@@ -1,0 +1,39 @@
+{
+    "ecmaFeatures": {
+        "jsx": true,
+        "arrowFunctions": true,
+        "modules": true,
+        "destructuring": true,
+        "spread": true,
+        "restParams": true,
+        "blockBindings": true
+    },
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "parser": "babel-eslint",
+    "rules": {
+        "semi": [2, "always"],
+        "quotes": [1, "single"],
+        "indent": [2, "tab", {"SwitchCase": 0}],
+        "comma-dangle": [2, "never"],
+        "no-mixed-spaces-and-tabs": 2,
+        "react/jsx-uses-react": 1,
+        "react/jsx-uses-vars": 1,
+        "babel/new-cap": 0,
+        "new-cap": 0,
+        "no-shadow": 1,
+        "eol-last": 1,
+        "space-before-function-paren": [1, "never"],
+        "space-before-blocks": 1,
+        "no-underscore-dangle": 0,
+        "no-debugger": 0,
+        "no-console": 0,
+        "no-use-before-define": 0,
+        "no-alert": 0,
+        "no-unused-vars": 0,
+        "no-trailing-spaces": [2, { "skipBlankLines": true }]
+    },
+    "plugins": ["react", "babel", "html"]
+}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>vuex-i18n</title>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.1/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
+	<script src="https://unpkg.com/vuex@2.0.0"></script>
+
+	<script src="../src/vuex-i18n.js"></script>
+	<script src="../src/vuex-i18n-store.js"></script>
+
+</head>
+<body>
+
+	<div id="app">
+
+		<div style="margin-bottom: 40px; border:1px solid #efefef; padding: 20px; display: inline-block">
+			<h1>{{ $t('message.title') }}</h1>
+			<p>{{ $t('message.body') }}</p>
+		</div>
+
+		<br />
+
+		<div style="display:block">
+			<input type="text" v-model="language">
+
+			<button type="submit" @click="changeLanguage">Set language</button>
+
+			<p>Current Language: {{ $i18n.locale() }}</p>
+		</div>
+
+	</div>
+
+	<!-- application code -->
+	<script type="text/javascript">
+
+		Vue.config.debug = true;
+
+		const store = new Vuex.Store({
+			modules: {
+				i18n: i18nVuexModule
+			}
+		});
+
+		Vue.use(VuexI18nPlugin, store);
+
+		var app = new Vue({
+			store,
+			el: '#app',
+			data: {
+				language: 'en'
+			},
+			mounted() {
+
+				this.$http.get('/test/locale-de.json').then((response) => {
+					return response.json();
+
+				}).then((data) => {
+					this.$i18n.add('de', data);
+					this.$i18n.set('de');
+				});
+
+			},
+			methods: {
+				changeLanguage() {
+
+					let lang = this.language;
+					let url = `/test/locale-${lang}.json`;
+
+					this.$http.get(url).then((response) => {
+						return response.json();
+
+					}).then((data) => {
+						this.$i18n.add(lang, data);
+						this.$i18n.set(lang);
+
+					}).catch((error) => {
+						alert('could not fetch locale translations');
+					});
+
+				}
+			}
+		});
+
+
+	</script>
+
+</body>
+</html>
