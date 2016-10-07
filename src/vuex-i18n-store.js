@@ -15,7 +15,7 @@ const i18nVuexModule = {
 		ADD_LOCALE(state, payload) {
 			state.translations[payload.locale] = payload.translations;
 		}
-		
+
 	},
 	actions: {
 
@@ -35,3 +35,5 @@ const i18nVuexModule = {
 
 	}
 };
+
+export default i18nVuexModule;

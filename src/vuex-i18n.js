@@ -102,3 +102,5 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 	};
 
 };
+
+export default VuexI18nPlugin;
