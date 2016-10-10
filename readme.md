@@ -17,4 +17,20 @@ $ npm install vuex-i18n
 ```
 
 ## Usage
-..
+The vuex-i18n plugin is intended to be used for applications that use vuex as
+store and require localized messages. Make sure that both vue and vuex have
+been loaded beforehand.
+
+The plugin provides a vuex module to store the localization information and
+translations and a plugin to allow easy access
+
+```javascript
+
+// load vue instance
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+// initialize the vuex store using the
+
+
+```
