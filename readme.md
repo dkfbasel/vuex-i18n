@@ -46,8 +46,11 @@ const store = new Vuex.Store({
 // initialize the internationalization plugin on the vue instance. note that
 // the store must be passed to the plugin. the plugin will then generate some
 // helper functions for components (i.e. this.$i18n.set, this.$t) and on the vue
-// instance (i.e. Vue.i18n.set)
+// instance (i.e. Vue.i18n.set).
 Vue.use(vuexI18n.plugin, store);
+
+// please note that you must specify the name of the vuex module if it is
+// different from i18n. i.e. Vue.use(vuexI18n.plugin, store, 'myName')
 
 
 // add some translations (could also be loaded from a separate file)
