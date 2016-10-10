@@ -38,14 +38,17 @@
 
 		Vue.config.debug = true;
 
+		// initialize a new vuex store including our i18nVuexModule
 		const store = new Vuex.Store({
 			modules: {
 				i18n: i18nVuexModule
 			}
 		});
 
+		// initialize the vuexi18nPlugin
 		Vue.use(VuexI18nPlugin, store);
 
+		// use the plugin methods to access and add translations
 		var app = new Vue({
 			store,
 			el: '#app',
