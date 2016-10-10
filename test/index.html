@@ -67,9 +67,9 @@
 
 			},
 			methods: {
-				changeLanguage() {
+				changeLanguage(e) {
 
-					let lang = this.language;
+					let lang = e.target.value();
 					let url = `/test/locale-${lang}.json`;
 
 					this.$http.get(url).then((response) => {
