@@ -8,8 +8,7 @@
 	<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
 	<script src="https://unpkg.com/vuex@2.0.0"></script>
 
-	<script src="../src/vuex-i18n.js"></script>
-	<script src="../src/vuex-i18n-store.js"></script>
+	<script src="../dist/vuex-i18n.min.js"></script>
 
 </head>
 <body>
@@ -42,12 +41,12 @@
 		// initialize a new vuex store including our i18nVuexModule
 		const store = new Vuex.Store({
 			modules: {
-				i18n: i18nVuexModule
+				i18n: vuexI18n.store
 			}
 		});
 
 		// initialize the vuexi18nPlugin
-		Vue.use(VuexI18nPlugin, store);
+		Vue.use(vuexI18n.plugin, store);
 
 		// use the plugin methods to access and add translations
 		var app = new Vue({

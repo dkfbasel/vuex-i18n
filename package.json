@@ -1,0 +1,48 @@
+{
+  "name": "vuex-i18n",
+  "version": "1.0.0",
+  "description": "Easy localization for vue-components using vuex as data store",
+  "directories": {
+    "test": "test"
+  },
+  "main": "dist/vuex-i18n.es.js",
+  "files": [
+    "dist",
+    "test"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dkfbasel/vuex-i18n.git"
+  },
+  "keywords": [
+    "localization",
+    "translation",
+    "vuex",
+    "vue",
+    "i18n"
+  ],
+  "author": {
+    "name": "Ramon Saccilotto",
+    "email": "tikiatua@gmail.com",
+    "url": "https://github.com/tikiatua"
+  },
+  "contributors": [
+    {
+      "name": "Vu Duong",
+      "email": "info@spotlit.de",
+      "url": "https://github.com/vuduo"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dkfbasel/vuex-i18n/issues"
+  },
+  "homepage": "https://github.com/dkfbasel/vuex-i18n#readme",
+  "devDependencies": {
+    "babel-preset-es2015-rollup": "^1.2.0",
+    "rollup-plugin-babel": "^2.6.1"
+  }
+}
