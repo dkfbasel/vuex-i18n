@@ -20,6 +20,30 @@ var i18nVuexModule = {
 		// add a new locale
 		ADD_LOCALE: function ADD_LOCALE(state, payload) {
 			state.translations[payload.locale] = payload.translations;
+		},
+
+
+		// add a new locale
+		REMOVE_LOCALE: function REMOVE_LOCALE(state, payload) {
+
+			// check if the given locale is present in the state
+			if (state.translations.hasOwnProperty(payload.locale)) {
+
+				// check if the current locale is the given locale to remvoe
+				if (state.locale === payload.locale) {
+					// reset the current locale
+					state.locale = null;
+				}
+
+				// create a copy of the translations object
+				var translationCopy = Object.assign({}, state.translations);
+
+				// remove the given locale
+				delete translationCopy[payload.locale];
+
+				// set the state to the new object
+				state.translations = copy;
+			}
 		}
 	},
 	actions: {
@@ -37,6 +61,16 @@ var i18nVuexModule = {
 		addLocale: function addLocale(context, payload) {
 			context.commit({
 				type: 'ADD_LOCALE',
+				locale: payload.locale,
+				translations: payload.translations
+			});
+		},
+
+
+		// remove the given locale translations
+		removeLocale: function removeLocale(context, payload) {
+			context.commit({
+				type: 'REMOVE_LOCALE',
 				locale: payload.locale,
 				translations: payload.translations
 			});
@@ -117,6 +151,16 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		});
 	};
 
+	// remove the givne locale from the store
+	var removeLocale = function removeLocale(locale) {
+		if (store.state[moduleName].translations.hasOwnProperty(locale)) {
+			store.dispatch({
+				type: 'removeLocale',
+				locale: locale
+			});
+		}
+	};
+
 	// check if the given locale is already loaded
 	var checkLocaleExists = function checkLocaleExists(locale) {
 		return store.state[moduleName].translations.hasOwnProperty(locale);
@@ -126,6 +170,7 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		locale: getLocale,
 		set: setLocale,
 		add: addLocale,
+		remove: removeLocale,
 		exists: checkLocaleExists
 	};
 
@@ -133,6 +178,7 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		locale: getLocale,
 		set: setLocale,
 		add: addLocale,
+		remove: removeLocale,
 		exists: checkLocaleExists
 	};
 };

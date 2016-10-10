@@ -69,6 +69,16 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		});
 	};
 
+	// remove the givne locale from the store
+	var removeLocale = function removeLocale(locale) {
+		if (store.state[moduleName].translations.hasOwnProperty(locale)) {
+			store.dispatch({
+				type: 'removeLocale',
+				locale: locale
+			});
+		}
+	};
+
 	// check if the given locale is already loaded
 	var checkLocaleExists = function checkLocaleExists(locale) {
 		return store.state[moduleName].translations.hasOwnProperty(locale);
@@ -78,6 +88,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		locale: getLocale,
 		set: setLocale,
 		add: addLocale,
+		remove: removeLocale,
 		exists: checkLocaleExists
 	};
 
@@ -85,6 +96,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		locale: getLocale,
 		set: setLocale,
 		add: addLocale,
+		remove: removeLocale,
 		exists: checkLocaleExists
 	};
 
