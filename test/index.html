@@ -58,6 +58,7 @@
 			},
 			mounted() {
 
+				// load the german language set
 				this.$http.get('/test/locale-de.json').then((response) => {
 					return response.json();
 
@@ -68,17 +69,26 @@
 
 			},
 			methods: {
-				changeLanguage(e) {
 
-					let lang = e.target.value();
-					let url = `/test/locale-${lang}.json`;
+				// enable language changing
+				changeLanguage() {
 
+					let locale = this.language;
+					let url = `/test/locale-${locale}.json`;
+
+					// check if the locale has already been loaded
+					if (this.$i18n.exists(locale)) {
+						this.$i18n.set(locale);
+						return;
+					}
+
+					// load the specified locale from the server
 					this.$http.get(url).then((response) => {
 						return response.json();
 
 					}).then((data) => {
-						this.$i18n.add(lang, data);
-						this.$i18n.set(lang);
+						this.$i18n.add(locale, data);
+						this.$i18n.set(locale);
 
 					}).catch((error) => {
 						alert('could not fetch locale translations');
