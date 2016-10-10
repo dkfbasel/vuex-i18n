@@ -48,24 +48,24 @@
 		// initialize the vuexi18nPlugin
 		Vue.use(vuexI18n.plugin, store);
 
+		// define default translations for english text
+		const localeEn = {
+			'message.title': 'An Awesome Title',
+			'message.body': 'And some slightly less awesome text'
+		};
+
+		// add the english locale to the i18n store
+		Vue.i18n.add('en', localeEn);
+
+		// set the current language to english
+		Vue.i18n.set('en');
+
 		// use the plugin methods to access and add translations
 		var app = new Vue({
 			store,
 			el: '#app',
 			data: {
-				language: 'en'
-			},
-			mounted() {
-
-				// load the german language set
-				this.$http.get('/test/locale-de.json').then((response) => {
-					return response.json();
-
-				}).then((data) => {
-					this.$i18n.add('de', data);
-					this.$i18n.set('de');
-				});
-
+				language: 'de'
 			},
 			methods: {
 
