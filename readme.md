@@ -31,9 +31,12 @@ A corresponding example can be found in the test directory.
 
 ```javascript
 
-// load vue instance
+// load vue and vuex instance
 import Vue from 'vue';
 import Vuex from 'vuex';
+
+// load vuex i18n module
+import vuexI18n from 'vuex-i18n';
 
 // initialize the vuex store using the vuex module. note that you can change the
 //  name of the module if you wish
