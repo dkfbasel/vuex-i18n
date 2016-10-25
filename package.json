@@ -1,11 +1,11 @@
 {
   "name": "vuex-i18n",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "description": "Easy localization for vue-components using vuex as data store",
   "directories": {
     "test": "test"
   },
-  "main": "dist/vuex-i18n.min.js",
+  "main": "dist/vuex-i18n.es.js",
   "files": [
     "dist",
     "test"
