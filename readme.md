@@ -54,7 +54,9 @@ Vue.use(vuexI18n.plugin, store);
 
 
 // add some translations (could also be loaded from a separate file)
-// note that it is possible to use placeholders
+// note that it is possible to use placeholders. translations can also be
+// structured as object trees and will automatically be flattened by the the
+// plugin
 const translationsEn = {
 	"content": "This is some {type} content"
 };
@@ -81,7 +83,7 @@ var app = new Vue({
 	el: '#app',
 	template: `
 		<div>
-			<h1>{{ $t('My nice title') }}</h1>
+			<h1>{{ 'My nice title' | translate }}</h1>
 			<p>{{ $t('content', {'type': 'nice'}) }}
 		</div>
 	`
@@ -91,11 +93,12 @@ var app = new Vue({
 
 ## Usage
 The plugin provides easy access to localized information through the use of
-the `$t()` method.
+the `$t()` method or the `translate` filter.
 
 The plugin will try to find the given string as key in the translations of the
 currently defined locale and return the respective translation. If the string
-is not found, it will return as is. This allows to setup an application very quickly without having to first define all strings in a separate template.
+is not found, it will return as is. This allows to setup an application very
+quickly without having to first define all strings in a separate template.
 
 ```javascript
 <div>
