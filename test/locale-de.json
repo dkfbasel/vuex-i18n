@@ -1,4 +1,7 @@
 {
 	"message.title": "Ein toller Titel",
-	"message.body": "Und etwas weniger interessanter Inhalt"
+	"message.body": "Und etwas weniger interessanter Inhalt",
+	"message": {
+		"footer": "Hier steht eine Fusszeile"
+	}
 }

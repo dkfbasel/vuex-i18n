@@ -18,6 +18,8 @@
 		<div style="margin-bottom: 40px; border:1px solid #efefef; padding: 20px; display: inline-block">
 			<h1>{{ $t('message.title') }}</h1>
 			<p>{{ $t('message.body') }}</p>
+
+			<p><small>{{ $t('message.footer') }}</small></p>
 		</div>
 
 		<br />
@@ -51,7 +53,8 @@
 		// define default translations for english text
 		const localeEn = {
 			'message.title': 'An Awesome Title',
-			'message.body': 'And some slightly less awesome text'
+			'message.body': 'And some slightly less awesome text',
+			'message.footer': 'This is a footer text'
 		};
 
 		// add the english locale to the i18n store
