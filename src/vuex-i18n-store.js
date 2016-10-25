@@ -18,7 +18,9 @@ const i18nVuexModule =  {
 
 		// add a new locale
 		ADD_LOCALE(state, payload) {
-			state.translations[payload.locale] = payload.translations;
+			// reduce the given translations to a single-depth tree
+			var translations = flattenTranslations(payload.translations);
+			state.translations[payload.locale] = translations;
 		},
 
 		// add a new locale
@@ -75,6 +77,40 @@ const i18nVuexModule =  {
 		}
 
 	}
+};
+
+// flattenTranslations will convert object trees for translations into a
+// single-depth object tree
+const flattenTranslations = function flattenTranslations(translations) {
+
+	var toReturn = {};
+
+	for (var i in translations) {
+
+		// check if the property is present
+		if (!translations.hasOwnProperty(i)) {
+			continue;
+		}
+
+		// get the type of the property
+		var objType = typeof translations[i];
+
+		if (objType == 'object' && objType !== null) {
+
+			var flatObject = flattenTranslations(translations[i]);
+
+			for (var x in flatObject) {
+				if (!flatObject.hasOwnProperty(x)) continue;
+
+				toReturn[i + '.' + x] = flatObject[x];
+			}
+
+		} else {
+			toReturn[i] = translations[i];
+
+		}
+	}
+	return toReturn;
 };
 
 export default i18nVuexModule;
