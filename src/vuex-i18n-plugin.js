@@ -30,7 +30,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 	};
 
 	// get localized string from store
-	Vue.prototype.$t = function $t(key, options) {
+	var translate = function $t(key, options) {
 
 		// get the current language from the store
 		var locale = store.state[moduleName].locale;
@@ -48,6 +48,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		// return the value from the store
 		return render(store.state[moduleName].translations[locale][key], options);
 	};
+
 
 	var setLocale = function setLocale(locale) {
 		store.dispatch({
@@ -84,6 +85,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		return store.state[moduleName].translations.hasOwnProperty(locale);
 	};
 
+	// register vue prototype methods
 	Vue.prototype.$i18n = {
 		locale: getLocale,
 		set: setLocale,
@@ -92,13 +94,21 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		exists: checkLocaleExists
 	};
 
+	// register global methods
 	Vue.i18n = {
 		locale: getLocale,
 		set: setLocale,
 		add: addLocale,
 		remove: removeLocale,
-		exists: checkLocaleExists
+		exists: checkLocaleExists,
+		translate: translate
 	};
+
+	// register the translation function on the vue instance
+	Vue.prototype.$t = translate;
+
+	// register a filter function for translations
+	Vue.filter('translate', translate);
 
 };
 
