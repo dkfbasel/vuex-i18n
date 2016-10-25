@@ -5,7 +5,7 @@
   "directories": {
     "test": "test"
   },
-  "main": "dist/vuex-i18n.es.js",
+  "main": "dist/vuex-i18n.min.js",
   "files": [
     "dist",
     "test"
