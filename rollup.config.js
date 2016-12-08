@@ -17,6 +17,6 @@ export default {
 	targets: [
 		{ dest: 'dist/vuex-i18n.es.js', format: 'es' },
 		{ dest: 'dist/vuex-i18n.cjs.js', format: 'cjs' },
-		{ dest: 'dist/vuex-i18n.min.js', format: 'iife', moduleName: 'vuexI18n' }
+		{ dest: 'dist/vuex-i18n.min.js', format: 'umd', moduleName: 'vuexI18n' }
 	]
 };
