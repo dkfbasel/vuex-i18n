@@ -298,7 +298,22 @@ var flattenTranslations = function flattenTranslations(translations) {
 		// get the type of the property
 		var objType = _typeof(translations[i]);
 
-		if (objType == 'object' && objType !== null) {
+		// allow unflattened array of strings
+		if (isArray(translations[i])) {
+
+			var count = translations[i].length;
+
+			for (var index = 0; index < count; index++) {
+				var itemType = _typeof(translations[i][index]);
+
+				if (itemType !== 'string') {
+					console.warn('vuex-i18n:', 'currently only arrays of strings are fully supported', translations[i]);
+					break;
+				}
+			}
+
+			toReturn[i] = translations[i];
+		} else if (objType == 'object' && objType !== null) {
 
 			var flatObject = flattenTranslations(translations[i]);
 
@@ -313,6 +328,11 @@ var flattenTranslations = function flattenTranslations(translations) {
 	}
 	return toReturn;
 };
+
+// check if the given object is an array
+function isArray(obj) {
+	return !!obj && Array === obj.constructor;
+}
 
 /* vuex-i18n defines the Vuexi18nPlugin to enable localization using a vuex
 ** module to store the translation information. Make sure to also include the
@@ -428,10 +448,18 @@ VuexI18nPlugin.install = function install(Vue, store) {
 	Vue.filter('translate', translate);
 };
 
-// render the given translation with placeholder replaced
-var render = function render(translation) {
-	var replacements = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+// replace will replace the given replacements in the translation string
+var replace = function replace(translation, replacements) {
+	var warn = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
+
+	// check if the object has a replace property
+	if (!translation.replace) {
+		console.log('no replace', translation);
+		return translation;
+	}
+
+	console.log('replace', translation, replacements);
 
 	return translation.replace(/\{\w+\}/g, function (placeholder) {
 
@@ -442,15 +470,44 @@ var render = function render(translation) {
 		}
 
 		// warn user that the placeholder has not been found
-		console.group('Not all placeholder founds');
-		console.warn('Text:', translation);
-		console.warn('Placeholder:', placeholder);
-		console.groupEnd();
+		if (warn === true) {
+			console.group('Not all placeholder founds');
+			console.warn('Text:', translation);
+			console.warn('Placeholder:', placeholder);
+			console.groupEnd();
+		}
 
 		// return the original placeholder
 		return placeholder;
 	});
 };
+
+// render will return the given translation object
+var render = function render(translation) {
+	var replacements = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+
+	// get the type of the property
+	var objType = typeof translation === 'undefined' ? 'undefined' : _typeof(translation);
+
+	if (isArray$1(translation)) {
+
+		// replace the placeholder elements in all sub-items
+		return translation.map(function (item) {
+			return replace(item, replacements, false);
+		});
+	} else if (objType === 'string') {
+		return replace(translation, replacements);
+	}
+
+	// return translation item directly
+	return translation;
+};
+
+// check if the given object is an array
+function isArray$1(obj) {
+	return !!obj && Array === obj.constructor;
+}
 
 // import the vuex module for localization
 // import the corresponding plugin for vue

@@ -32,6 +32,12 @@
 			<p>Current Language: {{ $i18n.locale() }}</p>
 		</div>
 
+		<div style="display:block; margin-top: 20px">
+			<ul>
+				<li v-for="block in $t('listing', {first:'1', second:'2'})">{{ block }}</li>
+			</ul>
+		</div>
+
 	</div>
 
 	<!-- application code -->
@@ -54,7 +60,11 @@
 		const localeEn = {
 			'message.title': 'An Awesome Title',
 			'message.body': 'And some slightly less awesome text',
-			'message.footer': 'This is a footer text'
+			'message.footer': 'This is a footer text',
+			'listing': [
+				'this is block no. {first}',
+				'this is block no. {second}'
+			]
 		};
 
 		// add the english locale to the i18n store

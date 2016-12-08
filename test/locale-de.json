@@ -3,5 +3,9 @@
 	"message.body": "Und etwas weniger interessanter Inhalt",
 	"message": {
 		"footer": "Hier steht eine Fusszeile"
-	}
+	},
+	"listing": [
+		"Dies ist der Block {first}",
+		"Dies ist der Block {second}"
+	]
 }

@@ -83,9 +83,9 @@ const i18nVuexModule =  {
 // single-depth object tree
 const flattenTranslations = function flattenTranslations(translations) {
 
-	var toReturn = {};
+	let toReturn = {};
 
-	for (var i in translations) {
+	for (let i in translations) {
 
 		// check if the property is present
 		if (!translations.hasOwnProperty(i)) {
@@ -93,13 +93,29 @@ const flattenTranslations = function flattenTranslations(translations) {
 		}
 
 		// get the type of the property
-		var objType = typeof translations[i];
+		let objType = typeof translations[i];
 
-		if (objType == 'object' && objType !== null) {
+		// allow unflattened array of strings
+		if (isArray(translations[i])) {
 
-			var flatObject = flattenTranslations(translations[i]);
+			let count = translations[i].length;
 
-			for (var x in flatObject) {
+			for (let index = 0; index < count; index++) {
+				let itemType = typeof translations[i][index];
+
+				if (itemType !== 'string') {
+					console.warn('vuex-i18n:','currently only arrays of strings are fully supported', translations[i]);
+					break;
+				}
+			}
+
+			toReturn[i] = translations[i];
+
+		} else if (objType == 'object' && objType !== null) {
+
+			let flatObject = flattenTranslations(translations[i]);
+
+			for (let x in flatObject) {
 				if (!flatObject.hasOwnProperty(x)) continue;
 
 				toReturn[i + '.' + x] = flatObject[x];
@@ -112,5 +128,10 @@ const flattenTranslations = function flattenTranslations(translations) {
 	}
 	return toReturn;
 };
+
+// check if the given object is an array
+function isArray(obj) {
+	return !!obj && Array === obj.constructor;
+}
 
 export default i18nVuexModule;

@@ -30,10 +30,10 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 	};
 
 	// get localized string from store
-	var translate = function $t(key, options) {
+	let translate = function $t(key, options) {
 
 		// get the current language from the store
-		var locale = store.state[moduleName].locale;
+		let locale = store.state[moduleName].locale;
 
 		// check if the language exists in the store. return the key if not
 		if (store.state[moduleName].translations.hasOwnProperty(locale) === false ) {
@@ -50,19 +50,19 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 	};
 
 
-	var setLocale = function setLocale(locale) {
+	let setLocale = function setLocale(locale) {
 		store.dispatch({
 			type: 'setLocale',
 			locale: locale
 		});
 	};
 
-	var getLocale = function getLocale() {
+	let getLocale = function getLocale() {
 		return store.state[moduleName].locale;
 	};
 
 	// add predefined translations to the store
-	var addLocale = function addLocale(locale, translations) {
+	let addLocale = function addLocale(locale, translations) {
 		return store.dispatch({
 			type: 'addLocale',
 			locale: locale,
@@ -71,7 +71,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 	};
 
 	// remove the givne locale from the store
-	var removeLocale = function removeLocale(locale) {
+	let removeLocale = function removeLocale(locale) {
 		if (store.state[moduleName].translations.hasOwnProperty(locale)) {
 			store.dispatch({
 				type: 'removeLocale',
@@ -81,7 +81,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 	};
 
 	// check if the given locale is already loaded
-	var checkLocaleExists = function checkLocaleExists(locale) {
+	let checkLocaleExists = function checkLocaleExists(locale) {
 		return store.state[moduleName].translations.hasOwnProperty(locale);
 	};
 
@@ -112,27 +112,67 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 
 };
 
-// render the given translation with placeholder replaced
-let render = function render(translation, replacements = {}) {
+// replace will replace the given replacements in the translation string
+let replace = function replace(translation, replacements, warn=true) {
+
+	// check if the object has a replace property
+	if (!translation.replace) {
+		console.log('no replace', translation);
+		return translation;
+	}
+
+	console.log('replace', translation, replacements);
 
 	return translation.replace(/\{\w+\}/g, function(placeholder) {
 
-		var key = placeholder.replace('{', '').replace('}', '');
+		let key = placeholder.replace('{', '').replace('}', '');
 
 		if (replacements[key] !== undefined) {
 			return replacements[key];
 		}
 
 		// warn user that the placeholder has not been found
-		console.group('Not all placeholder founds');
-		console.warn('Text:', translation);
-		console.warn('Placeholder:', placeholder);
-		console.groupEnd();
+		if (warn === true) {
+			console.group('Not all placeholder founds');
+			console.warn('Text:', translation);
+			console.warn('Placeholder:', placeholder);
+			console.groupEnd();
+		}
 
 		// return the original placeholder
 		return placeholder;
 	});
+};
+
+// render will return the given translation object
+let render = function render(translation, replacements = {}) {
+
+	// get the type of the property
+	let objType = typeof translation;
+
+	if (isArray(translation)) {
+
+		// replace the placeholder elements in all sub-items
+		return translation.map((item) => {
+			return replace(item, replacements, false);
+		});
+
+
+	} else if (objType === 'string') {
+		return replace(translation, replacements);
+
+	}
+
+	// return translation item directly
+	return translation;
 
 };
+
+// check if the given object is an array
+function isArray(obj) {
+	return !!obj && Array === obj.constructor;
+}
+
+
 
 export default VuexI18nPlugin;
