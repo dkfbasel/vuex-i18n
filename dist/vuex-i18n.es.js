@@ -453,11 +453,8 @@ var replace = function replace(translation, replacements) {
 
 	// check if the object has a replace property
 	if (!translation.replace) {
-		console.log('no replace', translation);
 		return translation;
 	}
-
-	console.log('replace', translation, replacements);
 
 	return translation.replace(/\{\w+\}/g, function (placeholder) {
 
