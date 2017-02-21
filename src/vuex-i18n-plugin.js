@@ -49,6 +49,22 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		return render(store.state[moduleName].translations[locale][key], options);
 	};
 
+	// get localized string from store in a given language if available
+	let translateInLanguage = function $tlang(lang, key, options) {
+
+		// check if the language exists in the store. return the key if not
+		if (store.state[moduleName].translations.hasOwnProperty(lang) === false ) {
+			return render(key, options);
+		}
+
+		// check if the key exists in the store. return the key if not
+		if (store.state[moduleName].translations[lang].hasOwnProperty(key) === false) {
+			return render(key, options);
+		}
+
+		// return the value from the store
+		return render(store.state[moduleName].translations[lang][key], options);
+	};
 
 	let setLocale = function setLocale(locale) {
 		store.dispatch({
@@ -101,11 +117,15 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		add: addLocale,
 		remove: removeLocale,
 		exists: checkLocaleExists,
-		translate: translate
+		translate: translate,
+		inLanguage: translateInLanguage
 	};
 
 	// register the translation function on the vue instance
 	Vue.prototype.$t = translate;
+
+	// register the specific language translation function on the vue instance
+	Vue.prototype.$tlang = translateInLanguage;
 
 	// register a filter function for translations
 	Vue.filter('translate', translate);
