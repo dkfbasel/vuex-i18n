@@ -130,6 +130,16 @@ The `$t()` method support basic pluralization
 </div>
 ```
 
+If you want to fetch a translation for a specific language, whats currently not
+the locale use the `$tlang()` method.
+
+```javascript
+<div>
+	// will return the english translation regardless of the current locale
+	{{ $tlang('en', 'You have {number} new messages', {number: 5}) }}
+</div>
+```
+
 There are also several methods available on the property `this.$i18n` or `Vue.i18n`
 
 ```javascript
