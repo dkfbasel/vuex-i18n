@@ -4,200 +4,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
 };
 
-
-
-
-
-var asyncGenerator = function () {
-  function AwaitValue(value) {
-    this.value = value;
-  }
-
-  function AsyncGenerator(gen) {
-    var front, back;
-
-    function send(key, arg) {
-      return new Promise(function (resolve, reject) {
-        var request = {
-          key: key,
-          arg: arg,
-          resolve: resolve,
-          reject: reject,
-          next: null
-        };
-
-        if (back) {
-          back = back.next = request;
-        } else {
-          front = back = request;
-          resume(key, arg);
-        }
-      });
-    }
-
-    function resume(key, arg) {
-      try {
-        var result = gen[key](arg);
-        var value = result.value;
-
-        if (value instanceof AwaitValue) {
-          Promise.resolve(value.value).then(function (arg) {
-            resume("next", arg);
-          }, function (arg) {
-            resume("throw", arg);
-          });
-        } else {
-          settle(result.done ? "return" : "normal", result.value);
-        }
-      } catch (err) {
-        settle("throw", err);
-      }
-    }
-
-    function settle(type, value) {
-      switch (type) {
-        case "return":
-          front.resolve({
-            value: value,
-            done: true
-          });
-          break;
-
-        case "throw":
-          front.reject(value);
-          break;
-
-        default:
-          front.resolve({
-            value: value,
-            done: false
-          });
-          break;
-      }
-
-      front = front.next;
-
-      if (front) {
-        resume(front.key, front.arg);
-      } else {
-        back = null;
-      }
-    }
-
-    this._invoke = send;
-
-    if (typeof gen.return !== "function") {
-      this.return = undefined;
-    }
-  }
-
-  if (typeof Symbol === "function" && Symbol.asyncIterator) {
-    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
-      return this;
-    };
-  }
-
-  AsyncGenerator.prototype.next = function (arg) {
-    return this._invoke("next", arg);
-  };
-
-  AsyncGenerator.prototype.throw = function (arg) {
-    return this._invoke("throw", arg);
-  };
-
-  AsyncGenerator.prototype.return = function (arg) {
-    return this._invoke("return", arg);
-  };
-
-  return {
-    wrap: function (fn) {
-      return function () {
-        return new AsyncGenerator(fn.apply(this, arguments));
-      };
-    },
-    await: function (value) {
-      return new AwaitValue(value);
-    }
-  };
-}();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var get = function get(object, property, receiver) {
-  if (object === null) object = Function.prototype;
-  var desc = Object.getOwnPropertyDescriptor(object, property);
-
-  if (desc === undefined) {
-    var parent = Object.getPrototypeOf(object);
-
-    if (parent === null) {
-      return undefined;
-    } else {
-      return get(parent, property, receiver);
-    }
-  } else if ("value" in desc) {
-    return desc.value;
-  } else {
-    var getter = desc.get;
-
-    if (getter === undefined) {
-      return undefined;
-    }
-
-    return getter.call(receiver);
-  }
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-var set = function set(object, property, value, receiver) {
-  var desc = Object.getOwnPropertyDescriptor(object, property);
-
-  if (desc === undefined) {
-    var parent = Object.getPrototypeOf(object);
-
-    if (parent !== null) {
-      set(parent, property, value, receiver);
-    }
-  } else if ("value" in desc && desc.writable) {
-    desc.value = value;
-  } else {
-    var setter = desc.set;
-
-    if (setter !== undefined) {
-      setter.call(receiver, value);
-    }
-  }
-
-  return value;
-};
-
 /* vuex-i18n-store defines a vuex module to store locale translations. Make sure
 ** to also include the file vuex-i18n.js to enable easy access to localized
 ** strings in your vue components.
@@ -207,6 +13,7 @@ var set = function set(object, property, value, receiver) {
 var i18nVuexModule = {
 	state: {
 		locale: null,
+		fallback: null,
 		translations: {}
 	},
 	mutations: {
@@ -246,6 +53,9 @@ var i18nVuexModule = {
 				// set the state to the new object
 				state.translations = translationCopy;
 			}
+		},
+		SET_FALLBACK_LOCALE: function SET_FALLBACK_LOCALE(state, payload) {
+			state.fallback = payload.locale;
 		}
 	},
 	actions: {
@@ -275,6 +85,12 @@ var i18nVuexModule = {
 				type: 'REMOVE_LOCALE',
 				locale: payload.locale,
 				translations: payload.translations
+			});
+		},
+		setFallbackLocale: function setFallbackLocale(context, payload) {
+			context.commit({
+				type: 'SET_FALLBACK_LOCALE',
+				locale: payload.locale
 			});
 		}
 	}
@@ -366,23 +182,56 @@ VuexI18nPlugin.install = function install(Vue, store) {
 	}
 
 	// get localized string from store
-	var translate = function $t(key, options) {
+	var translate = function $t(key, options, pluralization) {
 
 		// get the current language from the store
 		var locale = store.state[moduleName].locale;
 
+		return translateInLanguage(locale, key, options, pluralization);
+	};
+
+	// get localized string from store in a given language if available
+	var translateInLanguage = function translateInLanguage(locale, key, options, pluralization) {
+
+		// get the current language from the store
+		var fallback = store.state[moduleName].fallback;
+		var translations = store.state[moduleName].translations;
+
+		// flag for translation to exist or not
+		var translationExist = true;
+
 		// check if the language exists in the store. return the key if not
-		if (store.state[moduleName].translations.hasOwnProperty(locale) === false) {
-			return render(key, options);
+		if (translations.hasOwnProperty(locale) === false) {
+			translationExist = false;
+
+			// check if the key exists in the store. return the key if not
+		} else if (translations[locale].hasOwnProperty(key) === false) {
+			translationExist = false;
 		}
 
-		// check if the key exists in the store. return the key if not
-		if (store.state[moduleName].translations[locale].hasOwnProperty(key) === false) {
-			return render(key, options);
+		if (translationExist === false) {
+			// check if a vaild fallback exists in the store. return the key if not
+			if (translations.hasOwnProperty(fallback) === false) {
+				return render(key, options, pluralization);
+			}
+
+			// check if the key exists in the fallback in the store. return the key if not
+			if (translations[fallback].hasOwnProperty(key) === false) {
+				return render(key, options, pluralization);
+			}
+			return render(translations[fallback][key], options, pluralization);
 		}
 
 		// return the value from the store
-		return render(store.state[moduleName].translations[locale][key], options);
+		return render(translations[locale][key], options, pluralization);
+	};
+
+	// set fallback locale
+	var setFallbackLocale = function setFallbackLocale(locale) {
+		store.dispatch({
+			type: 'setFallbackLocale',
+			locale: locale
+		});
 	};
 
 	var setLocale = function setLocale(locale) {
@@ -426,6 +275,7 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		set: setLocale,
 		add: addLocale,
 		remove: removeLocale,
+		fallback: setFallbackLocale,
 		exists: checkLocaleExists
 	};
 
@@ -435,12 +285,17 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		set: setLocale,
 		add: addLocale,
 		remove: removeLocale,
+		fallback: setFallbackLocale,
 		exists: checkLocaleExists,
-		translate: translate
+		translate: translate,
+		translateIn: translateInLanguage
 	};
 
 	// register the translation function on the vue instance
 	Vue.prototype.$t = translate;
+
+	// register the specific language translation function on the vue instance
+	Vue.prototype.$tlang = translateInLanguage;
 
 	// register a filter function for translations
 	Vue.filter('translate', translate);
@@ -480,23 +335,39 @@ var replace = function replace(translation, replacements) {
 // render will return the given translation object
 var render = function render(translation) {
 	var replacements = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	var pluralization = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
 
 
 	// get the type of the property
 	var objType = typeof translation === 'undefined' ? 'undefined' : _typeof(translation);
 
-	if (isArray$1(translation)) {
+	var replacedText = function replacedText() {
 
-		// replace the placeholder elements in all sub-items
-		return translation.map(function (item) {
-			return replace(item, replacements, false);
-		});
-	} else if (objType === 'string') {
-		return replace(translation, replacements);
+		if (isArray$1(translation)) {
+
+			// replace the placeholder elements in all sub-items
+			return translation.map(function (item) {
+				return replace(item, replacements, false);
+			});
+		} else if (objType === 'string') {
+			return replace(translation, replacements);
+		}
+	};
+
+	// check for pluralization and return the correct part of the string
+	if (pluralization !== null) {
+
+		// return the left side on singular, the right side for plural
+		// 0 has plural notation
+		if (pluralization == 1) {
+			return replacedText().split(':::')[0].trim();
+		} else {
+			return replacedText().split(':::')[1].trim();
+		}
 	}
 
 	// return translation item directly
-	return translation;
+	return replacedText();
 };
 
 // check if the given object is an array
