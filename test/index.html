@@ -10,46 +10,96 @@
 
 	<script src="../dist/vuex-i18n.min.js"></script>
 
+	<style>
+
+		body {
+			font-family: Arial;
+			margin: 20px;
+		}
+
+		.example-text {
+			 margin-bottom: 40px;
+			 border:1px solid #efefef;
+			 padding: 20px;
+			 display: block;
+			 width: 600px;
+			 background-color: #eee
+		}
+
+		.block {
+			padding: 20px;
+			border: 1px solid lightgrey;
+			display: block;
+			min-width: 600px;
+			width: 600px;
+		}
+
+		h2 {
+			min-width: 600px;
+			width: 600px;
+			margin: 0;
+			margin-top: 20px;
+			padding: 10px 20px;
+			background-color: darkred;
+			color: white;
+			font-size: 16px;
+			font-weight: 400;
+		}
+
+		input[type=text], button {
+			padding: 5px 10px;
+			font-size: 16px;
+		}
+
+	</style>
+
 </head>
 <body>
 
 	<div id="app">
 
-		<div style="margin-bottom: 40px; border:1px solid #efefef; padding: 20px; display: inline-block">
+		<h1>
+			Testing page
+		</h1>
+
+		<div class="example-text">
 			<h1>{{ $t('message.title') }}</h1>
 			<p>{{ $t('message.body') }}</p>
 
 			<p><small>Footer: {{ 'message.footer' | translate }}</small></p>
 		</div>
 
-		<br />
-
-		<div style="display:block">
-			<p>The german translation is: {{ $tlang('de', 'message.title') }}</p>
-		</div>
-
-		<br />
-
-		<div style="display:block">
-			<input type="text" v-model="language">
-
+		<h2>Set language and load translations</h2>
+		<div class="block">
+			<input type="text" v-model="language" placeholder="de or en">
 			<button type="submit" @click="changeLanguage">Set language</button>
-
 			<p>Current Language: {{ $i18n.locale() }}</p>
 		</div>
 
-		<div style="display:block; margin-top: 20px">
+		<h2 v-if="!$i18n.exists('de')">Show fallback language translation</h2>
+		<div v-if="!$i18n.exists('de')" class="block">
+			no german translation available
+			<p>The fallback translation is: {{ $t('message.title') }}</p>
+		</div>
+
+		<h2>Translation for specific language</h2>
+		<div class="block">
+			<p>The english translation is: {{ $tlang('en', 'message.title') }}</p>
+		</div>
+
+		<h2>Render list with translations and options</h2>
+		<div class="block">
 			<ul>
 				<li v-for="block in $t('listing', {first:'1', second:'2'})">{{ block }}</li>
 			</ul>
 		</div>
 
-		<div style="display:block; margin-top: 20px">
-			<p>Pluralization</p>
-			<input type="text" v-model="count">
-			<ul>
-				<li>{{ $t('plural', {count: count}, count) }}</li>
-			</ul>
+		<h2>Render translation with pluralization</h2>
+		<div class="block">
+			Number of Blocks: <input type="text" v-model="count">
+			<p>
+				{{ $t('plural', {count: count}, count) }}
+			</p>
 		</div>
 
 	</div>
