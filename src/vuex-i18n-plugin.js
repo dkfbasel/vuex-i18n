@@ -184,6 +184,7 @@ let render = function render(translation, replacements = {}, pluralization = nul
 
 	// get the type of the property
 	let objType = typeof translation;
+	let pluralizationType = typeof pluralization;
 
 	let replacedText = function() {
 
@@ -197,23 +198,35 @@ let render = function render(translation, replacements = {}, pluralization = nul
 		} else if (objType === 'string') {
 			return replace(translation, replacements);
 		}
+
 	};
 
-	// check for pluralization and return the correct part of the string
-	if (pluralization !== null) {
-
-		// return the left side on singular, the right side for plural
-		// 0 has plural notation
-		if (pluralization == 1) {
-			return replacedText().split(':::')[0].trim();
-
-		} else {
-			return replacedText().split(':::')[1].trim();
-		}
+		// return translation item directly
+	if (pluralization === null) {
+		return replacedText();
 	}
 
-	// return translation item directly
-	return replacedText();
+	// check if pluralization value is countable
+	if (pluralizationType !== 'number') {
+		console.warn('pluralization is not a number');
+		return replacedText();
+	}
+
+	// check for pluralization and return the correct part of the string
+	let translatedText = replacedText().split(':::');
+
+	// return the left side on singular, the right side for plural
+	// 0 has plural notation
+	if (pluralization === 1) {
+		return translatedText[0].trim();
+	}
+
+	if (translatedText.length > 1) {
+		return translatedText[1].trim();
+	}
+
+	console.warn('no pluralized translation provided in ', translation);
+	return translatedText[0].trim();
 
 };
 
