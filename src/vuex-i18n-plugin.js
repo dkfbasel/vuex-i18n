@@ -57,21 +57,23 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 			translationExist = false;
 		}
 
-		if (translationExist === false) {
-			// check if a vaild fallback exists in the store. return the key if not
-			if (translations.hasOwnProperty(fallback) === false ) {
-				return render(key, options, pluralization);
-			}
-
-			// check if the key exists in the fallback in the store. return the key if not
-			if (translations[fallback].hasOwnProperty(key) === false) {
-				return render(key, options, pluralization);
-			}
-			return render(translations[fallback][key], options, pluralization);
+		// return the value from the store
+		if (translationExist === true) {
+			return render(translations[locale][key], options, pluralization);
 		}
 
-		// return the value from the store
-		return render(translations[locale][key], options, pluralization);
+		// check if a vaild fallback exists in the store. return the key if not
+		if (translations.hasOwnProperty(fallback) === false ) {
+			return render(key, options, pluralization);
+		}
+
+		// check if the key exists in the fallback in the store. return the key if not
+		if (translations[fallback].hasOwnProperty(key) === false) {
+			return render(key, options, pluralization);
+		}
+
+		return render(translations[fallback][key], options, pluralization);
+
 	};
 
 	// set fallback locale
