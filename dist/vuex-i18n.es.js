@@ -209,21 +209,22 @@ VuexI18nPlugin.install = function install(Vue, store) {
 			translationExist = false;
 		}
 
-		if (translationExist === false) {
-			// check if a vaild fallback exists in the store. return the key if not
-			if (translations.hasOwnProperty(fallback) === false) {
-				return render(key, options, pluralization);
-			}
-
-			// check if the key exists in the fallback in the store. return the key if not
-			if (translations[fallback].hasOwnProperty(key) === false) {
-				return render(key, options, pluralization);
-			}
-			return render(translations[fallback][key], options, pluralization);
+		// return the value from the store
+		if (translationExist === true) {
+			return render(translations[locale][key], options, pluralization);
 		}
 
-		// return the value from the store
-		return render(translations[locale][key], options, pluralization);
+		// check if a vaild fallback exists in the store. return the key if not
+		if (translations.hasOwnProperty(fallback) === false) {
+			return render(key, options, pluralization);
+		}
+
+		// check if the key exists in the fallback in the store. return the key if not
+		if (translations[fallback].hasOwnProperty(key) === false) {
+			return render(key, options, pluralization);
+		}
+
+		return render(translations[fallback][key], options, pluralization);
 	};
 
 	// set fallback locale
@@ -340,6 +341,7 @@ var render = function render(translation) {
 
 	// get the type of the property
 	var objType = typeof translation === 'undefined' ? 'undefined' : _typeof(translation);
+	var pluralizationType = typeof pluralization === 'undefined' ? 'undefined' : _typeof(pluralization);
 
 	var replacedText = function replacedText() {
 
@@ -354,20 +356,32 @@ var render = function render(translation) {
 		}
 	};
 
-	// check for pluralization and return the correct part of the string
-	if (pluralization !== null) {
-
-		// return the left side on singular, the right side for plural
-		// 0 has plural notation
-		if (pluralization == 1) {
-			return replacedText().split(':::')[0].trim();
-		} else {
-			return replacedText().split(':::')[1].trim();
-		}
+	// return translation item directly
+	if (pluralization === null) {
+		return replacedText();
 	}
 
-	// return translation item directly
-	return replacedText();
+	// check if pluralization value is countable
+	if (pluralizationType !== 'number') {
+		console.warn('pluralization is not a number');
+		return replacedText();
+	}
+
+	// check for pluralization and return the correct part of the string
+	var translatedText = replacedText().split(':::');
+
+	// return the left side on singular, the right side for plural
+	// 0 has plural notation
+	if (pluralization === 1) {
+		return translatedText[0].trim();
+	}
+
+	if (translatedText.length > 1) {
+		return translatedText[1].trim();
+	}
+
+	console.warn('no pluralized translation provided in ', translation);
+	return translatedText[0].trim();
 };
 
 // check if the given object is an array
