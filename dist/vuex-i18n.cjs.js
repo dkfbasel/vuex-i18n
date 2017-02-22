@@ -246,7 +246,7 @@ var i18nVuexModule = {
 				delete translationCopy[payload.locale];
 
 				// set the state to the new object
-				state.translations = copy;
+				state.translations = translationCopy;
 			}
 		}
 	},
