@@ -30,40 +30,56 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 	};
 
 	// get localized string from store
-	let translate = function $t(key, options) {
+	let translate = function $t(key, options, pluralization) {
 
 		// get the current language from the store
 		let locale = store.state[moduleName].locale;
 
-		// check if the language exists in the store. return the key if not
-		if (store.state[moduleName].translations.hasOwnProperty(locale) === false ) {
-			return render(key, options);
-		}
-
-		// check if the key exists in the store. return the key if not
-		if (store.state[moduleName].translations[locale].hasOwnProperty(key) === false) {
-			return render(key, options);
-		}
-
-		// return the value from the store
-		return render(store.state[moduleName].translations[locale][key], options);
+		return translateInLanguage(locale, key, options, pluralization);
 	};
 
 	// get localized string from store in a given language if available
-	let translateInLanguage = function $tlang(lang, key, options) {
+	let translateInLanguage = function translateInLanguage(locale, key, options, pluralization) {
+
+		// get the current language from the store
+		let fallback = store.state[moduleName].fallback;
+		let translations = store.state[moduleName].translations;
+
+		// flag for translation to exist or not
+		let translationExist = true;
 
 		// check if the language exists in the store. return the key if not
-		if (store.state[moduleName].translations.hasOwnProperty(lang) === false ) {
-			return render(key, options);
-		}
+		if (translations.hasOwnProperty(locale) === false ) {
+			translationExist = false;
 
 		// check if the key exists in the store. return the key if not
-		if (store.state[moduleName].translations[lang].hasOwnProperty(key) === false) {
-			return render(key, options);
+		} else if (translations[locale].hasOwnProperty(key) === false) {
+			translationExist = false;
+		}
+
+		if (translationExist === false) {
+			// check if a vaild fallback exists in the store. return the key if not
+			if (translations.hasOwnProperty(fallback) === false ) {
+				return render(key, options, pluralization);
+			}
+
+			// check if the key exists in the fallback in the store. return the key if not
+			if (translations[fallback].hasOwnProperty(key) === false) {
+				return render(key, options, pluralization);
+			}
+			return render(translations[fallback][key], options, pluralization);
 		}
 
 		// return the value from the store
-		return render(store.state[moduleName].translations[lang][key], options);
+		return render(translations[locale][key], options, pluralization);
+	};
+
+	// set fallback locale
+	let setFallbackLocale = function setFallbackLocale(locale) {
+		store.dispatch({
+			type: 'setFallbackLocale',
+			locale: locale
+		});
 	};
 
 	let setLocale = function setLocale(locale) {
@@ -107,6 +123,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		set: setLocale,
 		add: addLocale,
 		remove: removeLocale,
+		fallback: setFallbackLocale,
 		exists: checkLocaleExists
 	};
 
@@ -116,9 +133,10 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		set: setLocale,
 		add: addLocale,
 		remove: removeLocale,
+		fallback: setFallbackLocale,
 		exists: checkLocaleExists,
 		translate: translate,
-		inLanguage: translateInLanguage
+		translateIn: translateInLanguage
 	};
 
 	// register the translation function on the vue instance
@@ -162,26 +180,40 @@ let replace = function replace(translation, replacements, warn=true) {
 };
 
 // render will return the given translation object
-let render = function render(translation, replacements = {}) {
+let render = function render(translation, replacements = {}, pluralization = null) {
 
 	// get the type of the property
 	let objType = typeof translation;
 
-	if (isArray(translation)) {
+	let replacedText = function() {
 
-		// replace the placeholder elements in all sub-items
-		return translation.map((item) => {
-			return replace(item, replacements, false);
-		});
+		if (isArray(translation)) {
 
+			// replace the placeholder elements in all sub-items
+			return translation.map((item) => {
+				return replace(item, replacements, false);
+			});
 
-	} else if (objType === 'string') {
-		return replace(translation, replacements);
+		} else if (objType === 'string') {
+			return replace(translation, replacements);
+		}
+	};
 
+	// check for pluralization and return the correct part of the string
+	if (pluralization !== null) {
+
+		// return the left side on singular, the right side for plural
+		// 0 has plural notation
+		if (pluralization == 1) {
+			return replacedText().split(':::')[0].trim();
+
+		} else {
+			return replacedText().split(':::')[1].trim();
+		}
 	}
 
 	// return translation item directly
-	return translation;
+	return replacedText();
 
 };
 
