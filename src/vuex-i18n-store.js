@@ -7,6 +7,7 @@
 const i18nVuexModule =  {
 	state: {
 		locale: null,
+		fallback: null,
 		translations: {}
 	},
 	mutations: {
@@ -45,6 +46,10 @@ const i18nVuexModule =  {
 				state.translations = translationCopy;
 
 			}
+		},
+
+		SET_FALLBACK_LOCALE(state, payload) {
+			state.fallback = payload.locale;
 		}
 
 	},
@@ -73,6 +78,13 @@ const i18nVuexModule =  {
 				type: 'REMOVE_LOCALE',
 				locale: payload.locale,
 				translations: payload.translations
+			});
+		},
+
+		setFallbackLocale(context, payload) {
+			context.commit({
+				type: 'SET_FALLBACK_LOCALE',
+				locale: payload.locale
 			});
 		}
 
