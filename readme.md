@@ -121,6 +121,15 @@ passed to the method in the form of key/value pairs
 </div>
 ```
 
+The `$t()` method support basic pluralization
+
+```javascript
+<div>
+	// will return: "You have 5 new messages" or "You have one new message" if number passed is 1
+	{{ $t('You have one new message ::: You have {number} new messages', {number: 5}, 5) }}
+</div>
+```
+
 There are also several methods available on the property `this.$i18n` or `Vue.i18n`
 
 ```javascript
@@ -139,6 +148,9 @@ $i18n.exists(locale), Vue.i18n.exists(locale)
 
 $i18n.remove(locale), Vue.i18n.remove(locale)
 	// remove the given locale from the store
+
+$i18n.fallback(locale), Vue.i18n.fallback(locale)
+	// set a fallback locale if translation for current locale does not exist
 ```
 
 ## Contributions
