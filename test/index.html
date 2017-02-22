@@ -25,6 +25,12 @@
 		<br />
 
 		<div style="display:block">
+			<p>The german translation is: {{ $tlang('de', 'message.title') }}</p>
+		</div>
+
+		<br />
+
+		<div style="display:block">
 			<input type="text" v-model="language">
 
 			<button type="submit" @click="changeLanguage">Set language</button>
@@ -35,6 +41,14 @@
 		<div style="display:block; margin-top: 20px">
 			<ul>
 				<li v-for="block in $t('listing', {first:'1', second:'2'})">{{ block }}</li>
+			</ul>
+		</div>
+
+		<div style="display:block; margin-top: 20px">
+			<p>Pluralization</p>
+			<input type="text" v-model="count">
+			<ul>
+				<li>{{ $t('plural', {count: count}, count) }}</li>
 			</ul>
 		</div>
 
@@ -64,7 +78,8 @@
 			'listing': [
 				'this is block no. {first}',
 				'this is block no. {second}'
-			]
+			],
+			'plural': 'We have one block ::: We have {count} blocks'
 		};
 
 		// add the english locale to the i18n store
@@ -73,12 +88,15 @@
 		// set the current language to english
 		Vue.i18n.set('en');
 
+		Vue.i18n.fallback('en');
+
 		// use the plugin methods to access and add translations
 		var app = new Vue({
 			store,
 			el: '#app',
 			data: {
-				language: 'de'
+				language: 'de',
+				count: 0
 			},
 			methods: {
 

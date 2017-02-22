@@ -7,5 +7,6 @@
 	"listing": [
 		"Dies ist der Block {first}",
 		"Dies ist der Block {second}"
-	]
+	],
+	"plural": "Wir haben einen Block ::: Wir haben {count} Blöcke"
 }
