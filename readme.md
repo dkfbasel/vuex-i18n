@@ -116,7 +116,7 @@ the key itself will be returned as translation.
 
 ```
 
-Dynamic parameters that can be passed to the transslation method in the form of 
+Dynamic parameters that can be passed to the translation method in the form of 
 key/value pairs.
 
 ```javascript
@@ -134,8 +134,11 @@ parameters are passed as second argument.
 
 ```javascript
 <div>
-	// will return: "You have 5 new messages" or "You have one new message" if number passed is 1
-	{{ $t('You have one new message ::: You have {number} new messages', {number: 5}, 5) }}
+	// will return: "You have 5 new messages" if the third argument is 5"
+	// or "You have 1 new message" if the third argument is 1
+	// or "You have -1 new message" if the third argument is -1
+	// or "Your have 0 new messages" if the third argument is 0 (note pluralized version)
+	{{ $t('You have {count} new message ::: You have {count} new messages', {count: 5}, 5) }}
 </div>
 ```
 
@@ -146,7 +149,7 @@ possible to request a specific locale using the `$tlang()` method.
 ```javascript
 <div>
 	// will return the english translation regardless of the current locale
-	{{ $tlang('en', 'You have {number} new messages', {number: 5}) }}
+	{{ $tlang('en', 'You have {count} new messages', {count: 5}) }}
 </div>
 ```
 
