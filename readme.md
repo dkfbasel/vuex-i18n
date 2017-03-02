@@ -122,22 +122,21 @@ key/value pairs.
 ```javascript
 <div>
 	// will return: "You have 5 new messages"
-	{{ $t('You have {number} new messages', {number: 5}) }}
+	{{ $t('You have {count} new messages', {count: 5}) }}
 </div>
 ```
 
 Basic pluralization is also supported. Please note, that the singular translation 
 must be specified first, denoted from the pluralized translation by `:::`.
 The third parameter is used to define if the singular or plural version should be 
-used (i.e every number > 1 will display the pluralized translation). Dynamic 
-parameters are passed as second argument.
+used (see below for examples). Dynamic parameters can be passed as second argument.
 
 ```javascript
 <div>
 	// will return: "You have 5 new messages" if the third argument is 5"
 	// or "You have 1 new message" if the third argument is 1
 	// or "You have -1 new message" if the third argument is -1
-	// or "Your have 0 new messages" if the third argument is 0 (note pluralized version)
+	// or "You have 0 new messages" if the third argument is 0 (note pluralized version)
 	{{ $t('You have {count} new message ::: You have {count} new messages', {count: 5}, 5) }}
 </div>
 ```
