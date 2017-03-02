@@ -95,13 +95,18 @@ var app = new Vue({
 ```
 
 ## Usage
-The plugin provides easy access to localized information through the use of
+vuex-i18n provides easy access to localized information through the use of
 the `$t()` method or the `translate` filter.
 
 The plugin will try to find the given string as key in the translations of the
 currently defined locale and return the respective translation. If the string
-is not found, it will return as is. This allows to setup an application very
-quickly without having to first define all strings in a separate template.
+is not found, it will return as is. This wil allow you to setup an application 
+very quickly without having to first define all strings in a separate template.
+
+It is also possible to specify a fallback-locale `$i18n.fallback(locale)`. If 
+the key is not found in current locale, vuex-i18n will look for the key in the 
+fallback-locale. If the key can not be found in the fallback-locale either, 
+the key itself will be returned as translation.
 
 ```javascript
 <div>
@@ -111,8 +116,8 @@ quickly without having to first define all strings in a separate template.
 
 ```
 
-The `$t()` method also allows for inclusion of dynamic parameters that can be
-passed to the method in the form of key/value pairs
+Dynamic parameters that can be passed to the transslation method in the form of 
+key/value pairs.
 
 ```javascript
 <div>
@@ -121,7 +126,11 @@ passed to the method in the form of key/value pairs
 </div>
 ```
 
-The `$t()` method support basic pluralization
+Basic pluralization is also supported. Please note, that the singular translation 
+must be specified first, denoted from the pluralized translation by `:::`.
+The third parameter is used to define if the singular or plural version should be 
+used (i.e every number > 1 will display the pluralized translation). Dynamic 
+parameters are passed as second argument.
 
 ```javascript
 <div>
@@ -130,8 +139,9 @@ The `$t()` method support basic pluralization
 </div>
 ```
 
-If you want to fetch a translation for a specific language, whats currently not
-the locale use the `$tlang()` method.
+The current locale can be set using the `$i18n.set()` method. By default, the 
+translation method will select the pre-specified current locale. However, it is
+possible to request a specific locale using the `$tlang()` method.
 
 ```javascript
 <div>
