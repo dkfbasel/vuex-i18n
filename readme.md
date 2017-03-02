@@ -87,7 +87,7 @@ var app = new Vue({
 	template: `
 		<div>
 			<h1>{{ 'My nice title' | translate }}</h1>
-			<p>{{ $t('content', {'type': 'nice'}) }}
+			<p>{{ $t('content', {'type': 'nice'}) }}</p>
 		</div>
 	`
 });
