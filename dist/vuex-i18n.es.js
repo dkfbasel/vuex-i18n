@@ -376,6 +376,11 @@ var render = function render(translation) {
 		return translatedText[0].trim();
 	}
 
+	// use singular version for -1 as well
+	if (pluralization === -1) {
+		return translatedText[0].trim();
+	}
+
 	if (translatedText.length > 1) {
 		return translatedText[1].trim();
 	}
