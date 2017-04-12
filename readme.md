@@ -40,11 +40,7 @@ import vuexI18n from 'vuex-i18n';
 
 // initialize the vuex store using the vuex module. note that you can change the
 //  name of the module if you wish
-const store = new Vuex.Store({
-	modules: {
-		i18n: vuexI18n.store
-	}
-});
+const store = new Vuex.Store();
 
 // initialize the internationalization plugin on the vue instance. note that
 // the store must be passed to the plugin. the plugin will then generate some
