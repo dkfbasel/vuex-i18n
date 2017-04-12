@@ -111,11 +111,7 @@
 		Vue.config.devtools = true;
 
 		// initialize a new vuex store including our i18nVuexModule
-		const store = new Vuex.Store({
-			modules: {
-				i18n: vuexI18n.store
-			}
-		});
+		const store = new Vuex.Store({});
 
 		// initialize the vuexi18nPlugin
 		Vue.use(vuexI18n.plugin, store);

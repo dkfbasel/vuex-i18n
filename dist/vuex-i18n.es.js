@@ -161,6 +161,8 @@ VuexI18nPlugin.install = function install(Vue, store) {
 	var moduleName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'i18n';
 
 
+	store.registerModule(moduleName, i18nVuexModule);
+
 	// check if the plugin was correctly initialized
 	if (store.state.hasOwnProperty(moduleName) === false) {
 		console.error('i18n vuex module is not correctly initialized. Please check the module name:', moduleName);
