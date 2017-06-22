@@ -28,11 +28,14 @@ var i18nVuexModule = {
 		ADD_LOCALE: function ADD_LOCALE(state, payload) {
 			// reduce the given translations to a single-depth tree
 			var translations = flattenTranslations(payload.translations);
-			state.translations[payload.locale] = translations;
+			state.translations[payload.locale] = payload.translations;
+
+			// make sure to notify vue of changes (this might break with new vue versions)
+			state.translations.__ob__.dep.notify();
 		},
 
 
-		// add a new locale
+		// remove a new locale
 		REMOVE_LOCALE: function REMOVE_LOCALE(state, payload) {
 
 			// check if the given locale is present in the state
@@ -237,6 +240,7 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		});
 	};
 
+	// set the current locale
 	var setLocale = function setLocale(locale) {
 		store.dispatch({
 			type: 'setLocale',
@@ -244,6 +248,7 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		});
 	};
 
+	// get the current locale
 	var getLocale = function getLocale() {
 		return store.state[moduleName].locale;
 	};
