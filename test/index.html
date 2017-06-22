@@ -76,6 +76,14 @@
 			<p>Current Language: {{ $i18n.locale() }}</p>
 		</div>
 
+		<template v-if="$i18n.locale() == 'en'">
+		<h2>Update english locale translations</h2>
+			<div class="block">
+				<button type="submit" @click="updateEnLocale">Update the translations</button>
+				<p>Current Language: {{ $i18n.locale() }}</p>
+			</div>
+		</template>
+
 		<h2 v-if="!$i18n.exists('de')">Show fallback language translation</h2>
 		<div v-if="!$i18n.exists('de')" class="block">
 			no german translation available
@@ -128,6 +136,19 @@
 			'plural': 'We have one block ::: We have {count} blocks'
 		};
 
+		// updated locale information
+		// to simulate loading of new local translations via ajax
+		const localeEnPlus = {
+			'message.title': 'An Awesome Title 2',
+			'message.body': 'And some slightly less awesome text 2',
+			'message.footer': 'This is a footer text 2',
+			'listing': [
+				'this is block no. {first}',
+				'this is block no. {second}'
+			],
+			'plural': 'We have one block ::: We have {count} blocks'
+		};
+
 		// add the english locale to the i18n store
 		Vue.i18n.add('en', localeEn);
 
@@ -169,6 +190,12 @@
 					}).catch((error) => {
 						alert('could not fetch locale translations');
 					});
+
+				},
+
+				updateEnLocale() {
+
+					this.$i18n.add('en', localeEnPlus);
 
 				}
 			}
