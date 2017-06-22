@@ -11,7 +11,7 @@ let VuexI18nPlugin = {};
 // internationalization plugin for vue js using vuex
 VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 
-	store.registerModule(moduleName, module)
+	store.registerModule(moduleName, module);
 
 	// check if the plugin was correctly initialized
 	if (store.state.hasOwnProperty(moduleName) === false) {
