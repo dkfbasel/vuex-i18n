@@ -24,7 +24,7 @@ const i18nVuexModule =  {
 			state.translations[payload.locale] = translations;
 		},
 
-		// add a new locale
+		// remove a new locale
 		REMOVE_LOCALE(state, payload) {
 
 			// check if the given locale is present in the state
