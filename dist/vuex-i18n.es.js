@@ -162,6 +162,7 @@ var VuexI18nPlugin = {};
 // internationalization plugin for vue js using vuex
 VuexI18nPlugin.install = function install(Vue, store) {
 	var moduleName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'i18n';
+	var identifiers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : ['{', '}'];
 
 
 	store.registerModule(moduleName, i18nVuexModule);
@@ -216,20 +217,20 @@ VuexI18nPlugin.install = function install(Vue, store) {
 
 		// return the value from the store
 		if (translationExist === true) {
-			return render(translations[locale][key], options, pluralization);
+			return render(translations[locale][key], options, pluralization, identifiers);
 		}
 
 		// check if a vaild fallback exists in the store. return the key if not
 		if (translations.hasOwnProperty(fallback) === false) {
-			return render(key, options, pluralization);
+			return render(key, options, pluralization, identifiers);
 		}
 
 		// check if the key exists in the fallback in the store. return the key if not
 		if (translations[fallback].hasOwnProperty(key) === false) {
-			return render(key, options, pluralization);
+			return render(key, options, pluralization, identifiers);
 		}
 
-		return render(translations[fallback][key], options, pluralization);
+		return render(translations[fallback][key], options, pluralization, identifiers);
 	};
 
 	// set fallback locale
@@ -310,18 +311,28 @@ VuexI18nPlugin.install = function install(Vue, store) {
 };
 
 // replace will replace the given replacements in the translation string
+// it is possible to specify the identifiers that should be used for variable substitutions
 var replace = function replace(translation, replacements) {
 	var warn = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+	var identifiers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
+
+	if (identifiers == null || identifiers.length != 2) {
+		console.warn('You must specify the start and end character identifying variable substitutions');
+	}
 
 	// check if the object has a replace property
 	if (!translation.replace) {
 		return translation;
 	}
 
-	return translation.replace(/\{\w+\}/g, function (placeholder) {
+	// construct a regular expression ot find variable substitutions, i.e. {test}
+	var matcher = new RegExp('' + identifiers[0] + '\\w+' + identifiers[1], 'g');
 
-		var key = placeholder.replace('{', '').replace('}', '');
+	return translation.replace(matcher, function (placeholder) {
+
+		// remove the identifiers (can be set on the module level)
+		var key = placeholder.replace(identifiers[0], '').replace(identifiers[1], '');
 
 		if (replacements[key] !== undefined) {
 			return replacements[key];
@@ -329,7 +340,7 @@ var replace = function replace(translation, replacements) {
 
 		// warn user that the placeholder has not been found
 		if (warn === true) {
-			console.group('Not all placeholder founds');
+			console.group('Not all placeholders found');
 			console.warn('Text:', translation);
 			console.warn('Placeholder:', placeholder);
 			console.groupEnd();
@@ -344,6 +355,7 @@ var replace = function replace(translation, replacements) {
 var render = function render(translation) {
 	var replacements = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	var pluralization = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	var identifiers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
 
 	// get the type of the property
@@ -356,10 +368,10 @@ var render = function render(translation) {
 
 			// replace the placeholder elements in all sub-items
 			return translation.map(function (item) {
-				return replace(item, replacements, false);
+				return replace(item, replacements, false, identifiers);
 			});
 		} else if (objType === 'string') {
-			return replace(translation, replacements);
+			return replace(translation, replacements, true, identifiers);
 		}
 	};
 
