@@ -3,11 +3,15 @@
 ** file vuex-i18n-store.js to include a respective vuex module.
 */
 
+import module from './vuex-i18n-store';
+
 // initialize the plugin object
 let VuexI18nPlugin = {};
 
 // internationalization plugin for vue js using vuex
 VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
+
+	store.registerModule(moduleName, module)
 
 	// check if the plugin was correctly initialized
 	if (store.state.hasOwnProperty(moduleName) === false) {
