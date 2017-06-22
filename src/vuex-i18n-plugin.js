@@ -84,6 +84,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		});
 	};
 
+	// set the current locale
 	let setLocale = function setLocale(locale) {
 		store.dispatch({
 			type: 'setLocale',
@@ -91,6 +92,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n') {
 		});
 	};
 
+	// get the current locale
 	let getLocale = function getLocale() {
 		return store.state[moduleName].locale;
 	};
