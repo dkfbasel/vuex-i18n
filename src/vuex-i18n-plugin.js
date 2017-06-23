@@ -149,6 +149,12 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		}
 	};
 
+	// we are phasing out the exists function
+	let phaseOutExistsFn = function phaseOutExistsFn(locale) {
+		console.warn('$i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exatly the same functionality.');
+		return checkLocaleExists(locale);
+	};
+
 	// check if the given locale is already loaded
 	let checkLocaleExists = function checkLocaleExists(locale) {
 		return store.state[moduleName].translations.hasOwnProperty(locale);
@@ -161,9 +167,10 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		add: addLocale,
 		remove: removeLocale,
 		fallback: setFallbackLocale,
-		exists: checkLocaleExists,
 		localeExists: checkLocaleExists,
-		keyExists: checkKeyExists
+		keyExists: checkKeyExists,
+
+		exists: phaseOutExistsFn
 	};
 
 	// register global methods
@@ -173,11 +180,12 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		add: addLocale,
 		remove: removeLocale,
 		fallback: setFallbackLocale,
-		exists: checkLocaleExists,
+		translate: translate,
+		translateIn: translateInLanguage,
 		localeExists: checkLocaleExists,
 		keyExists: checkKeyExists,
-		translate: translate,
-		translateIn: translateInLanguage
+
+		exists: phaseOutExistsFn
 	};
 
 	// register the translation function on the vue instance
