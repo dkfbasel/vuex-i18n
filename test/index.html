@@ -63,8 +63,9 @@
 		</h1>
 
 		<div class="example-text">
-			<h1>{{ $t('message.title') }}</h1>
-			<p>{{ $t('message.body') }}</p>
+			<h1>message.title: {{ $t('message.title') }}</h1>
+			<p>message.body: {{ $t('message.body') }}</p>
+			<p>custom.option1: {{ $t('custom.option1')}}</p>
 
 			<p><small>Footer: {{ 'message.footer' | translate }}</small></p>
 		</div>
@@ -146,6 +147,10 @@
 				'this is block no. {first}',
 				'this is block no. {second}'
 			],
+			'custom': {
+				'option1': 'test',
+				'option2': 'test2'
+			},
 			'plural': 'We have one block ::: We have {count} blocks'
 		};
 
