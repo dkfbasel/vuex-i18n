@@ -238,6 +238,30 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		return render(translations[fallback][key], options, pluralization);
 	};
 
+	// check if the given key exists in the current locale
+	var checkKeyExists = function checkKeyExists(key) {
+
+		// get the current language from the store
+		var locale = store.state[moduleName].locale;
+		var fallback = store.state[moduleName].fallback;
+		var translations = store.state[moduleName].translations;
+
+		// check if the language exists in the store.
+		if (translations.hasOwnProperty(locale) === false) {
+
+			// check if a fallback locale exists
+			if (translations.hasOwnProperty(fallback) === false) {
+				return false;
+			}
+
+			// check the fallback locale for the key
+			return translations[fallback].hasOwnProperty(key);
+		}
+
+		// check if the key exists in the store
+		return translations[locale].hasOwnProperty(key);
+	};
+
 	// set fallback locale
 	var setFallbackLocale = function setFallbackLocale(locale) {
 		store.dispatch({
@@ -290,7 +314,9 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		add: addLocale,
 		remove: removeLocale,
 		fallback: setFallbackLocale,
-		exists: checkLocaleExists
+		exists: checkLocaleExists,
+		localeExists: checkLocaleExists,
+		keyExists: checkKeyExists
 	};
 
 	// register global methods
@@ -301,6 +327,8 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		remove: removeLocale,
 		fallback: setFallbackLocale,
 		exists: checkLocaleExists,
+		localeExists: checkLocaleExists,
+		keyExists: checkKeyExists,
 		translate: translate,
 		translateIn: translateInLanguage
 	};
