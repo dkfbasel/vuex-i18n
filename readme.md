@@ -96,12 +96,12 @@ the `$t()` method or the `translate` filter.
 
 The plugin will try to find the given string as key in the translations of the
 currently defined locale and return the respective translation. If the string
-is not found, it will return as is. This wil allow you to setup an application 
+is not found, it will return as is. This wil allow you to setup an application
 very quickly without having to first define all strings in a separate template.
 
-It is also possible to specify a fallback-locale `$i18n.fallback(locale)`. If 
-the key is not found in current locale, vuex-i18n will look for the key in the 
-fallback-locale. If the key can not be found in the fallback-locale either, 
+It is also possible to specify a fallback-locale `$i18n.fallback(locale)`. If
+the key is not found in current locale, vuex-i18n will look for the key in the
+fallback-locale. If the key can not be found in the fallback-locale either,
 the key itself will be returned as translation.
 
 ```javascript
@@ -112,7 +112,7 @@ the key itself will be returned as translation.
 
 ```
 
-Dynamic parameters that can be passed to the translation method in the form of 
+Dynamic parameters that can be passed to the translation method in the form of
 key/value pairs.
 
 ```javascript
@@ -122,9 +122,20 @@ key/value pairs.
 </div>
 ```
 
-Basic pluralization is also supported. Please note, that the singular translation 
+It is possible to specify custom identifiers for variable substitutions. The
+respective identifiers - start and stop - must be passed when initializing the
+module. Please note that a regular expression is used to match the tags.
+Therefore it might be necessary to escape certain characters accordingly.
+
+```javascript
+// i.e. to use {{count}} as variable substitution.
+// the third parameter defines the module name and is i18n per default
+Vue.use(vuexI18n.plugin, store, 'i18n', ['{{','}}']);
+```
+
+Basic pluralization is also supported. Please note, that the singular translation
 must be specified first, denoted from the pluralized translation by `:::`.
-The third parameter is used to define if the singular or plural version should be 
+The third parameter is used to define if the singular or plural version should be
 used (see below for examples). Dynamic parameters can be passed as second argument.
 
 ```javascript
@@ -137,7 +148,7 @@ used (see below for examples). Dynamic parameters can be passed as second argume
 </div>
 ```
 
-The current locale can be set using the `$i18n.set()` method. By default, the 
+The current locale can be set using the `$i18n.set()` method. By default, the
 translation method will select the pre-specified current locale. However, it is
 possible to request a specific locale using the `$tlang()` method.
 
