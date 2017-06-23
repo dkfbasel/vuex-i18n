@@ -30,7 +30,7 @@ var i18nVuexModule = {
 		ADD_LOCALE: function ADD_LOCALE(state, payload) {
 			// reduce the given translations to a single-depth tree
 			var translations = flattenTranslations(payload.translations);
-			state.translations[payload.locale] = payload.translations;
+			state.translations[payload.locale] = translations;
 
 			// make sure to notify vue of changes (this might break with new vue versions)
 			state.translations.__ob__.dep.notify();
@@ -302,6 +302,12 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		}
 	};
 
+	// we are phasing out the exists function
+	var phaseOutExistsFn = function phaseOutExistsFn(locale) {
+		console.warn('$i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exatly the same functionality.');
+		return checkLocaleExists(locale);
+	};
+
 	// check if the given locale is already loaded
 	var checkLocaleExists = function checkLocaleExists(locale) {
 		return store.state[moduleName].translations.hasOwnProperty(locale);
@@ -314,9 +320,10 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		add: addLocale,
 		remove: removeLocale,
 		fallback: setFallbackLocale,
-		exists: checkLocaleExists,
 		localeExists: checkLocaleExists,
-		keyExists: checkKeyExists
+		keyExists: checkKeyExists,
+
+		exists: phaseOutExistsFn
 	};
 
 	// register global methods
@@ -326,11 +333,12 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		add: addLocale,
 		remove: removeLocale,
 		fallback: setFallbackLocale,
-		exists: checkLocaleExists,
+		translate: translate,
+		translateIn: translateInLanguage,
 		localeExists: checkLocaleExists,
 		keyExists: checkKeyExists,
-		translate: translate,
-		translateIn: translateInLanguage
+
+		exists: phaseOutExistsFn
 	};
 
 	// register the translation function on the vue instance
@@ -406,10 +414,10 @@ var renderFn = function renderFn(identifiers) {
 
 				// replace the placeholder elements in all sub-items
 				return translation.map(function (item) {
-					return replace(item, replacements, false, identifiers);
+					return replace(item, replacements, false);
 				});
 			} else if (objType === 'string') {
-				return replace(translation, replacements, true, identifiers);
+				return replace(translation, replacements);
 			}
 		};
 
