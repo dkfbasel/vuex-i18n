@@ -91,7 +91,6 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		let fallback = store.state[moduleName].fallback;
 		let translations = store.state[moduleName].translations;
 
-
 		// check if the language exists in the store.
 		if (translations.hasOwnProperty(locale) === false ) {
 
@@ -257,11 +256,11 @@ let renderFn = function(identifiers) {
 
 				// replace the placeholder elements in all sub-items
 				return translation.map((item) => {
-					return replace(item, replacements, false, identifiers);
+					return replace(item, replacements, false);
 				});
 
 			} else if (objType === 'string') {
-				return replace(translation, replacements, true, identifiers);
+				return replace(translation, replacements, true);
 			}
 
 		};
