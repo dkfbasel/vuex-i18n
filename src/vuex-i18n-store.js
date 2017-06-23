@@ -21,7 +21,7 @@ const i18nVuexModule =  {
 		ADD_LOCALE(state, payload) {
 			// reduce the given translations to a single-depth tree
 			var translations = flattenTranslations(payload.translations);
-			state.translations[payload.locale] = payload.translations;
+			state.translations[payload.locale] = translations;
 
 			// make sure to notify vue of changes (this might break with new vue versions)
 			state.translations.__ob__.dep.notify();
