@@ -110,6 +110,18 @@
 			</p>
 		</div>
 
+		<h2>Test if a key exists</h2>
+		<div class="block">
+			<strong>Show custom text if the key 'weird.translation' does not exist:</strong>
+			<p v-if="$i18n.keyExists('weird.translation')">
+				{{ $t('weird.translation') }}
+			</p>
+			<p v-else>
+				There is no translation for the key 'weird.translation'
+			</p>
+		</div>
+
+
 	</div>
 
 	<!-- application code -->
@@ -129,6 +141,7 @@
 			'message.title': 'An Awesome Title',
 			'message.body': 'And some slightly less awesome text',
 			'message.footer': 'This is a footer text',
+			'weird.translation': 'This is a weird translation',
 			'listing': [
 				'this is block no. {first}',
 				'this is block no. {second}'
