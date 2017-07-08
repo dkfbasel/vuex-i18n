@@ -415,7 +415,7 @@ var renderFn = function renderFn(identifiers) {
 					return replace(item, replacements, false);
 				});
 			} else if (objType === 'string') {
-				return replace(translation, replacements);
+				return replace(translation, replacements, true);
 			}
 		};
 
@@ -433,28 +433,57 @@ var renderFn = function renderFn(identifiers) {
 		// check for pluralization and return the correct part of the string
 		var translatedText = replacedText().split(':::');
 
-		// return the left side on singular, the right side for plural
-		// 0 has plural notation
-		if (pluralization === 1) {
-			return translatedText[0].trim();
+		if (translatedText.length === 3) {
+			return getNumEnding3(pluralization, translatedText);
+		} else {
+			return getNumEnding(pluralization, translatedText);
 		}
-
-		// use singular version for -1 as well
-		if (pluralization === -1) {
-			return translatedText[0].trim();
-		}
-
-		if (translatedText.length > 1) {
-			return translatedText[1].trim();
-		}
-
-		console.warn('no pluralized translation provided in ', translation);
-		return translatedText[0].trim();
 	};
 
 	// return the render function to the caller
 	return render;
 };
+
+function getNumEnding(iNumber, aEndings) {
+	// return the left side on singular, the right side for plural
+	// 0 has plural notation
+	if (iNumber === 1) {
+		return aEndings[0].trim();
+	}
+
+	// use singular version for -1 as well
+	if (iNumber === -1) {
+		return aEndings[0].trim();
+	}
+
+	if (aEndings.length > 1) {
+		return aEndings[1].trim();
+	}
+
+	console.warn('no pluralized translation provided in ', iNumber);
+	return aEndings[0].trim();
+}
+
+function getNumEnding3(iNumber, aEndings) {
+	var sEnding, i;
+	iNumber = iNumber % 100;
+	if (iNumber >= 11 && iNumber <= 19) {
+		sEnding = aEndings[2];
+	} else {
+		i = iNumber % 10;
+		switch (i) {
+			case 1:
+				sEnding = aEndings[0];break;
+			case 2:
+			case 3:
+			case 4:
+				sEnding = aEndings[1];break;
+			default:
+				sEnding = aEndings[2];
+		}
+	}
+	return sEnding.trim();
+}
 
 // check if the given object is an array
 function isArray$1(obj) {

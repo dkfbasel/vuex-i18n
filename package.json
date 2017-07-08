@@ -1,6 +1,6 @@
 {
   "name": "vuex-i18n-ru",
-  "version": "1.4.1",
+  "version": "1.4.3",
   "description": "Easy localization for vue-components using vuex as data store",
   "directories": {
     "test": "test"
@@ -31,9 +31,9 @@
   },
   "contributors": [
     {
-        "name": "Nikolai Paschenko",
-        "email": "nikolai.paschenko@gmail.com",
-        "url": "https://github.com/nik-zp"
+      "name": "Nikolai Paschenko",
+      "email": "nikolai.paschenko@gmail.com",
+      "url": "https://github.com/nik-zp"
     },
     {
       "name": "Vu Duong",
@@ -52,11 +52,16 @@
   },
   "homepage": "https://github.com/dkfbasel/vuex-i18n#readme",
   "devDependencies": {
-    "babel-plugin-external-helpers": "^6.18.0",
-    "babel-preset-es2015": "^6.18.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-preset-es2015": "^6.24.1",
     "babel-preset-es2015-rollup": "^1.2.0",
-    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-babel": "^2.7.1",
     "rollup-plugin-commonjs": "^5.0.5",
     "rollup-plugin-uglify": "^1.0.1"
+  },
+  "dependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1"
   }
 }
