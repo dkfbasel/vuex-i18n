@@ -1,5 +1,5 @@
 {
-  "name": "vuex-i18n",
+  "name": "vuex-i18n-ru",
   "version": "1.4.1",
   "description": "Easy localization for vue-components using vuex as data store",
   "directories": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dkfbasel/vuex-i18n.git"
+    "url": "git+https://github.com/nik-zp/vuex-i18n.git"
   },
   "keywords": [
     "localization",
@@ -30,6 +30,11 @@
     "url": "https://github.com/tikiatua"
   },
   "contributors": [
+    {
+        "name": "Nikolai Paschenko",
+        "email": "nikolai.paschenko@gmail.com",
+        "url": "https://github.com/nik-zp"
+    },
     {
       "name": "Vu Duong",
       "email": "info@spotlit.de",
