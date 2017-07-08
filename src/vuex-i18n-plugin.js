@@ -281,9 +281,10 @@ let renderFn = function(identifiers) {
 
 		if (translatedText.length === 3) {
 			return getNumEnding3(pluralization, translatedText);
+		} else {
+			return getNumEnding(pluralization, translatedText);
 		}
 
-		return getNumEnding(pluralization, translatedText);
 	};
 
 	// return the render function to the caller
