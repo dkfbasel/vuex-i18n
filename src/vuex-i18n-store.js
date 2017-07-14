@@ -24,7 +24,10 @@ const i18nVuexModule =  {
 			state.translations[payload.locale] = translations;
 
 			// make sure to notify vue of changes (this might break with new vue versions)
-			state.translations.__ob__.dep.notify();
+			if (state.translations.__ob__) {
+				state.translations.__ob__.dep.notify();
+			}
+
 		},
 
 		// remove a new locale

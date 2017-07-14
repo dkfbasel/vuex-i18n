@@ -33,7 +33,9 @@ var i18nVuexModule = {
 			state.translations[payload.locale] = translations;
 
 			// make sure to notify vue of changes (this might break with new vue versions)
-			state.translations.__ob__.dep.notify();
+			if (state.translations.__ob__) {
+				state.translations.__ob__.dep.notify();
+			}
 		},
 
 
@@ -417,7 +419,7 @@ var renderFn = function renderFn(identifiers) {
 					return replace(item, replacements, false);
 				});
 			} else if (objType === 'string') {
-				return replace(translation, replacements);
+				return replace(translation, replacements, true);
 			}
 		};
 
