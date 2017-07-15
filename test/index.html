@@ -4,9 +4,9 @@
 	<meta charset="utf-8">
 	<title>vuex-i18n</title>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.1/vue.js"></script>
-	<script src="https://cdn.jsdelivr.net/vue.resource/1.0.3/vue-resource.min.js"></script>
-	<script src="https://unpkg.com/vuex@2.0.0"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.1/vue.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
+	<script src="https://unpkg.com/vuex@2.3.0"></script>
 
 	<script src="../dist/vuex-i18n.min.js"></script>
 
@@ -85,8 +85,8 @@
 			</div>
 		</template>
 
-		<h2 v-if="!$i18n.exists('de')">Show fallback language translation</h2>
-		<div v-if="!$i18n.exists('de')" class="block">
+		<h2 v-if="!$i18n.localeExists('de')">Show fallback language translation</h2>
+		<div v-if="!$i18n.localeExists('de')" class="block">
 			no german translation available
 			<p>The fallback translation is: {{ $t('message.title') }}</p>
 		</div>
@@ -122,6 +122,14 @@
 			</p>
 		</div>
 
+		<h2>Add a new french locale</h2>
+		<div class="block">
+			<button type="submit" @click="addFrLocale">Add new locale</button>
+			<p v-if="$i18n.keyExists('weird.translation')">
+				{{ $t('weird.translation') }}
+			</p>
+		</div>
+
 
 	</div>
 
@@ -152,6 +160,13 @@
 				'option2': 'test2'
 			},
 			'plural': 'We have one block ::: We have {count} blocks'
+		};
+
+		const localeFr = {
+			'message.title': 'Un titre impressionnant',
+			'message.body': 'C\'est un message important',
+			'message.footer': 'Ceci est un texte de pied de page',
+			'weird.translation': 'Ceci est une traduction bizarre'
 		};
 
 		// updated locale information
@@ -192,17 +207,14 @@
 					let url = `/test/locale-${locale}.json`;
 
 					// check if the locale has already been loaded
-					if (this.$i18n.exists(locale)) {
+					if (this.$i18n.localeExists(locale)) {
 						this.$i18n.set(locale);
 						return;
 					}
 
 					// load the specified locale from the server
-					this.$http.get(url).then((response) => {
-						return response.json();
-
-					}).then((data) => {
-						this.$i18n.add(locale, data);
+					axios.get(url).then((response) => {
+						this.$i18n.add(locale, response.data);
 						this.$i18n.set(locale);
 
 					}).catch((error) => {
@@ -212,9 +224,12 @@
 				},
 
 				updateEnLocale() {
-
 					this.$i18n.add('en', localeEnPlus);
+				},
 
+				addFrLocale() {
+					this.$i18n.set('fr');
+					this.$i18n.add('fr', localeFr);
 				}
 			}
 		});
