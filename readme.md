@@ -166,7 +166,7 @@ possible to request a specific locale using the `$tlang()` method.
 
 ```javascript
 <div>
-	// will return the english translation regardless of the current locale
+    // will return the english translation regardless of the current locale
 	{{ $tlang('en', 'You have {count} new messages', {count: 5}) }}
 </div>
 ```
@@ -175,26 +175,26 @@ There are also several methods available on the property `this.$i18n` or `Vue.i1
 
 ```javascript
 $i18n.locale(), Vue.i18n.locale()
-	// get the current locale
+// get the current locale
 
 $i18n.set(locale), Vue.i18n.set(locale)
-	// set the current locale (i.e. 'de', 'en')
+// set the current locale (i.e. 'de', 'en')
 
 $i18n.add(locale, translations), Vue.i18n.add(locale, translations)
-	// add a new locale to the storage
-	// (i.e. 'de', {'message': 'Eine Nachricht'})
+// add a new locale to the storage
+// (i.e. 'de', {'message': 'Eine Nachricht'})
 
 $i18n.localeExists(locale), Vue.i18n.localeExists(locale)
-	// check if the given locale translations are present in the store
+// check if the given locale translations are present in the store
 
 $i18n.keyExists(key), Vue.i18n.keyExists(key)
-	// check if the given key is available in the current or fallback locale
+// check if the given key is available in the current or fallback locale
 
 $i18n.remove(locale), Vue.i18n.remove(locale)
-	// remove the given locale from the store
+// remove the given locale from the store
 
 $i18n.fallback(locale), Vue.i18n.fallback(locale)
-	// set a fallback locale if translation for current locale does not exist
+// set a fallback locale if translation for current locale does not exist
 ```
 
 ## Contributions
