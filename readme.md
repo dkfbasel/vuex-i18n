@@ -134,19 +134,31 @@ Vue.use(vuexI18n.plugin, store, 'i18n', ['{{','}}']);
 ```
 
 Basic pluralization is also supported. Please note, that the singular translation
-must be specified first, denoted from the pluralized translation by `:::`.
+must be specified first, then comes plural translation and other all denoted by `:::`.
+Up to six translation forms are supported based on configuration taken from 'vue-gettext'.  
 The third parameter is used to define if the singular or plural version should be
 used (see below for examples). Dynamic parameters can be passed as second argument.
+
 
 ```javascript
 <div>
 	// will return: "You have 5 new messages" if the third argument is 5"
 	// or "You have 1 new message" if the third argument is 1
-	// or "You have -1 new message" if the third argument is -1
 	// or "You have 0 new messages" if the third argument is 0 (note pluralized version)
 	{{ $t('You have {count} new message ::: You have {count} new messages', {count: 5}, 5) }}
 </div>
 ```
+
+```javascript
+<div>
+	// In case when there are more than singular and plural versions like in Latvian language.
+    // will return: "5 bērni" (in english - 5 children) if the third argument is 5"
+    // or "2 bērni" if the third argument is 2
+    // or "1 bērns" if the third argument is 1    
+    // or "0 bērnu" if the third argument is 0
+	{{ $t('{count} bērns ::: {count} bērni ::: {count} bērnu', {count: 5}, 5) }}
+</div>
+```	
 
 The current locale can be set using the `$i18n.set()` method. By default, the
 translation method will select the pre-specified current locale. However, it is

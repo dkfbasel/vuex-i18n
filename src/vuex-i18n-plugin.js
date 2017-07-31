@@ -4,6 +4,7 @@
 */
 
 import module from './vuex-i18n-store';
+import plurals from './vuex-i18n-plurals';
 
 // initialize the plugin object
 let VuexI18nPlugin = {};
@@ -66,20 +67,20 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 
 		// return the value from the store
 		if (translationExist === true) {
-			return render(translations[locale][key], options, pluralization);
+			return render(locale, translations[locale][key], options, pluralization);
 		}
 
 		// check if a vaild fallback exists in the store. return the key if not
 		if (translations.hasOwnProperty(fallback) === false ) {
-			return render(key, options, pluralization);
+			return render(locale, key, options, pluralization);
 		}
 
 		// check if the key exists in the fallback in the store. return the key if not
 		if (translations[fallback].hasOwnProperty(key) === false) {
-			return render(key, options, pluralization);
+			return render(locale, key, options, pluralization);
 		}
 
-		return render(translations[fallback][key], options, pluralization);
+		return render(locale, translations[fallback][key], options, pluralization);
 
 	};
 
@@ -244,8 +245,7 @@ let renderFn = function(identifiers) {
 
 	// the render function will replace variable substitutions and prepare the
 	// translations for rendering
-	let render = function render(translation, replacements = {}, pluralization = null) {
-
+	let render = function render(locale, translation, replacements = {}, pluralization = null) {
 		// get the type of the property
 		let objType = typeof translation;
 		let pluralizationType = typeof pluralization;
@@ -278,26 +278,16 @@ let renderFn = function(identifiers) {
 
 		// check for pluralization and return the correct part of the string
 		let translatedText = replacedText().split(':::');
+		let index = plurals.getTranslationIndex('lv', pluralization)
 
-		// return the left side on singular, the right side for plural
-		// 0 has plural notation
-		if (pluralization === 1) {
-			return translatedText[0].trim();
-		}
-
-		// use singular version for -1 as well
-		if (pluralization === -1) {
-			return translatedText[0].trim();
-		}
-
-		if (translatedText.length > 1) {
-			return translatedText[1].trim();
-		}
-
-		console.warn('no pluralized translation provided in ', translation);
-		return translatedText[0].trim();
-
-	};
+        if(typeof translatedText[index] === 'undefined') {
+            console.warn('no pluralized translation provided in ', translation);
+            return translatedText[0].trim();
+        }
+        else {
+            return translatedText[index].trim();
+        }
+    };
 
 	// return the render function to the caller
 	return render;
