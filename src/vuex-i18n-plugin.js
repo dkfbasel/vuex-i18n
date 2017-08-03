@@ -327,7 +327,7 @@ let renderFn = function(identifiers) {
 
 		// check for pluralization and return the correct part of the string
 		let translatedText = replacedText().split(':::');
-		let index = plurals.getTranslationIndex('lv', pluralization);
+		let index = plurals.getTranslationIndex(locale, pluralization);
 
 		if(typeof translatedText[index] === 'undefined') {
 			console.warn('no pluralized translation provided in ', translation);
