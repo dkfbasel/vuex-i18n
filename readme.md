@@ -123,6 +123,7 @@ found in the current and in the fallback locale.
 	// not specified in the current and the fallback locale
 	{{ $t('non.existing.key', 'Default information text')}}
 </div>
+```
 
 Dynamic parameters that can be passed to the translation method in the form of
 key/value pairs.
@@ -166,7 +167,7 @@ the singular or pluralized translation should be used (see below for examples).
 	// In case when there are more than singular and plural versions like in Latvian language.
 	// will return: "5 bērni" (in english - 5 children) if the third argument is 5"
 	// or "2 bērni" if the third argument is 2
-	// or "1 bērns" if the third argument is 1    
+	// or "1 bērns" if the third argument is 1
 	// or "0 bērnu" if the third argument is 0
 	{{ $t('{count} bērns ::: {count} bērni ::: {count} bērnu', {count: 5}, 5) }}
 </div>
