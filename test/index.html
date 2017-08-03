@@ -105,7 +105,7 @@
 
 		<h2>Render translation with pluralization</h2>
 		<div class="block">
-			Number of Blocks: <input type="text" v-model="count">
+			Number of Blocks: <input type="text" v-model.number="count">
 			<p>
 				{{ $t('plural', {count: count}, count) }}
 			</p>
@@ -159,7 +159,7 @@
 				'option1': 'test',
 				'option2': 'test2'
 			},
-			'plural': 'We have one block ::: We have {count} blocks'
+			'plural': 'We have one block ::: We have {count} blocks ::: We have no blocks'
 		};
 
 		const localeFr = {
@@ -179,7 +179,7 @@
 				'this is block no. {first}',
 				'this is block no. {second}'
 			],
-			'plural': 'We have one block ::: We have {count} blocks'
+			'plural': 'We have one block ::: We have {count} blocks ::: We have no blocks'
 		};
 
 		// add the english locale to the i18n store

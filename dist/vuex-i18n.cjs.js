@@ -157,6 +157,151 @@ function isArray(obj) {
 	return !!obj && Array === obj.constructor;
 }
 
+var plurals = {
+
+    getTranslationIndex: function getTranslationIndex(languageCode, n) {
+
+        n = Number.isNaN(parseInt(n)) ? 1 : parseInt(n);
+
+        switch (languageCode) {
+            case 'ay': // Aymará
+            case 'bo': // Tibetan
+            case 'cgg': // Chiga
+            case 'dz': // Dzongkha
+            case 'fa': // Persian
+            case 'id': // Indonesian
+            case 'ja': // Japanese
+            case 'jbo': // Lojban
+            case 'ka': // Georgian
+            case 'kk': // Kazakh
+            case 'km': // Khmer
+            case 'ko': // Korean
+            case 'ky': // Kyrgyz
+            case 'lo': // Lao
+            case 'ms': // Malay
+            case 'my': // Burmese
+            case 'sah': // Yakut
+            case 'su': // Sundanese
+            case 'th': // Thai
+            case 'tt': // Tatar
+            case 'ug': // Uyghur
+            case 'vi': // Vietnamese
+            case 'wo': // Wolof
+            case 'zh':
+                // Chinese
+                // 1 form
+                return 0;
+            case 'is':
+                // Icelandic
+                // 2 forms
+                return n % 10 !== 1 || n % 100 === 11 ? 1 : 0;
+            case 'jv':
+                // Javanese
+                // 2 forms
+                return n !== 0 ? 1 : 0;
+            case 'mk':
+                // Macedonian
+                // 2 forms
+                return n === 1 || n % 10 === 1 ? 0 : 1;
+            case 'ach': // Acholi
+            case 'ak': // Akan
+            case 'am': // Amharic
+            case 'arn': // Mapudungun
+            case 'br': // Breton
+            case 'fil': // Filipino
+            case 'fr': // French
+            case 'gun': // Gun
+            case 'ln': // Lingala
+            case 'mfe': // Mauritian Creole
+            case 'mg': // Malagasy
+            case 'mi': // Maori
+            case 'oc': // Occitan
+            case 'pt_BR': // Brazilian Portuguese
+            case 'tg': // Tajik
+            case 'ti': // Tigrinya
+            case 'tr': // Turkish
+            case 'uz': // Uzbek
+            case 'wa': // Walloon
+            /* eslint-disable */
+            /* Disable "Duplicate case label" because there are 2 forms of Chinese plurals */
+            case 'zh':
+                // Chinese
+                /* eslint-enable */
+                // 2 forms
+                return n > 1 ? 1 : 0;
+            case 'lv':
+                // Latvian
+                // 3 forms
+                return n % 10 === 1 && n % 100 !== 11 ? 0 : n !== 0 ? 1 : 2;
+            case 'lt':
+                // Lithuanian
+                // 3 forms
+                return n % 10 === 1 && n % 100 !== 11 ? 0 : n % 10 >= 2 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
+            case 'be': // Belarusian
+            case 'bs': // Bosnian
+            case 'hr': // Croatian
+            case 'ru': // Russian
+            case 'sr': // Serbian
+            case 'uk':
+                // Ukrainian
+                // 3 forms
+                return n % 10 === 1 && n % 100 !== 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
+            case 'mnk':
+                // Mandinka
+                // 3 forms
+                return n === 0 ? 0 : n === 1 ? 1 : 2;
+            case 'ro':
+                // Romanian
+                // 3 forms
+                return n === 1 ? 0 : n === 0 || n % 100 > 0 && n % 100 < 20 ? 1 : 2;
+            case 'pl':
+                // Polish
+                // 3 forms
+                return n === 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
+            case 'cs': // Czech
+            case 'sk':
+                // Slovak
+                // 3 forms
+                return n === 1 ? 0 : n >= 2 && n <= 4 ? 1 : 2;
+            case 'csb':
+                // Kashubian
+                // 3 forms
+                return n === 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
+            case 'sl':
+                // Slovenian
+                // 4 forms
+                return n % 100 === 1 ? 0 : n % 100 === 2 ? 1 : n % 100 === 3 || n % 100 === 4 ? 2 : 3;
+            case 'mt':
+                // Maltese
+                // 4 forms
+                return n === 1 ? 0 : n === 0 || n % 100 > 1 && n % 100 < 11 ? 1 : n % 100 > 10 && n % 100 < 20 ? 2 : 3;
+            case 'gd':
+                // Scottish Gaelic
+                // 4 forms
+                return n === 1 || n === 11 ? 0 : n === 2 || n === 12 ? 1 : n > 2 && n < 20 ? 2 : 3;
+            case 'cy':
+                // Welsh
+                // 4 forms
+                return n === 1 ? 0 : n === 2 ? 1 : n !== 8 && n !== 11 ? 2 : 3;
+            case 'kw':
+                // Cornish
+                // 4 forms
+                return n === 1 ? 0 : n === 2 ? 1 : n === 3 ? 2 : 3;
+            case 'ga':
+                // Irish
+                // 5 forms
+                return n === 1 ? 0 : n === 2 ? 1 : n > 2 && n < 7 ? 2 : n > 6 && n < 11 ? 3 : 4;
+            case 'ar':
+                // Arabic
+                // 6 forms
+                return n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : n % 100 >= 3 && n % 100 <= 10 ? 3 : n % 100 >= 11 ? 4 : 5;
+            default:
+                // Everything else
+                return n !== 1 ? 1 : 0;
+        }
+    }
+};
+
 /* vuex-i18n defines the Vuexi18nPlugin to enable localization using a vuex
 ** module to store the translation information. Make sure to also include the
 ** file vuex-i18n-store.js to include a respective vuex module.
@@ -226,20 +371,20 @@ VuexI18nPlugin.install = function install(Vue, store) {
 
 		// return the value from the store
 		if (translationExist === true) {
-			return render(translations[locale][key], options, pluralization);
+			return render(locale, translations[locale][key], options, pluralization);
 		}
 
 		// check if a vaild fallback exists in the store. return the key if not
 		if (translations.hasOwnProperty(fallback) === false) {
-			return render(key, options, pluralization);
+			return render(locale, key, options, pluralization);
 		}
 
 		// check if the key exists in the fallback in the store. return the key if not
 		if (translations[fallback].hasOwnProperty(key) === false) {
-			return render(key, options, pluralization);
+			return render(locale, key, options, pluralization);
 		}
 
-		return render(translations[fallback][key], options, pluralization);
+		return render(locale, translations[fallback][key], options, pluralization);
 	};
 
 	// check if the given key exists in the current locale
@@ -403,10 +548,9 @@ var renderFn = function renderFn(identifiers) {
 
 	// the render function will replace variable substitutions and prepare the
 	// translations for rendering
-	var render = function render(translation) {
-		var replacements = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-		var pluralization = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-
+	var render = function render(locale, translation) {
+		var replacements = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+		var pluralization = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
 		// get the type of the property
 		var objType = typeof translation === 'undefined' ? 'undefined' : _typeof(translation);
@@ -438,24 +582,14 @@ var renderFn = function renderFn(identifiers) {
 
 		// check for pluralization and return the correct part of the string
 		var translatedText = replacedText().split(':::');
+		var index = plurals.getTranslationIndex('lv', pluralization);
 
-		// return the left side on singular, the right side for plural
-		// 0 has plural notation
-		if (pluralization === 1) {
+		if (typeof translatedText[index] === 'undefined') {
+			console.warn('no pluralized translation provided in ', translation);
 			return translatedText[0].trim();
+		} else {
+			return translatedText[index].trim();
 		}
-
-		// use singular version for -1 as well
-		if (pluralization === -1) {
-			return translatedText[0].trim();
-		}
-
-		if (translatedText.length > 1) {
-			return translatedText[1].trim();
-		}
-
-		console.warn('no pluralized translation provided in ', translation);
-		return translatedText[0].trim();
 	};
 
 	// return the render function to the caller
