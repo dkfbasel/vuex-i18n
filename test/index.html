@@ -111,6 +111,15 @@
 			</p>
 		</div>
 
+		<h2>Use default values and identifier keys</h2>
+		<div class="block">
+			<strong>Show the specified default value if the key does not exist in the current and the fallback locale:</strong><br />
+			Number for pluralization: <input type="text" v-model.number="countDefault">
+			<p>
+				{{ $t('not.existing', 'Default text for not existing key ::: Plurlized default text for not existing key', {}, countDefault) }}
+			</p>
+		</div>
+
 		<h2>Test if a key exists</h2>
 		<div class="block">
 			<strong>Show custom text if the key 'weird.translation' does not exist:</strong>
@@ -196,7 +205,8 @@
 			el: '#app',
 			data: {
 				language: 'de',
-				count: 2
+				count: 2,
+				countDefault: 1
 			},
 			methods: {
 
