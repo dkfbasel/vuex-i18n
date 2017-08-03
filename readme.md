@@ -112,6 +112,18 @@ the key itself will be returned as translation.
 
 ```
 
+In larger projects, it is often easier to use a more robust translation key instead
+of the default text. Therefore it is also possible to specify the key and
+default translation. The default value will only be used, if the key cannot be
+found in the current and in the fallback locale.
+
+```javascript
+<div>
+	// will return: "Default information text" if the key non.existing.key is
+	// not specified in the current and the fallback locale
+	{{ $t('non.existing.key', 'Default information text')}}
+</div>
+
 Dynamic parameters that can be passed to the translation method in the form of
 key/value pairs.
 
@@ -134,10 +146,10 @@ Vue.use(vuexI18n.plugin, store, 'i18n', ['{{','}}']);
 ```
 
 Basic pluralization is also supported. Please note, that the singular translation
-must be specified first, then comes plural translation and other all denoted by `:::`.
-Up to six translation forms are supported based on configuration taken from 'vue-gettext'.  
-The third parameter is used to define if the singular or plural version should be
-used (see below for examples). Dynamic parameters can be passed as second argument.
+must be specified first, followed by plural translations denoted by `:::`.
+Up to six pluralization forms are supported based on configuration taken from [vue-gettext](https://github.com/Polyconseil/vue-gettext).
+The second option is used for variable replacements. The third option to define if
+the singular or pluralized translation should be used (see below for examples).
 
 
 ```javascript
@@ -152,13 +164,13 @@ used (see below for examples). Dynamic parameters can be passed as second argume
 ```javascript
 <div>
 	// In case when there are more than singular and plural versions like in Latvian language.
-    // will return: "5 bērni" (in english - 5 children) if the third argument is 5"
-    // or "2 bērni" if the third argument is 2
-    // or "1 bērns" if the third argument is 1    
-    // or "0 bērnu" if the third argument is 0
+	// will return: "5 bērni" (in english - 5 children) if the third argument is 5"
+	// or "2 bērni" if the third argument is 2
+	// or "1 bērns" if the third argument is 1    
+	// or "0 bērnu" if the third argument is 0
 	{{ $t('{count} bērns ::: {count} bērni ::: {count} bērnu', {count: 5}, 5) }}
 </div>
-```	
+```
 
 The current locale can be set using the `$i18n.set()` method. By default, the
 translation method will select the pre-specified current locale. However, it is
@@ -166,7 +178,7 @@ possible to request a specific locale using the `$tlang()` method.
 
 ```javascript
 <div>
-    // will return the english translation regardless of the current locale
+	// will return the english translation regardless of the current locale
 	{{ $tlang('en', 'You have {count} new messages', {count: 5}) }}
 </div>
 ```
