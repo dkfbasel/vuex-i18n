@@ -105,9 +105,18 @@
 
 		<h2>Render translation with pluralization</h2>
 		<div class="block">
-			Number of Blocks: <input type="text" v-model="count">
+			Number of Blocks: <input type="text" v-model.number="count">
 			<p>
 				{{ $t('plural', {count: count}, count) }}
+			</p>
+		</div>
+
+		<h2>Use default values and identifier keys</h2>
+		<div class="block">
+			<strong>Show the specified default value if the key does not exist in the current and the fallback locale:</strong><br />
+			Number for pluralization: <input type="text" v-model.number="countDefault">
+			<p>
+				{{ $t('not.existing', 'Default text for not existing key ::: Plurlized default text for not existing key', {}, countDefault) }}
 			</p>
 		</div>
 
@@ -159,7 +168,7 @@
 				'option1': 'test',
 				'option2': 'test2'
 			},
-			'plural': 'We have one block ::: We have {count} blocks'
+			'plural': 'We have one block ::: We have {count} blocks ::: We have no blocks'
 		};
 
 		const localeFr = {
@@ -179,7 +188,7 @@
 				'this is block no. {first}',
 				'this is block no. {second}'
 			],
-			'plural': 'We have one block ::: We have {count} blocks'
+			'plural': 'We have one block ::: We have {count} blocks ::: We have no blocks'
 		};
 
 		// add the english locale to the i18n store
@@ -196,7 +205,8 @@
 			el: '#app',
 			data: {
 				language: 'de',
-				count: 2
+				count: 2,
+				countDefault: 1
 			},
 			methods: {
 

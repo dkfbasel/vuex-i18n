@@ -4,6 +4,7 @@
 */
 
 import module from './vuex-i18n-store';
+import plurals from './vuex-i18n-plurals';
 
 // initialize the plugin object
 let VuexI18nPlugin = {};
@@ -36,17 +37,64 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 	// initialize the replacement function
 	let render = renderFn(identifiers);
 
-	// get localized string from store
-	let translate = function $t(key, options, pluralization) {
+	// get localized string from store. note that we pass the arguments passed
+	// to the function directly to the translateInLanguage function
+	let translate = function $t() {
 
 		// get the current language from the store
 		let locale = store.state[moduleName].locale;
 
-		return translateInLanguage(locale, key, options, pluralization);
+		return translateInLanguage(locale, ...arguments);
 	};
 
-	// get localized string from store in a given language if available
-	let translateInLanguage = function translateInLanguage(locale, key, options, pluralization) {
+	// get localized string from store in a given language if available.
+	// there are two possible signatures for the function.
+	// we will check the arguments to make up the options passed.
+	// 1: locale, key, options, pluralization
+	// 2: locale, key, defaultValue, options, pluralization
+	let translateInLanguage = function translateInLanguage(locale) {
+
+		// read the function arguments
+		let args = arguments;
+
+		// initialize options
+		let key = '';
+		let defaultValue = '';
+		let options = {};
+		let pluralization = null;
+
+		let count = args.length;
+
+		// check if a default value was specified and fill options accordingly
+		if (count >= 3 && typeof args[2] === 'string') {
+
+			key = args[1];
+			defaultValue = args[2];
+
+			if (count > 3) {
+				options = args[3];
+			}
+
+			if (count > 4) {
+				pluralization = args[4];
+			}
+
+		} else {
+
+			key = args[1];
+
+			// default value was not specified and is therefore the same as the key
+			defaultValue = key;
+
+			if (count > 2) {
+				options = args[2];
+			}
+
+			if (count > 3) {
+				pluralization = args[3];
+			}
+
+		}
 
 		// get the current language from the store
 		let fallback = store.state[moduleName].fallback;
@@ -66,20 +114,22 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 
 		// return the value from the store
 		if (translationExist === true) {
-			return render(translations[locale][key], options, pluralization);
+			return render(locale, translations[locale][key], options, pluralization);
 		}
 
-		// check if a vaild fallback exists in the store. return the key if not
+		// check if a vaild fallback exists in the store.
+		// return the default value if not
 		if (translations.hasOwnProperty(fallback) === false ) {
-			return render(key, options, pluralization);
+			return render(locale, defaultValue, options, pluralization);
 		}
 
-		// check if the key exists in the fallback in the store. return the key if not
+		// check if the key exists in the fallback locale in the store.
+		// return the default value if not
 		if (translations[fallback].hasOwnProperty(key) === false) {
-			return render(key, options, pluralization);
+			return render(locale, defaultValue, options, pluralization);
 		}
 
-		return render(translations[fallback][key], options, pluralization);
+		return render(locale, translations[fallback][key], options, pluralization);
 
 	};
 
@@ -244,8 +294,7 @@ let renderFn = function(identifiers) {
 
 	// the render function will replace variable substitutions and prepare the
 	// translations for rendering
-	let render = function render(translation, replacements = {}, pluralization = null) {
-
+	let render = function render(locale, translation, replacements = {}, pluralization = null) {
 		// get the type of the property
 		let objType = typeof translation;
 		let pluralizationType = typeof pluralization;
@@ -278,58 +327,21 @@ let renderFn = function(identifiers) {
 
 		// check for pluralization and return the correct part of the string
 		let translatedText = replacedText().split(':::');
+		let index = plurals.getTranslationIndex(locale, pluralization);
 
-		if (translatedText.length === 3) {
-			return getNumEnding3(pluralization, translatedText);
-		} else {
-			return getNumEnding(pluralization, translatedText);
+		if(typeof translatedText[index] === 'undefined') {
+			console.warn('no pluralized translation provided in ', translation);
+			return translatedText[0].trim();
 		}
-
+		else {
+			return translatedText[index].trim();
+		}
 	};
 
 	// return the render function to the caller
 	return render;
 
 };
-
-function getNumEnding(iNumber, aEndings) {
-	// return the left side on singular, the right side for plural
-	// 0 has plural notation
-	if (iNumber === 1) {
-		return aEndings[0].trim();
-	}
-
-	// use singular version for -1 as well
-	if (iNumber === -1) {
-		return aEndings[0].trim();
-	}
-
-	if (aEndings.length > 1) {
-		return aEndings[1].trim();
-	}
-
-	console.warn('no pluralized translation provided in ', iNumber);
-	return aEndings[0].trim();
-}
-
-function getNumEnding3(iNumber, aEndings)
-{
-    var sEnding, i;
-    iNumber = iNumber % 100;
-    if (iNumber >= 11 && iNumber <= 19) {
-        sEnding = aEndings[2];
-    } else {
-        i = iNumber % 10;
-        switch (i) {
-            case (1): sEnding = aEndings[0]; break;
-            case (2):
-            case (3):
-            case (4): sEnding = aEndings[1]; break;
-            default: sEnding = aEndings[2];
-        }
-    }
-    return sEnding.trim();
-}
 
 // check if the given object is an array
 function isArray(obj) {
