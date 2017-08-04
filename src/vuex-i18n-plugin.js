@@ -96,9 +96,15 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 
 		}
 
-		// get the current language from the store
-		let fallback = store.state[moduleName].fallback;
+		// get the translations from the store
 		let translations = store.state[moduleName].translations;
+
+		// get the last resort fallback from the store
+		let fallback = store.state[moduleName].fallback;
+
+		// split locale by - to support partial fallback for regional locales
+		// like de-CH, en-UK
+		let localeRegional = locale.split('-');
 
 		// flag for translation to exist or not
 		let translationExist = true;
@@ -106,7 +112,6 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		// check if the language exists in the store. return the key if not
 		if (translations.hasOwnProperty(locale) === false ) {
 			translationExist = false;
-
 		// check if the key exists in the store. return the key if not
 		} else if (translations[locale].hasOwnProperty(key) === false) {
 			translationExist = false;
@@ -115,6 +120,14 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		// return the value from the store
 		if (translationExist === true) {
 			return render(locale, translations[locale][key], options, pluralization);
+		}
+
+		// check if a regional locale translation would be available for the key
+		// i.e. de for de-CH
+		if (localeRegional.length > 1 &&
+			translations.hasOwnProperty(localeRegional[0]) === true &&
+			translations[localeRegional[0]].hasOwnProperty(key) === true) {
+			return render(localeRegional[0], translations[localeRegional[0]][key], options, pluralization);
 		}
 
 		// check if a vaild fallback exists in the store.
@@ -126,7 +139,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		// check if the key exists in the fallback locale in the store.
 		// return the default value if not
 		if (translations[fallback].hasOwnProperty(key) === false) {
-			return render(locale, defaultValue, options, pluralization);
+			return render(fallback, defaultValue, options, pluralization);
 		}
 
 		return render(locale, translations[fallback][key], options, pluralization);

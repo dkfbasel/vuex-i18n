@@ -73,6 +73,7 @@
 		<h2>Set language and load translations</h2>
 		<div class="block">
 			<input type="text" v-model="language" placeholder="de or en">
+			<button type="submit" @click="fetchLanguage">Fetch and change language</button>
 			<button type="submit" @click="changeLanguage">Set language</button>
 			<p>Current Language: {{ $i18n.locale() }}</p>
 		</div>
@@ -210,8 +211,12 @@
 			},
 			methods: {
 
-				// enable language changing
 				changeLanguage() {
+					this.$i18n.set(this.language);
+				},
+
+				// enable language changing
+				fetchLanguage() {
 
 					let locale = this.language;
 					let url = `/test/locale-${locale}.json`;
