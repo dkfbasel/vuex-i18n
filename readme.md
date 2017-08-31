@@ -187,27 +187,31 @@ possible to request a specific locale using the `$tlang()` method.
 There are also several methods available on the property `this.$i18n` or `Vue.i18n`
 
 ```javascript
-$i18n.locale(), Vue.i18n.locale()
 // get the current locale
+$i18n.locale(), Vue.i18n.locale()
 
-$i18n.set(locale), Vue.i18n.set(locale)
 // set the current locale (i.e. 'de', 'en')
+$i18n.set(locale), Vue.i18n.set(locale)
 
-$i18n.add(locale, translations), Vue.i18n.add(locale, translations)
-// add a new locale to the storage
+// add locale translation to the storage. this will extend existing information
 // (i.e. 'de', {'message': 'Eine Nachricht'})
+$i18n.add(locale, translations), Vue.i18n.add(locale, translations)
 
-$i18n.localeExists(locale), Vue.i18n.localeExists(locale)
+// replace locale translations in the storage. this will remove all previous
+// locale information for the specified locale
+$i18n.replace(locale, translations), Vue.i18n.replace(locale, translations)
+
 // check if the given locale translations are present in the store
+$i18n.localeExists(locale), Vue.i18n.localeExists(locale)
 
-$i18n.keyExists(key), Vue.i18n.keyExists(key)
 // check if the given key is available in the current or fallback locale
+$i18n.keyExists(key), Vue.i18n.keyExists(key)
 
-$i18n.remove(locale), Vue.i18n.remove(locale)
 // remove the given locale from the store
+$i18n.remove(locale), Vue.i18n.remove(locale)
 
-$i18n.fallback(locale), Vue.i18n.fallback(locale)
 // set a fallback locale if translation for current locale does not exist
+$i18n.fallback(locale), Vue.i18n.fallback(locale)
 ```
 
 ## Contributions

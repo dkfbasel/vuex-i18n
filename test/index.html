@@ -83,6 +83,7 @@
 			<div class="block">
 				<button type="submit" @click="updateEnLocale">Update the translations</button>
 				<p>Current Language: {{ $i18n.locale() }}</p>
+				<p>This translation is not specified on load: {{ $t('appended.translation') }}</p>
 			</div>
 		</template>
 
@@ -185,11 +186,7 @@
 			'message.title': 'An Awesome Title 2',
 			'message.body': 'And some slightly less awesome text 2',
 			'message.footer': 'This is a footer text 2',
-			'listing': [
-				'this is block no. {first}',
-				'this is block no. {second}'
-			],
-			'plural': 'We have one block ::: We have {count} blocks ::: We have no blocks'
+			'appended.translation': 'This was appended to the existing translation information'
 		};
 
 		// add the english locale to the i18n store

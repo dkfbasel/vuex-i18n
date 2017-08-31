@@ -192,10 +192,19 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		return store.state[moduleName].locale;
 	};
 
-	// add predefined translations to the store
+	// add predefined translations to the store (keeping existing information)
 	let addLocale = function addLocale(locale, translations) {
 		return store.dispatch({
 			type: 'addLocale',
+			locale: locale,
+			translations: translations
+		});
+	};
+
+	// replace all locale information in the store
+	let replaceLocale = function replaceLocale(locale, translations) {
+		return store.dispatch({
+			type: 'replaceLocale',
 			locale: locale,
 			translations: translations
 		});
@@ -227,6 +236,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		locale: getLocale,
 		set: setLocale,
 		add: addLocale,
+		replace: replaceLocale,
 		remove: removeLocale,
 		fallback: setFallbackLocale,
 		localeExists: checkLocaleExists,
@@ -240,6 +250,7 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		locale: getLocale,
 		set: setLocale,
 		add: addLocale,
+		replace: replaceLocale,
 		remove: removeLocale,
 		fallback: setFallbackLocale,
 		translate: translate,
