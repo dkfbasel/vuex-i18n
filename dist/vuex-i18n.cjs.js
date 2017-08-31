@@ -28,8 +28,36 @@ var i18nVuexModule = {
 
 		// add a new locale
 		ADD_LOCALE: function ADD_LOCALE(state, payload) {
+
 			// reduce the given translations to a single-depth tree
 			var translations = flattenTranslations(payload.translations);
+
+			if (state.translations.hasOwnProperty(payload.locale)) {
+				// get the existing translations
+				var existingTranslations = state.translations[payload.locale];
+				// merge the translations
+				state.translations[payload.locale] = Object.assign({}, existingTranslations, translations);
+			} else {
+				// just set the locale if it does not yet exist
+				state.translations[payload.locale] = translations;
+			}
+
+			// make sure to notify vue of changes (this might break with new vue versions)
+			try {
+				if (state.translations.__ob__) {
+					state.translations.__ob__.dep.notify();
+				}
+			} catch (ex) {}
+		},
+
+
+		// replace existing locale information with new translations
+		REPLACE_LOCALE: function REPLACE_LOCALE(state, payload) {
+
+			// reduce the given translations to a single-depth tree
+			var translations = flattenTranslations(payload.translations);
+
+			// replace the translations entirely
 			state.translations[payload.locale] = translations;
 
 			// make sure to notify vue of changes (this might break with new vue versions)
@@ -41,7 +69,7 @@ var i18nVuexModule = {
 		},
 
 
-		// remove a new locale
+		// remove a locale from the store
 		REMOVE_LOCALE: function REMOVE_LOCALE(state, payload) {
 
 			// check if the given locale is present in the state
@@ -78,10 +106,20 @@ var i18nVuexModule = {
 		},
 
 
-		// add a new locale with translations
+		// add or extend a locale with translations
 		addLocale: function addLocale(context, payload) {
 			context.commit({
 				type: 'ADD_LOCALE',
+				locale: payload.locale,
+				translations: payload.translations
+			});
+		},
+
+
+		// replace locale information
+		replaceLocale: function replaceLocale(context, payload) {
+			context.commit({
+				type: 'REPLACE_LOCALE',
 				locale: payload.locale,
 				translations: payload.translations
 			});
@@ -486,10 +524,19 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		return store.state[moduleName].locale;
 	};
 
-	// add predefined translations to the store
+	// add predefined translations to the store (keeping existing information)
 	var addLocale = function addLocale(locale, translations) {
 		return store.dispatch({
 			type: 'addLocale',
+			locale: locale,
+			translations: translations
+		});
+	};
+
+	// replace all locale information in the store
+	var replaceLocale = function replaceLocale(locale, translations) {
+		return store.dispatch({
+			type: 'replaceLocale',
 			locale: locale,
 			translations: translations
 		});
@@ -521,6 +568,7 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		locale: getLocale,
 		set: setLocale,
 		add: addLocale,
+		replace: replaceLocale,
 		remove: removeLocale,
 		fallback: setFallbackLocale,
 		localeExists: checkLocaleExists,
@@ -534,6 +582,7 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		locale: getLocale,
 		set: setLocale,
 		add: addLocale,
+		replace: replaceLocale,
 		remove: removeLocale,
 		fallback: setFallbackLocale,
 		translate: translate,
