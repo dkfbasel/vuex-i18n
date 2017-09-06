@@ -10,7 +10,7 @@ import plurals from './vuex-i18n-plurals';
 let VuexI18nPlugin = {};
 
 // internationalization plugin for vue js using vuex
-VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', identifiers = ['{', '}']) {
+VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', identifiers = ['{', '}'], onNoTranslation) {
 
 	store.registerModule(moduleName, module);
 
@@ -120,6 +120,10 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		// return the value from the store
 		if (translationExist === true) {
 			return render(locale, translations[locale][key], options, pluralization);
+		} else {
+			if (typeof onNoTranslation === 'function') {
+				onNoTranslation(key, locale);
+			}
 		}
 
 		// check if a regional locale translation would be available for the key
@@ -375,3 +379,4 @@ function isArray(obj) {
 }
 
 export default VuexI18nPlugin;
+
