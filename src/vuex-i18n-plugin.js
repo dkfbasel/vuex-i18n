@@ -305,10 +305,12 @@ let renderFn = function(identifiers) {
 
 			// warn user that the placeholder has not been found
 			if (warn === true) {
-				console.group('Not all placeholders found');
+				console.group ? console.group('Not all placeholders found') : console.warn('Not all placeholders found');
 				console.warn('Text:', translation);
 				console.warn('Placeholder:', placeholder);
+				if(console.groupEnd) {
 				console.groupEnd();
+				}
 			}
 
 			// return the original placeholder
