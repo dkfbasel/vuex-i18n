@@ -90,6 +90,18 @@ var app = new Vue({
 
 ```
 
+You can specify a custom module name for vuex (default is 'i18n') or a callback that is triggered
+when a key has no translation for the current locale. Example:
+
+```javascript
+Vue.use(vuexI18n.plugin, store, {
+	moduleName: 'i18n',
+	onNoTranslation (key, locale) {
+		console.warn(`vuex-i18n :: Key '${key} not found for locale '${locale}'`);
+	}}
+);
+```
+
 ## Usage
 vuex-i18n provides easy access to localized information through the use of
 the `$t()` method or the `translate` filter.
@@ -142,8 +154,9 @@ Therefore it might be necessary to escape certain characters accordingly.
 
 ```javascript
 // i.e. to use {{count}} as variable substitution.
-// the third parameter defines the module name and is i18n per default
-Vue.use(vuexI18n.plugin, store, 'i18n', ['{{','}}']);
+Vue.use(vuexI18n.plugin, store, {
+	identifiers: ['{{','}}']
+});
 ```
 
 Basic pluralization is also supported. Please note, that the singular translation
