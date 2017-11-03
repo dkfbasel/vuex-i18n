@@ -194,144 +194,144 @@ function isArray(obj) {
 }
 
 var plurals = {
-    getTranslationIndex: function getTranslationIndex(languageCode, n) {
-        switch (languageCode) {
-            case 'ay': // Aymará
-            case 'bo': // Tibetan
-            case 'cgg': // Chiga
-            case 'dz': // Dzongkha
-            case 'fa': // Persian
-            case 'id': // Indonesian
-            case 'ja': // Japanese
-            case 'jbo': // Lojban
-            case 'ka': // Georgian
-            case 'kk': // Kazakh
-            case 'km': // Khmer
-            case 'ko': // Korean
-            case 'ky': // Kyrgyz
-            case 'lo': // Lao
-            case 'ms': // Malay
-            case 'my': // Burmese
-            case 'sah': // Yakut
-            case 'su': // Sundanese
-            case 'th': // Thai
-            case 'tt': // Tatar
-            case 'ug': // Uyghur
-            case 'vi': // Vietnamese
-            case 'wo': // Wolof
-            case 'zh':
-                // Chinese
-                // 1 form
-                return 0;
-            case 'is':
-                // Icelandic
-                // 2 forms
-                return n % 10 !== 1 || n % 100 === 11 ? 1 : 0;
-            case 'jv':
-                // Javanese
-                // 2 forms
-                return n !== 0 ? 1 : 0;
-            case 'mk':
-                // Macedonian
-                // 2 forms
-                return n === 1 || n % 10 === 1 ? 0 : 1;
-            case 'ach': // Acholi
-            case 'ak': // Akan
-            case 'am': // Amharic
-            case 'arn': // Mapudungun
-            case 'br': // Breton
-            case 'fil': // Filipino
-            case 'fr': // French
-            case 'gun': // Gun
-            case 'ln': // Lingala
-            case 'mfe': // Mauritian Creole
-            case 'mg': // Malagasy
-            case 'mi': // Maori
-            case 'oc': // Occitan
-            case 'pt_BR': // Brazilian Portuguese
-            case 'tg': // Tajik
-            case 'ti': // Tigrinya
-            case 'tr': // Turkish
-            case 'uz': // Uzbek
-            case 'wa': // Walloon
-            /* eslint-disable */
-            /* Disable "Duplicate case label" because there are 2 forms of Chinese plurals */
-            case 'zh':
-                // Chinese
-                /* eslint-enable */
-                // 2 forms
-                return n > 1 ? 1 : 0;
-            case 'lv':
-                // Latvian
-                // 3 forms
-                return n % 10 === 1 && n % 100 !== 11 ? 0 : n !== 0 ? 1 : 2;
-            case 'lt':
-                // Lithuanian
-                // 3 forms
-                return n % 10 === 1 && n % 100 !== 11 ? 0 : n % 10 >= 2 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
-            case 'be': // Belarusian
-            case 'bs': // Bosnian
-            case 'hr': // Croatian
-            case 'ru': // Russian
-            case 'sr': // Serbian
-            case 'uk':
-                // Ukrainian
-                // 3 forms
-                return n % 10 === 1 && n % 100 !== 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
-            case 'mnk':
-                // Mandinka
-                // 3 forms
-                return n === 0 ? 0 : n === 1 ? 1 : 2;
-            case 'ro':
-                // Romanian
-                // 3 forms
-                return n === 1 ? 0 : n === 0 || n % 100 > 0 && n % 100 < 20 ? 1 : 2;
-            case 'pl':
-                // Polish
-                // 3 forms
-                return n === 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
-            case 'cs': // Czech
-            case 'sk':
-                // Slovak
-                // 3 forms
-                return n === 1 ? 0 : n >= 2 && n <= 4 ? 1 : 2;
-            case 'csb':
-                // Kashubian
-                // 3 forms
-                return n === 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
-            case 'sl':
-                // Slovenian
-                // 4 forms
-                return n % 100 === 1 ? 0 : n % 100 === 2 ? 1 : n % 100 === 3 || n % 100 === 4 ? 2 : 3;
-            case 'mt':
-                // Maltese
-                // 4 forms
-                return n === 1 ? 0 : n === 0 || n % 100 > 1 && n % 100 < 11 ? 1 : n % 100 > 10 && n % 100 < 20 ? 2 : 3;
-            case 'gd':
-                // Scottish Gaelic
-                // 4 forms
-                return n === 1 || n === 11 ? 0 : n === 2 || n === 12 ? 1 : n > 2 && n < 20 ? 2 : 3;
-            case 'cy':
-                // Welsh
-                // 4 forms
-                return n === 1 ? 0 : n === 2 ? 1 : n !== 8 && n !== 11 ? 2 : 3;
-            case 'kw':
-                // Cornish
-                // 4 forms
-                return n === 1 ? 0 : n === 2 ? 1 : n === 3 ? 2 : 3;
-            case 'ga':
-                // Irish
-                // 5 forms
-                return n === 1 ? 0 : n === 2 ? 1 : n > 2 && n < 7 ? 2 : n > 6 && n < 11 ? 3 : 4;
-            case 'ar':
-                // Arabic
-                // 6 forms
-                return n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : n % 100 >= 3 && n % 100 <= 10 ? 3 : n % 100 >= 11 ? 4 : 5;
-            default:
-                // Everything else
-                return n !== 1 ? 1 : 0;
-        }
-    }
+	getTranslationIndex: function getTranslationIndex(languageCode, n) {
+		switch (languageCode) {
+			case 'ay': // Aymará
+			case 'bo': // Tibetan
+			case 'cgg': // Chiga
+			case 'dz': // Dzongkha
+			case 'fa': // Persian
+			case 'id': // Indonesian
+			case 'ja': // Japanese
+			case 'jbo': // Lojban
+			case 'ka': // Georgian
+			case 'kk': // Kazakh
+			case 'km': // Khmer
+			case 'ko': // Korean
+			case 'ky': // Kyrgyz
+			case 'lo': // Lao
+			case 'ms': // Malay
+			case 'my': // Burmese
+			case 'sah': // Yakut
+			case 'su': // Sundanese
+			case 'th': // Thai
+			case 'tt': // Tatar
+			case 'ug': // Uyghur
+			case 'vi': // Vietnamese
+			case 'wo': // Wolof
+			case 'zh':
+				// Chinese
+				// 1 form
+				return 0;
+			case 'is':
+				// Icelandic
+				// 2 forms
+				return n % 10 !== 1 || n % 100 === 11 ? 1 : 0;
+			case 'jv':
+				// Javanese
+				// 2 forms
+				return n !== 0 ? 1 : 0;
+			case 'mk':
+				// Macedonian
+				// 2 forms
+				return n === 1 || n % 10 === 1 ? 0 : 1;
+			case 'ach': // Acholi
+			case 'ak': // Akan
+			case 'am': // Amharic
+			case 'arn': // Mapudungun
+			case 'br': // Breton
+			case 'fil': // Filipino
+			case 'fr': // French
+			case 'gun': // Gun
+			case 'ln': // Lingala
+			case 'mfe': // Mauritian Creole
+			case 'mg': // Malagasy
+			case 'mi': // Maori
+			case 'oc': // Occitan
+			case 'pt_BR': // Brazilian Portuguese
+			case 'tg': // Tajik
+			case 'ti': // Tigrinya
+			case 'tr': // Turkish
+			case 'uz': // Uzbek
+			case 'wa': // Walloon
+			/* eslint-disable */
+			/* Disable "Duplicate case label" because there are 2 forms of Chinese plurals */
+			case 'zh':
+				// Chinese
+				/* eslint-enable */
+				// 2 forms
+				return n > 1 ? 1 : 0;
+			case 'lv':
+				// Latvian
+				// 3 forms
+				return n % 10 === 1 && n % 100 !== 11 ? 0 : n !== 0 ? 1 : 2;
+			case 'lt':
+				// Lithuanian
+				// 3 forms
+				return n % 10 === 1 && n % 100 !== 11 ? 0 : n % 10 >= 2 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
+			case 'be': // Belarusian
+			case 'bs': // Bosnian
+			case 'hr': // Croatian
+			case 'ru': // Russian
+			case 'sr': // Serbian
+			case 'uk':
+				// Ukrainian
+				// 3 forms
+				return n % 10 === 1 && n % 100 !== 11 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
+			case 'mnk':
+				// Mandinka
+				// 3 forms
+				return n === 0 ? 0 : n === 1 ? 1 : 2;
+			case 'ro':
+				// Romanian
+				// 3 forms
+				return n === 1 ? 0 : n === 0 || n % 100 > 0 && n % 100 < 20 ? 1 : 2;
+			case 'pl':
+				// Polish
+				// 3 forms
+				return n === 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
+			case 'cs': // Czech
+			case 'sk':
+				// Slovak
+				// 3 forms
+				return n === 1 ? 0 : n >= 2 && n <= 4 ? 1 : 2;
+			case 'csb':
+				// Kashubian
+				// 3 forms
+				return n === 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
+			case 'sl':
+				// Slovenian
+				// 4 forms
+				return n % 100 === 1 ? 0 : n % 100 === 2 ? 1 : n % 100 === 3 || n % 100 === 4 ? 2 : 3;
+			case 'mt':
+				// Maltese
+				// 4 forms
+				return n === 1 ? 0 : n === 0 || n % 100 > 1 && n % 100 < 11 ? 1 : n % 100 > 10 && n % 100 < 20 ? 2 : 3;
+			case 'gd':
+				// Scottish Gaelic
+				// 4 forms
+				return n === 1 || n === 11 ? 0 : n === 2 || n === 12 ? 1 : n > 2 && n < 20 ? 2 : 3;
+			case 'cy':
+				// Welsh
+				// 4 forms
+				return n === 1 ? 0 : n === 2 ? 1 : n !== 8 && n !== 11 ? 2 : 3;
+			case 'kw':
+				// Cornish
+				// 4 forms
+				return n === 1 ? 0 : n === 2 ? 1 : n === 3 ? 2 : 3;
+			case 'ga':
+				// Irish
+				// 5 forms
+				return n === 1 ? 0 : n === 2 ? 1 : n > 2 && n < 7 ? 2 : n > 6 && n < 11 ? 3 : 4;
+			case 'ar':
+				// Arabic
+				// 6 forms
+				return n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : n % 100 >= 3 && n % 100 <= 10 ? 3 : n % 100 >= 11 ? 4 : 5;
+			default:
+				// Everything else
+				return n !== 1 ? 1 : 0;
+		}
+	}
 };
 
 /* vuex-i18n defines the Vuexi18nPlugin to enable localization using a vuex
@@ -343,11 +343,37 @@ var plurals = {
 var VuexI18nPlugin = {};
 
 // internationalization plugin for vue js using vuex
-VuexI18nPlugin.install = function install(Vue, store) {
-	var moduleName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'i18n';
-	var identifiers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : ['{', '}'];
+VuexI18nPlugin.install = function install(Vue, store, config) {
 
+	// TODO: remove this block for next major update (API break)
+	if (typeof arguments[2] === 'string' || typeof arguments[3] === 'string') {
+		console.warn('VuexI18nPlugin: Registering the plugin with a string for `moduleName` or `identifiers` is deprecated. Use a configuration object instead.', 'https://github.com/dkfbasel/vuex-i18n#setup');
+		config = {
+			moduleName: arguments[2],
+			identifiers: arguments[3]
+		};
+	}
 
+	// merge default options with user supplied options
+	var mergedConfig = Object.assign({
+		moduleName: 'i18n',
+		identifiers: ['{', '}'],
+		onTranslationNotFound: function onTranslationNotFound() {}
+	}, config);
+
+	// define module name and identifiers as constants to prevent any changes
+	var moduleName = mergedConfig.moduleName;
+	var identifiers = mergedConfig.identifiers;
+
+	// initialize the onTranslationNotFound function and make sure it is actually
+	// a function
+	var onTranslationNotFound = mergedConfig.onTranslationNotFound;
+	if (typeof onTranslationNotFound !== 'function') {
+		console.error('i18n config option onTranslationNotFound must be a function');
+		onTranslationNotFound = function onTranslationNotFound() {};
+	}
+
+	// register the i18n module in the vuex store
 	store.registerModule(moduleName, i18nVuexModule);
 
 	// check if the plugin was correctly initialized
@@ -430,6 +456,12 @@ VuexI18nPlugin.install = function install(Vue, store) {
 			}
 		}
 
+		// return the default value if the locale is not set (could happen on initialization)
+		if (!locale) {
+			console.warn('i18n locale is not set when trying to access translations:', key);
+			return defaultValue;
+		}
+
 		// get the translations from the store
 		var translations = store.state[moduleName].translations;
 
@@ -441,19 +473,25 @@ VuexI18nPlugin.install = function install(Vue, store) {
 		var localeRegional = locale.split('-');
 
 		// flag for translation to exist or not
-		var translationExist = true;
+		var translationExists = true;
 
 		// check if the language exists in the store. return the key if not
 		if (translations.hasOwnProperty(locale) === false) {
-			translationExist = false;
+			translationExists = false;
 			// check if the key exists in the store. return the key if not
 		} else if (translations[locale].hasOwnProperty(key) === false) {
-			translationExist = false;
+			translationExists = false;
 		}
 
 		// return the value from the store
-		if (translationExist === true) {
+		if (translationExists === true) {
 			return render(locale, translations[locale][key], options, pluralization);
+		}
+
+		// call custom on function if the translation does not exists
+		// in the store, but continue with fallback locale and default value rendering
+		if (translationExists === false) {
+			onTranslationNotFound(locale, key);
 		}
 
 		// check if a regional locale translation would be available for the key
@@ -636,10 +674,12 @@ var renderFn = function renderFn(identifiers) {
 
 			// warn user that the placeholder has not been found
 			if (warn === true) {
-				console.group('Not all placeholders found');
+				console.group ? console.group('Not all placeholders found') : console.warn('Not all placeholders found');
 				console.warn('Text:', translation);
 				console.warn('Placeholder:', placeholder);
-				console.groupEnd();
+				if (console.groupEnd) {
+					console.groupEnd();
+				}
 			}
 
 			// return the original placeholder
