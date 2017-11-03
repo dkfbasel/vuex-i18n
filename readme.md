@@ -91,13 +91,16 @@ var app = new Vue({
 ```
 
 You can specify a custom module name for vuex (default is 'i18n') or a callback that is triggered
-when a key has no translation for the current locale. Example:
+when a key has no translation for the current locale. Please note, that the function
+supplied for onTranslationNotFound will be called if the key is not in the actual
+locale, however, the key might still be available in the fallback locale or a
+localized locale version. This might need some further work in the future.
 
 ```javascript
 Vue.use(vuexI18n.plugin, store, {
 	moduleName: 'i18n',
-	onNoTranslation (key, locale) {
-		console.warn(`vuex-i18n :: Key '${key} not found for locale '${locale}'`);
+	onTranslationNotFound (locale, key) {
+		console.warn(`i18n :: Key '${key}' not found for locale '${locale}'`);
 	}}
 );
 ```

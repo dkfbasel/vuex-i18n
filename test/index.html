@@ -154,7 +154,11 @@
 		const store = new Vuex.Store();
 
 		// initialize the vuexi18nPlugin
-		Vue.use(vuexI18n.plugin, store);
+		Vue.use(vuexI18n.plugin, store, {
+			onTranslationNotFound: function(locale, key) {
+				console.warn(`vuex-i18n :: Key '${key}' not found for locale '${locale}'`);
+			}
+		});
 
 		// define default translations for english text
 		const localeEn = {

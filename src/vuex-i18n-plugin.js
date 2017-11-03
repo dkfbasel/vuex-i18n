@@ -11,6 +11,7 @@ let VuexI18nPlugin = {};
 
 // internationalization plugin for vue js using vuex
 VuexI18nPlugin.install = function install(Vue, store, config) {
+
 	// TODO: remove this block for next major update (API break)
 	if (typeof arguments[2] === 'string' || typeof arguments[3] === 'string') {
 		console.warn('VuexI18nPlugin: Registering the plugin with a string for `moduleName` or `identifiers` is deprecated. Use a configuration object instead.', 'https://github.com/dkfbasel/vuex-i18n#setup');
@@ -19,11 +20,27 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 			identifiers: arguments[3]
 		};
 	}
-	const { moduleName, identifiers, onNoTranslation } = Object.assign({
+
+	// merge default options with user supplied options
+	let mergedConfig = Object.assign({
 		moduleName: 'i18n',
-		identifiers: ['{', '}']
+		identifiers: ['{', '}'],
+		onTranslationNotFound: function() {}
 	}, config);
 
+	// define module name and identifiers as constants to prevent any changes
+	const moduleName = mergedConfig.moduleName;
+	const identifiers = mergedConfig.identifiers;
+
+	// initialize the onTranslationNotFound function and make sure it is actually
+	// a function
+	let onTranslationNotFound = mergedConfig.onTranslationNotFound;
+	if (typeof onTranslationNotFound !== 'function') {
+		console.error('i18n config option onTranslationNotFound must be a function');
+		onTranslationNotFound = function() {};
+	}
+
+	// register the i18n module in the vuex store
 	store.registerModule(moduleName, module);
 
 	// check if the plugin was correctly initialized
@@ -125,23 +142,25 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		let localeRegional = locale.split('-');
 
 		// flag for translation to exist or not
-		let translationExist = true;
+		let translationExists = true;
 
 		// check if the language exists in the store. return the key if not
 		if (translations.hasOwnProperty(locale) === false ) {
-			translationExist = false;
+			translationExists = false;
 		// check if the key exists in the store. return the key if not
 		} else if (translations[locale].hasOwnProperty(key) === false) {
-			translationExist = false;
+			translationExists = false;
 		}
 
 		// return the value from the store
-		if (translationExist === true) {
+		if (translationExists === true) {
 			return render(locale, translations[locale][key], options, pluralization);
-		} else {
-			if (typeof onNoTranslation === 'function') {
-				onNoTranslation(key, locale);
-			}
+		}
+
+		// call custom on function if the translation does not exists
+		// in the store, but continue with fallback locale and default value rendering
+		if (translationExists === false) {
+			onTranslationNotFound(locale, key);
 		}
 
 		// check if a regional locale translation would be available for the key
@@ -397,4 +416,3 @@ function isArray(obj) {
 }
 
 export default VuexI18nPlugin;
-
