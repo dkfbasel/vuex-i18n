@@ -638,10 +638,12 @@ var renderFn = function renderFn(identifiers) {
 
 			// warn user that the placeholder has not been found
 			if (warn === true) {
-				console.group('Not all placeholders found');
+				console.group ? console.group('Not all placeholders found') : console.warn('Not all placeholders found');
 				console.warn('Text:', translation);
 				console.warn('Placeholder:', placeholder);
-				console.groupEnd();
+				if (console.groupEnd) {
+					console.groupEnd();
+				}
 			}
 
 			// return the original placeholder
@@ -659,7 +661,7 @@ var renderFn = function renderFn(identifiers) {
 		var objType = typeof translation === 'undefined' ? 'undefined' : _typeof(translation);
 		var pluralizationType = typeof pluralization === 'undefined' ? 'undefined' : _typeof(pluralization);
 
-		var replacedText = function replacedText() {
+		var replaceTranslation = function replaceTranslation() {
 
 			if (isArray$1(translation)) {
 
@@ -674,25 +676,26 @@ var renderFn = function renderFn(identifiers) {
 
 		// return translation item directly
 		if (pluralization === null) {
-			return replacedText();
+			return replaceTranslation();
 		}
 
 		// check if pluralization value is countable
 		if (pluralizationType !== 'number') {
 			console.warn('pluralization is not a number');
-			return replacedText();
+			return replaceTranslation();
 		}
 
 		// check for pluralization and return the correct part of the string
-		var translatedText = replacedText().split(':::');
+		var replacedTranslation = replaceTranslation();
+		var pluralizations = isArray$1(replacedTranslation) && replacedTranslation.length > 0 ? replacedTranslation : replacedTranslation.split(':::');
 		var index = plurals.getTranslationIndex(locale, pluralization);
 
-		if (typeof translatedText[index] === 'undefined') {
+		if (typeof pluralizations[index] === 'undefined') {
 			console.warn('no pluralized translation provided in ', translation);
-			return translatedText[0].trim();
-		} else {
-			return translatedText[index].trim();
+			index = 0;
 		}
+
+		return isArray$1(replacedTranslation) ? pluralizations[index] : pluralizations[index].trim();
 	};
 
 	// return the render function to the caller

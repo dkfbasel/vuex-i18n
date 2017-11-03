@@ -347,7 +347,7 @@ let renderFn = function(identifiers) {
 		let objType = typeof translation;
 		let pluralizationType = typeof pluralization;
 
-		let replacedText = function() {
+		let replaceTranslation = function() {
 
 			if (isArray(translation)) {
 
@@ -362,28 +362,28 @@ let renderFn = function(identifiers) {
 
 		};
 
-			// return translation item directly
+		// return translation item directly
 		if (pluralization === null) {
-			return replacedText();
+			return replaceTranslation();
 		}
 
 		// check if pluralization value is countable
 		if (pluralizationType !== 'number') {
 			console.warn('pluralization is not a number');
-			return replacedText();
+			return replaceTranslation();
 		}
 
 		// check for pluralization and return the correct part of the string
-		let translatedText = replacedText().split(':::');
+		let replacedTranslation = replaceTranslation();
+		let pluralizations = isArray(replacedTranslation) && replacedTranslation.length > 0 ? replacedTranslation : replacedTranslation.split(':::');
 		let index = plurals.getTranslationIndex(locale, pluralization);
 
-		if(typeof translatedText[index] === 'undefined') {
+		if (typeof pluralizations[index] === 'undefined') {
 			console.warn('no pluralized translation provided in ', translation);
-			return translatedText[0].trim();
+			index = 0;
 		}
-		else {
-			return translatedText[index].trim();
-		}
+
+		return isArray(replacedTranslation) ? pluralizations[index] : pluralizations[index].trim();
 	};
 
 	// return the render function to the caller
