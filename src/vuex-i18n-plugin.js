@@ -309,7 +309,7 @@ let renderFn = function(identifiers) {
 				console.warn('Text:', translation);
 				console.warn('Placeholder:', placeholder);
 				if(console.groupEnd) {
-				console.groupEnd();
+					console.groupEnd();
 				}
 			}
 
