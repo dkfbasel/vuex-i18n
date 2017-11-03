@@ -10,7 +10,19 @@ import plurals from './vuex-i18n-plurals';
 let VuexI18nPlugin = {};
 
 // internationalization plugin for vue js using vuex
-VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', identifiers = ['{', '}']) {
+VuexI18nPlugin.install = function install(Vue, store, config) {
+	// TODO: remove this block for next major update (API break)
+	if (typeof arguments[2] === 'string' || typeof arguments[3] === 'string') {
+		console.warn('VuexI18nPlugin: Registering the plugin with a string for `moduleName` or `identifiers` is deprecated. Use a configuration object instead.', 'https://github.com/dkfbasel/vuex-i18n#setup');
+		config = {
+			moduleName: arguments[2],
+			identifiers: arguments[3]
+		};
+	}
+	const { moduleName, identifiers, onNoTranslation } = Object.assign({
+		moduleName: 'i18n',
+		identifiers: ['{', '}']
+	}, config);
 
 	store.registerModule(moduleName, module);
 
@@ -126,6 +138,10 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 		// return the value from the store
 		if (translationExist === true) {
 			return render(locale, translations[locale][key], options, pluralization);
+		} else {
+			if (typeof onNoTranslation === 'function') {
+				onNoTranslation(key, locale);
+			}
 		}
 
 		// check if a regional locale translation would be available for the key
@@ -381,3 +397,4 @@ function isArray(obj) {
 }
 
 export default VuexI18nPlugin;
+
