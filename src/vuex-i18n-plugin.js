@@ -96,6 +96,12 @@ VuexI18nPlugin.install = function install(Vue, store, moduleName = 'i18n', ident
 
 		}
 
+		// return the default value if the locale is not set (could happen on initialization)
+		if (!locale) {
+			console.warn('i18n locale is not set when trying to access translations:', key);
+			return defaultValue;
+		}
+
 		// get the translations from the store
 		let translations = store.state[moduleName].translations;
 
