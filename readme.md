@@ -40,7 +40,7 @@ import vuexI18n from 'vuex-i18n';
 
 // please note that the default format for the plugin is in es2015
 // for use in server side rendering (such as nuxt), the umd version should be loaded like this
-// import vuexI18n from 'vuex-i18n/dist/vuex-i18n.umd.js
+// import vuexI18n from 'vuex-i18n/dist/vuex-i18n.umd.js';
 
 // initialize the vuex store using the vuex module. note that you can change the
 //  name of the module if you wish
