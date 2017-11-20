@@ -234,5 +234,9 @@ $i18n.remove(locale), Vue.i18n.remove(locale)
 $i18n.fallback(locale), Vue.i18n.fallback(locale)
 ```
 
+## Third-Party Integration
+Thanks to Liip Team Amboss for developing an interactive translation manager for node.js. You can find it at https://github.com/liip-amboss/locale-man.
+
+
 ## Contributions
 Any comments or suggestions are very welcome.
