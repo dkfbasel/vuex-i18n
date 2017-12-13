@@ -7,6 +7,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.4.1/vue.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.min.js"></script>
 	<script src="https://unpkg.com/vuex@2.3.0"></script>
+	<script src="https://unpkg.com/vue-router@3.0.1/dist/vue-router.js"></script>
 
 	<script src="../dist/vuex-i18n.min.js"></script>
 
@@ -160,6 +161,32 @@
 			}
 		});
 
+		// use vue router to illustrate how to use route matching to set the locale
+		Vue.use(VueRouter);
+
+		// define an init function for the router (to pass the store via closure)
+		let router = new VueRouter({
+			routes: [{
+				path: '/:lang'
+			}]
+		});
+
+		// use beforeEach route guard to set the language
+		router.beforeEach((to, from, next) => {
+
+			// use the language from the routing param or default language
+			let language = to.params.lang;
+			if (!language) {
+				language = 'en';
+			}
+
+			// set the current language for vuex-i18n. note that translation data
+			// for the language might need to be loaded first
+			Vue.i18n.set(language);
+			next();
+		});
+
+
 		// define default translations for english text
 		const localeEn = {
 			'message.title': 'An Awesome Title',
@@ -204,6 +231,7 @@
 
 		// use the plugin methods to access and add translations
 		var app = new Vue({
+			router,
 			store,
 			el: '#app',
 			data: {
