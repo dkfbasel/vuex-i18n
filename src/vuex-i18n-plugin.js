@@ -188,28 +188,42 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	};
 
 	// check if the given key exists in the current locale
-	let checkKeyExists = function checkKeyExists(key) {
+	let checkKeyExists = function checkKeyExists(key, scope = 'fallback') {
 
 		// get the current language from the store
 		let locale = store.state[moduleName].locale;
 		let fallback = store.state[moduleName].fallback;
 		let translations = store.state[moduleName].translations;
 
-		// check if the language exists in the store.
-		if (translations.hasOwnProperty(locale) === false ) {
-
-			// check if a fallback locale exists
-			if (translations.hasOwnProperty(fallback) === false ) {
-				return false;
-			}
-
-			// check the fallback locale for the key
-			return translations[fallback].hasOwnProperty(key);
-
+		// check the current translation
+		if (translations.hasOwnProperty(locale) && translations[locale].hasOwnProperty(key)) {
+			return true;
 		}
 
-		// check if the key exists in the store
-		return translations[locale].hasOwnProperty(key);
+		if (scope == 'strict') {
+			return false;
+		}
+
+		// check any localized translations
+		let localeRegional = locale.split('-');
+
+		if (localeRegional.length > 1 &&
+			translations.hasOwnProperty(localeRegional[0]) &&
+			translations[localeRegional[0]].hasOwnProperty(key)) {
+			return true;
+		}
+
+		if (scope == 'locale') {
+			return false;
+		}
+
+		// check if a fallback locale exists
+		if (translations.hasOwnProperty(fallback) && translations[fallback].hasOwnProperty(key)) {
+			return true;
+		}
+
+		// key does not exist in the store
+		return false;
 	};
 
 	// set fallback locale
