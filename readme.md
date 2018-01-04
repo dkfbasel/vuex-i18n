@@ -209,10 +209,10 @@ There are also several methods available on the property `this.$i18n` or `Vue.i1
 ```javascript
 
 // translate the given key
-$i18n.$t(), Vue.i18n.translate()
+$t(), Vue.i18n.translate()
 
 // translate the given key in a specific locale
-$i18n.$tlang(), Vue.i18n.translateIn()
+$tlang(), Vue.i18n.translateIn()
 
 // get the current locale
 $i18n.locale(), Vue.i18n.locale()
