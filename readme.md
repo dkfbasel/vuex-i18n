@@ -207,6 +207,13 @@ possible to request a specific locale using the `$tlang()` method.
 There are also several methods available on the property `this.$i18n` or `Vue.i18n`
 
 ```javascript
+
+// translate the given key
+$i18n.$t(), Vue.i18n.translate()
+
+// translate the given key in a specific locale
+$i18n.$tlang(), Vue.i18n.translateIn()
+
 // get the current locale
 $i18n.locale(), Vue.i18n.locale()
 
@@ -221,17 +228,25 @@ $i18n.add(locale, translations), Vue.i18n.add(locale, translations)
 // locale information for the specified locale
 $i18n.replace(locale, translations), Vue.i18n.replace(locale, translations)
 
-// check if the given locale translations are present in the store
-$i18n.localeExists(locale), Vue.i18n.localeExists(locale)
-
-// check if the given key is available in the current or fallback locale
-$i18n.keyExists(key), Vue.i18n.keyExists(key)
-
 // remove the given locale from the store
 $i18n.remove(locale), Vue.i18n.remove(locale)
 
 // set a fallback locale if translation for current locale does not exist
 $i18n.fallback(locale), Vue.i18n.fallback(locale)
+
+// check if the given locale translations are present in the store
+$i18n.localeExists(locale), Vue.i18n.localeExists(locale)
+
+// check if the given key is available (will check current, regional and fallback locale)
+$i18n.keyExists(key), Vue.i18n.keyExists(key)
+
+// optional with a second parameter to limit the scope
+// strict: only current locale (exact match)
+// locale: current locale and parent language locale (i.e. en-us & en)
+// fallback: current locale, parent language locale and fallback locale
+// the default is fallback
+$i18n.keyExists(key, 'strict'), $i18n.keyExists(key, 'locale'), $i18n.keyExists(key, 'fallback'),
+
 ```
 
 ## Third-Party Integration
