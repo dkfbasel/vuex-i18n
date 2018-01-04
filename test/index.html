@@ -119,18 +119,37 @@
 			<strong>Show the specified default value if the key does not exist in the current and the fallback locale:</strong><br />
 			Number for pluralization: <input type="text" v-model.number="countDefault">
 			<p>
-				{{ $t('not.existing', 'Default text for not existing key ::: Plurlized default text for not existing key', {}, countDefault) }}
+				{{ $t('not.existing', 'Default text for not existing key ::: Pluralized default text for not existing key', {}, countDefault) }}
 			</p>
 		</div>
+
+		<h2>Pluralization without key specified</h2>
+		<div class="block">
+			<strong>Lookup separate pluralization string parts by keys:</strong><br />
+			Number for pluralization: <input type="text" v-model.number="countDefault">
+			<p>
+				{{ $t('pluralization_singular ::: pluralization_plural ::: pluralization_none', {}, countDefault) }}
+			</p>
+		</div>
+
 
 		<h2>Test if a key exists</h2>
 		<div class="block">
 			<strong>Show custom text if the key 'weird.translation' does not exist:</strong>
+			<p v-if="$i18n.keyExists('weird.translation', 'strict')">
+				STRICT: {{ $t('weird.translation') }}
+			</p>
+			<p v-if="$i18n.keyExists('weird.translation', 'locale')">
+				LOCALE: {{ $t('weird.translation') }}
+			</p>
+			<p v-if="$i18n.keyExists('weird.translation', 'fallback')">
+				FALLBACK: {{ $t('weird.translation') }}
+			</p>
 			<p v-if="$i18n.keyExists('weird.translation')">
-				{{ $t('weird.translation') }}
+				DEFAULT: {{ $t('weird.translation') }}
 			</p>
 			<p v-else>
-				There is no translation for the key 'weird.translation'
+				DEFAULT: DOES NOT EXIST
 			</p>
 		</div>
 
@@ -201,7 +220,10 @@
 				'option1': 'test',
 				'option2': 'test2'
 			},
-			'plural': 'We have one block ::: We have {count} blocks ::: We have no blocks'
+			'plural': 'We have one block ::: We have {count} blocks ::: We have no blocks',
+			'pluralization_singular': 'We have one block',
+			'pluralization_plural': 'We have {count} blocks',
+			'pluralization_none': 'We have no blocks'
 		};
 
 		const localeFr = {
@@ -213,7 +235,7 @@
 
 		// updated locale information
 		// to simulate loading of new local translations via ajax
-		const localeEnPlus = {
+		const localeEnUs = {
 			'message.title': 'An Awesome Title 2',
 			'message.body': 'And some slightly less awesome text 2',
 			'message.footer': 'This is a footer text 2',
@@ -269,7 +291,7 @@
 				},
 
 				updateEnLocale() {
-					this.$i18n.add('en', localeEnPlus);
+					this.$i18n.add('en-us', localeEnUs);
 				},
 
 				addFrLocale() {
