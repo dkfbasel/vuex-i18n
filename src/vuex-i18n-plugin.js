@@ -387,7 +387,7 @@ let renderFn = function(identifiers) {
 		let objType = typeof translation;
 		let pluralizationType = typeof pluralization;
 
-		let replacedText = function() {
+		let resolvePlaceholders = function() {
 
 			if (isArray(translation)) {
 
@@ -404,26 +404,47 @@ let renderFn = function(identifiers) {
 
 			// return translation item directly
 		if (pluralization === null) {
-			return replacedText();
+			return resolvePlaceholders();
 		}
 
 		// check if pluralization value is countable
 		if (pluralizationType !== 'number') {
-			console.warn('pluralization is not a number');
-			return replacedText();
+			console.warn('i18n: pluralization is not a number');
+			return resolvePlaceholders();
 		}
 
-		// check for pluralization and return the correct part of the string
-		let translatedText = replacedText().split(':::');
+		// --- handle pluralizations ---
+
+		// replace all placeholders
+		let resolvedTranslation = resolvePlaceholders();
+
+		// initialize pluralizations
+		let pluralizations = null;
+
+		// if translations are already an array and have more than one entry,
+		// we will not perform a split operation on :::
+		if (isArray(resolvedTranslation) && resolvedTranslation.length > 0) {
+			pluralizations = resolvedTranslation;
+
+		} else {
+			// split translation strings by ::: to find create the pluralization array
+			pluralizations = resolvedTranslation.split(':::');
+		}
+
+		// determine the pluralization version to use by locale
 		let index = plurals.getTranslationIndex(locale, pluralization);
 
-		if(typeof translatedText[index] === 'undefined') {
-			console.warn('no pluralized translation provided in ', translation);
-			return translatedText[0].trim();
+		// check if the specified index is present in the pluralization
+		if(typeof pluralizations[index] === 'undefined') {
+			console.warn('i18n: pluralization not provided in locale', translation, locale, index);
+
+			// return the first element of the pluralization by default
+			return pluralizations[0].trim();
 		}
-		else {
-			return translatedText[index].trim();
-		}
+
+		// return the requested item from the pluralizations
+		return pluralizations[index].trim();
+
 	};
 
 	// return the render function to the caller
