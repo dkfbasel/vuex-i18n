@@ -170,14 +170,12 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		let asyncTranslation = onTranslationNotFound(locale, key);
 
 		// resolve async translations by updating the store
-		if (asyncTranslation && (typeof asyncTranslation == 'string' || typeof asyncTranslation.then == 'function')) {
-
+		if (asyncTranslation) {
 			Promise.resolve(asyncTranslation).then((value) => {
 				let additionalTranslations = {};
 				additionalTranslations[key] = value;
 				addLocale(locale, additionalTranslations);
 			});
-			
 		}
 
 		// check if a vaild fallback exists in the store.
