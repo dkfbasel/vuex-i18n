@@ -147,6 +147,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		// check if the language exists in the store. return the key if not
 		if (translations.hasOwnProperty(locale) === false ) {
 			translationExists = false;
+
 		// check if the key exists in the store. return the key if not
 		} else if (translations[locale].hasOwnProperty(key) === false) {
 			translationExists = false;
@@ -157,18 +158,26 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 			return render(locale, translations[locale][key], options, pluralization);
 		}
 
-		// call custom on function if the translation does not exists
-		// in the store, but continue with fallback locale and default value rendering
-		if (translationExists === false) {
-			onTranslationNotFound(locale, key);
-		}
-
 		// check if a regional locale translation would be available for the key
 		// i.e. de for de-CH
 		if (localeRegional.length > 1 &&
 			translations.hasOwnProperty(localeRegional[0]) === true &&
 			translations[localeRegional[0]].hasOwnProperty(key) === true) {
 			return render(localeRegional[0], translations[localeRegional[0]][key], options, pluralization);
+		}
+
+		// invoke a method if a translation is not found
+		let asyncTranslation = onTranslationNotFound(locale, key);
+
+		// resolve async translations by updating the store
+		if (asyncTranslation && (typeof asyncTranslation == 'string' || typeof asyncTranslation.then == 'function')) {
+
+			Promise.resolve(asyncTranslation).then((value) => {
+				let additionalTranslations = {};
+				additionalTranslations[key] = value;
+				addLocale(locale, additionalTranslations);
+			});
+			
 		}
 
 		// check if a vaild fallback exists in the store.
