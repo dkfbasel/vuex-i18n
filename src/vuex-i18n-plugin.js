@@ -14,7 +14,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// TODO: remove this block for next major update (API break)
 	if (typeof arguments[2] === 'string' || typeof arguments[3] === 'string') {
-		console.warn('VuexI18nPlugin: Registering the plugin with a string for `moduleName` or `identifiers` is deprecated. Use a configuration object instead.', 'https://github.com/dkfbasel/vuex-i18n#setup');
+		console.warn('i18n: Registering the plugin vuex-i18n with a string for `moduleName` or `identifiers` is deprecated. Use a configuration object instead.', 'https://github.com/dkfbasel/vuex-i18n#setup');
 		config = {
 			moduleName: arguments[2],
 			identifiers: arguments[3]
@@ -36,7 +36,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// a function
 	let onTranslationNotFound = mergedConfig.onTranslationNotFound;
 	if (typeof onTranslationNotFound !== 'function') {
-		console.error('i18n config option onTranslationNotFound must be a function');
+		console.error('i18n: i18n config option onTranslationNotFound must be a function');
 		onTranslationNotFound = function() {};
 	}
 
@@ -45,7 +45,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// check if the plugin was correctly initialized
 	if (store.state.hasOwnProperty(moduleName) === false) {
-		console.error('i18n vuex module is not correctly initialized. Please check the module name:', moduleName);
+		console.error('i18n: i18n vuex module is not correctly initialized. Please check the module name:', moduleName);
 
 		// always return the key if module is not initialized correctly
 		Vue.prototype.$i18n = function(key) {
@@ -57,7 +57,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		};
 
 		Vue.prototype.$setLanguage = function() {
-			console.error('i18n vuex module is not correctly initialized');
+			console.error('i18n: i18n vuex module is not correctly initialized');
 		};
 
 		return;
@@ -127,7 +127,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 		// return the default value if the locale is not set (could happen on initialization)
 		if (!locale) {
-			console.warn('i18n locale is not set when trying to access translations:', key);
+			console.warn('i18n: i18n locale is not set when trying to access translations:', key);
 			return defaultValue;
 		}
 
@@ -284,7 +284,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// we are phasing out the exists function
 	let phaseOutExistsFn = function phaseOutExistsFn(locale) {
-		console.warn('$i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exatly the same functionality.');
+		console.warn('i18n: $i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exatly the same functionality.');
 		return checkLocaleExists(locale);
 	};
 
@@ -342,7 +342,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 let renderFn = function(identifiers) {
 
 	if (identifiers == null || identifiers.length != 2) {
-		console.warn('You must specify the start and end character identifying variable substitutions');
+		console.warn('i18n: You must specify the start and end character identifying variable substitutions');
 	}
 
 	// construct a regular expression ot find variable substitutions, i.e. {test}
@@ -367,7 +367,7 @@ let renderFn = function(identifiers) {
 
 			// warn user that the placeholder has not been found
 			if (warn === true) {
-				console.group ? console.group('Not all placeholders found') : console.warn('Not all placeholders found');
+				console.group ? console.group('i18n: Not all placeholders found') : console.warn('i18n: Not all placeholders found');
 				console.warn('Text:', translation);
 				console.warn('Placeholder:', placeholder);
 				if(console.groupEnd) {

@@ -163,7 +163,7 @@ const flattenTranslations = function flattenTranslations(translations) {
 				let itemType = typeof translations[i][index];
 
 				if (itemType !== 'string') {
-					console.warn('vuex-i18n:','currently only arrays of strings are fully supported', translations[i]);
+					console.warn('i18n:','currently only arrays of strings are fully supported', translations[i]);
 					break;
 				}
 			}
