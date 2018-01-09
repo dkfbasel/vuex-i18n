@@ -169,7 +169,7 @@ var flattenTranslations = function flattenTranslations(translations) {
 				var itemType = _typeof(translations[i][index]);
 
 				if (itemType !== 'string') {
-					console.warn('vuex-i18n:', 'currently only arrays of strings are fully supported', translations[i]);
+					console.warn('i18n:', 'currently only arrays of strings are fully supported', translations[i]);
 					break;
 				}
 			}
@@ -350,7 +350,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// TODO: remove this block for next major update (API break)
 	if (typeof arguments[2] === 'string' || typeof arguments[3] === 'string') {
-		console.warn('VuexI18nPlugin: Registering the plugin with a string for `moduleName` or `identifiers` is deprecated. Use a configuration object instead.', 'https://github.com/dkfbasel/vuex-i18n#setup');
+		console.warn('i18n: Registering the plugin vuex-i18n with a string for `moduleName` or `identifiers` is deprecated. Use a configuration object instead.', 'https://github.com/dkfbasel/vuex-i18n#setup');
 		config = {
 			moduleName: arguments[2],
 			identifiers: arguments[3]
@@ -372,7 +372,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// a function
 	var onTranslationNotFound = mergedConfig.onTranslationNotFound;
 	if (typeof onTranslationNotFound !== 'function') {
-		console.error('i18n config option onTranslationNotFound must be a function');
+		console.error('i18n: i18n config option onTranslationNotFound must be a function');
 		onTranslationNotFound = function onTranslationNotFound() {};
 	}
 
@@ -381,7 +381,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// check if the plugin was correctly initialized
 	if (store.state.hasOwnProperty(moduleName) === false) {
-		console.error('i18n vuex module is not correctly initialized. Please check the module name:', moduleName);
+		console.error('i18n: i18n vuex module is not correctly initialized. Please check the module name:', moduleName);
 
 		// always return the key if module is not initialized correctly
 		Vue.prototype.$i18n = function (key) {
@@ -393,7 +393,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		};
 
 		Vue.prototype.$setLanguage = function () {
-			console.error('i18n vuex module is not correctly initialized');
+			console.error('i18n: i18n vuex module is not correctly initialized');
 		};
 
 		return;
@@ -461,7 +461,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 		// return the default value if the locale is not set (could happen on initialization)
 		if (!locale) {
-			console.warn('i18n locale is not set when trying to access translations:', key);
+			console.warn('i18n: i18n locale is not set when trying to access translations:', key);
 			return defaultValue;
 		}
 
@@ -499,7 +499,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		}
 
 		// invoke a method if a translation is not found
-		var asyncTranslation = onTranslationNotFound(locale, key);
+		var asyncTranslation = onTranslationNotFound(locale, key, defaultValue);
 
 		// resolve async translations by updating the store
 		if (asyncTranslation) {
@@ -615,7 +615,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// we are phasing out the exists function
 	var phaseOutExistsFn = function phaseOutExistsFn(locale) {
-		console.warn('$i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exatly the same functionality.');
+		console.warn('i18n: $i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exatly the same functionality.');
 		return checkLocaleExists(locale);
 	};
 
@@ -672,7 +672,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 var renderFn = function renderFn(identifiers) {
 
 	if (identifiers == null || identifiers.length != 2) {
-		console.warn('You must specify the start and end character identifying variable substitutions');
+		console.warn('i18n: You must specify the start and end character identifying variable substitutions');
 	}
 
 	// construct a regular expression ot find variable substitutions, i.e. {test}
@@ -699,7 +699,7 @@ var renderFn = function renderFn(identifiers) {
 
 			// warn user that the placeholder has not been found
 			if (warn === true) {
-				console.group ? console.group('Not all placeholders found') : console.warn('Not all placeholders found');
+				console.group ? console.group('i18n: Not all placeholders found') : console.warn('i18n: Not all placeholders found');
 				console.warn('Text:', translation);
 				console.warn('Placeholder:', placeholder);
 				if (console.groupEnd) {
@@ -722,7 +722,7 @@ var renderFn = function renderFn(identifiers) {
 		var objType = typeof translation === 'undefined' ? 'undefined' : _typeof(translation);
 		var pluralizationType = typeof pluralization === 'undefined' ? 'undefined' : _typeof(pluralization);
 
-		var replacedText = function replacedText() {
+		var resolvePlaceholders = function resolvePlaceholders() {
 
 			if (isArray$1(translation)) {
 
@@ -737,25 +737,45 @@ var renderFn = function renderFn(identifiers) {
 
 		// return translation item directly
 		if (pluralization === null) {
-			return replacedText();
+			return resolvePlaceholders();
 		}
 
 		// check if pluralization value is countable
 		if (pluralizationType !== 'number') {
-			console.warn('pluralization is not a number');
-			return replacedText();
+			console.warn('i18n: pluralization is not a number');
+			return resolvePlaceholders();
 		}
 
-		// check for pluralization and return the correct part of the string
-		var translatedText = replacedText().split(':::');
+		// --- handle pluralizations ---
+
+		// replace all placeholders
+		var resolvedTranslation = resolvePlaceholders();
+
+		// initialize pluralizations
+		var pluralizations = null;
+
+		// if translations are already an array and have more than one entry,
+		// we will not perform a split operation on :::
+		if (isArray$1(resolvedTranslation) && resolvedTranslation.length > 0) {
+			pluralizations = resolvedTranslation;
+		} else {
+			// split translation strings by ::: to find create the pluralization array
+			pluralizations = resolvedTranslation.split(':::');
+		}
+
+		// determine the pluralization version to use by locale
 		var index = plurals.getTranslationIndex(locale, pluralization);
 
-		if (typeof translatedText[index] === 'undefined') {
-			console.warn('no pluralized translation provided in ', translation);
-			return translatedText[0].trim();
-		} else {
-			return translatedText[index].trim();
+		// check if the specified index is present in the pluralization
+		if (typeof pluralizations[index] === 'undefined') {
+			console.warn('i18n: pluralization not provided in locale', translation, locale, index);
+
+			// return the first element of the pluralization by default
+			return pluralizations[0].trim();
 		}
+
+		// return the requested item from the pluralizations
+		return pluralizations[index].trim();
 	};
 
 	// return the render function to the caller
