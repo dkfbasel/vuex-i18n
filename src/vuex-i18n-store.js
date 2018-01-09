@@ -5,6 +5,7 @@
 
 // define a simple vuex module to handle locale translations
 const i18nVuexModule =  {
+	namespaced: true,
 	state: {
 		locale: null,
 		fallback: null,

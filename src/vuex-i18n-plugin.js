@@ -229,7 +229,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// set fallback locale
 	let setFallbackLocale = function setFallbackLocale(locale) {
 		store.dispatch({
-			type: 'setFallbackLocale',
+			type: `${moduleName}/setFallbackLocale`,
 			locale: locale
 		});
 	};
@@ -237,7 +237,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// set the current locale
 	let setLocale = function setLocale(locale) {
 		store.dispatch({
-			type: 'setLocale',
+			type: `${moduleName}/setLocale`,
 			locale: locale
 		});
 	};
@@ -250,7 +250,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// add predefined translations to the store (keeping existing information)
 	let addLocale = function addLocale(locale, translations) {
 		return store.dispatch({
-			type: 'addLocale',
+			type: `${moduleName}/addLocale`,
 			locale: locale,
 			translations: translations
 		});
@@ -259,7 +259,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// replace all locale information in the store
 	let replaceLocale = function replaceLocale(locale, translations) {
 		return store.dispatch({
-			type: 'replaceLocale',
+			type: `${moduleName}/replaceLocale`,
 			locale: locale,
 			translations: translations
 		});
@@ -269,7 +269,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	let removeLocale = function removeLocale(locale) {
 		if (store.state[moduleName].translations.hasOwnProperty(locale)) {
 			store.dispatch({
-				type: 'removeLocale',
+				type: `${moduleName}/removeLocale`,
 				locale: locale
 			});
 		}
