@@ -775,7 +775,7 @@ var renderFn = function renderFn(identifiers) {
 			console.warn('i18n: pluralization not provided in locale', translation, locale, index);
 
 			// return the first element of the pluralization by default
-			return pluralizations[0].trim();
+			return resolvedTranslation;
 		}
 
 		// return the requested item from the pluralizations
