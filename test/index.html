@@ -104,6 +104,7 @@
 			<ul>
 				<li v-for="block in $t('listing', {first:'1', second:'2'})">{{ block }}</li>
 			</ul>
+			<p>Second item of list {{$t('listing')}}
 		</div>
 
 		<h2>Render translation with pluralization</h2>
@@ -131,7 +132,6 @@
 				{{ $t('pluralization_singular ::: pluralization_plural ::: pluralization_none', {}, countDefault) }}
 			</p>
 		</div>
-
 
 		<h2>Test if a key exists</h2>
 		<div class="block">
@@ -161,6 +161,15 @@
 			</p>
 		</div>
 
+		<h2>Load missing translations asynchronously</h2>
+		<div class="block">
+			<p>
+				Value: {{ $t('async.value') }}
+			</p>
+			<p>
+				Promise: {{ $t('async.promise') }}
+			</p>
+		</div>
 
 	</div>
 
@@ -176,6 +185,20 @@
 		// initialize the vuexi18nPlugin
 		Vue.use(vuexI18n.plugin, store, {
 			onTranslationNotFound: function(locale, key) {
+
+				if (key == 'async.value') {
+					return 'This translation is resolved synchronously as value';
+				}
+
+				if (key == 'async.promise') {
+					return new Promise((resolve, reject) => {
+						window.setTimeout(() => {
+							resolve('This translation is resolved asynchronously');
+						}, 2000);
+					});
+
+				}
+
 				console.warn(`vuex-i18n :: Key '${key}' not found for locale '${locale}'`);
 			}
 		});
