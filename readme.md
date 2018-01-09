@@ -97,16 +97,62 @@ var app = new Vue({
 You can specify a custom module name for vuex (default is 'i18n') or a callback that is triggered
 when a key has no translation for the current locale. Please note, that the function
 supplied for onTranslationNotFound will be called if the key is not in the actual
-locale, however, the key might still be available in the fallback locale or a
-localized locale version. This might need some further work in the future.
+locale or a parent locale (ie. en for en-us), however, the key might still be available
+in the fallback locale.
+
+If a return value is given, this will be used as translation text for the key
+that was not found. It is also possible to return a promise. This will allow you
+to dynamically fetch the data from an api. Be aware, that the key will only
+be resolved once and then written like any other key into the store. Therefore
+subsequent calls of the same key will not trigger the onTranslationNotFound method.
 
 ```javascript
+
+// without return value (will use fallback translation, default translation or key)
 Vue.use(vuexI18n.plugin, store, {
 	moduleName: 'i18n',
 	onTranslationNotFound (locale, key) {
 		console.warn(`i18n :: Key '${key}' not found for locale '${locale}'`);
 	}}
 );
+
+// with string as return value. this will write the new value as translation
+// into the store
+// note: synchronous resolving of keys is not recommended as this functionality
+// should be implemented in a different way
+Vue.use(vuexI18n.plugin, store, {
+	moduleName: 'i18n',
+	onTranslationNotFound (locale, key) {
+		switch(key) {
+		case: '200':
+			return 'Everything went fine';
+			break;
+		default:
+			return 'There was a problem';
+		}
+	}}
+);
+
+// with promise as return value. this will write the new value into the store,
+// after the promise is resolved
+Vue.use(vuexI18n.plugin, store, {
+	moduleName: 'i18n',
+	onTranslationNotFound (locale, key) {
+
+		return new Promise((resolve, reject) => {
+			axios.get('/api/translations/async', {locale: locale, key:key})
+			.then((result) => {
+				resolve(result.data);
+
+			}).catch() {
+				reject();
+			}
+			
+		})
+
+	}}
+);
+
 ```
 
 ## Usage
