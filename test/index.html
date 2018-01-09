@@ -107,11 +107,19 @@
 			<p>Second item of list {{$t('listing')}}
 		</div>
 
-		<h2>Render translation with pluralization</h2>
+		<h2>Render translation with pluralization (specified with :::)</h2>
 		<div class="block">
 			Number of Blocks: <input type="text" v-model.number="count">
 			<p>
 				{{ $t('plural', {count: count}, count) }}
+			</p>
+		</div>
+
+		<h2>Render translation with pluralization (specified as array)</h2>
+		<div class="block">
+			Number of Blocks: <input type="text" v-model.number="count">
+			<p>
+				{{ $t('plural_from_array', {count: count}, count) }}
 			</p>
 		</div>
 
@@ -253,6 +261,7 @@
 				'option2': 'test2'
 			},
 			'plural': 'We have one block ::: We have {count} blocks ::: We have no blocks',
+			'plural_from_array': ['We have one block', 'We have {count} blocks', 'We have no blocks'],
 			'pluralization_singular': 'We have one block',
 			'pluralization_plural': 'We have {count} blocks',
 			'pluralization_none': 'We have no blocks'
