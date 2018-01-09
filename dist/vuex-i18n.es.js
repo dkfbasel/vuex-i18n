@@ -11,6 +11,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 // define a simple vuex module to handle locale translations
 var i18nVuexModule = {
+	namespaced: true,
 	state: {
 		locale: null,
 		fallback: null,
@@ -374,7 +375,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	}
 
 	// register the i18n module in the vuex store
-	store.registerModule(moduleName, i18nVuexModule);
+	store.registerModule(moduleName, i18nVuexModule, { preserveState: true });
 
 	// check if the plugin was correctly initialized
 	if (store.state.hasOwnProperty(moduleName) === false) {
@@ -478,6 +479,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		// check if the language exists in the store. return the key if not
 		if (translations.hasOwnProperty(locale) === false) {
 			translationExists = false;
+
 			// check if the key exists in the store. return the key if not
 		} else if (translations[locale].hasOwnProperty(key) === false) {
 			translationExists = false;
@@ -488,16 +490,23 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 			return render(locale, translations[locale][key], options, pluralization);
 		}
 
-		// call custom on function if the translation does not exists
-		// in the store, but continue with fallback locale and default value rendering
-		if (translationExists === false) {
-			onTranslationNotFound(locale, key);
-		}
-
 		// check if a regional locale translation would be available for the key
 		// i.e. de for de-CH
 		if (localeRegional.length > 1 && translations.hasOwnProperty(localeRegional[0]) === true && translations[localeRegional[0]].hasOwnProperty(key) === true) {
 			return render(localeRegional[0], translations[localeRegional[0]][key], options, pluralization);
+		}
+
+		// invoke a method if a translation is not found
+		var asyncTranslation = onTranslationNotFound(locale, key);
+
+		// resolve async translations by updating the store
+		if (asyncTranslation && (typeof asyncTranslation == 'string' || typeof asyncTranslation.then == 'function')) {
+
+			Promise.resolve(asyncTranslation).then(function (value) {
+				var additionalTranslations = {};
+				additionalTranslations[key] = value;
+				addLocale(locale, additionalTranslations);
+			});
 		}
 
 		// check if a vaild fallback exists in the store.
@@ -557,7 +566,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// set fallback locale
 	var setFallbackLocale = function setFallbackLocale(locale) {
 		store.dispatch({
-			type: 'setFallbackLocale',
+			type: moduleName + '/setFallbackLocale',
 			locale: locale
 		});
 	};
@@ -565,7 +574,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// set the current locale
 	var setLocale = function setLocale(locale) {
 		store.dispatch({
-			type: 'setLocale',
+			type: moduleName + '/setLocale',
 			locale: locale
 		});
 	};
@@ -578,7 +587,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// add predefined translations to the store (keeping existing information)
 	var addLocale = function addLocale(locale, translations) {
 		return store.dispatch({
-			type: 'addLocale',
+			type: moduleName + '/addLocale',
 			locale: locale,
 			translations: translations
 		});
@@ -587,7 +596,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// replace all locale information in the store
 	var replaceLocale = function replaceLocale(locale, translations) {
 		return store.dispatch({
-			type: 'replaceLocale',
+			type: moduleName + '/replaceLocale',
 			locale: locale,
 			translations: translations
 		});
@@ -597,7 +606,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	var removeLocale = function removeLocale(locale) {
 		if (store.state[moduleName].translations.hasOwnProperty(locale)) {
 			store.dispatch({
-				type: 'removeLocale',
+				type: moduleName + '/removeLocale',
 				locale: locale
 			});
 		}
