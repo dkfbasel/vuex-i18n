@@ -167,7 +167,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		}
 
 		// invoke a method if a translation is not found
-		let asyncTranslation = onTranslationNotFound(locale, key);
+		let asyncTranslation = onTranslationNotFound(locale, key, defaultValue);
 
 		// resolve async translations by updating the store
 		if (asyncTranslation) {
