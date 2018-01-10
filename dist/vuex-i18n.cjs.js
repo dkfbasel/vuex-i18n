@@ -361,6 +361,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	var mergedConfig = Object.assign({
 		moduleName: 'i18n',
 		identifiers: ['{', '}'],
+		preserveState: false,
 		onTranslationNotFound: function onTranslationNotFound() {}
 	}, config);
 
@@ -377,7 +378,8 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	}
 
 	// register the i18n module in the vuex store
-	store.registerModule(moduleName, i18nVuexModule, { preserveState: true });
+	// preserveState can be used via configuration if server side rendering is used
+	store.registerModule(moduleName, i18nVuexModule, { preserveState: mergedConfig.preserveState });
 
 	// check if the plugin was correctly initialized
 	if (store.state.hasOwnProperty(moduleName) === false) {
@@ -771,7 +773,7 @@ var renderFn = function renderFn(identifiers) {
 			console.warn('i18n: pluralization not provided in locale', translation, locale, index);
 
 			// return the first element of the pluralization by default
-			return resolvedTranslation;
+			return pluralizations[0].trim();
 		}
 
 		// return the requested item from the pluralizations
