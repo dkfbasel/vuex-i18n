@@ -381,7 +381,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	}
 
 	// register the i18n module in the vuex store
-	store.registerModule(moduleName, i18nVuexModule, { preserveState: true });
+	store.registerModule(moduleName, i18nVuexModule, { preserveState: !!store.state[moduleName] });
 
 	// check if the plugin was correctly initialized
 	if (store.state.hasOwnProperty(moduleName) === false) {
