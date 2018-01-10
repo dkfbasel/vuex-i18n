@@ -40,10 +40,10 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		console.error('i18n: i18n config option onTranslationNotFound must be a function');
 		onTranslationNotFound = function() {};
 	}
-	
+
 	// register the i18n module in the vuex store
 	// preserveState can be used via configuration if server side rendering is used
-	store.registerModule(moduleName, module, {preserveState: preserveState});
+	store.registerModule(moduleName, module, {preserveState: mergedConfig.preserveState});
 
 	// check if the plugin was correctly initialized
 	if (store.state.hasOwnProperty(moduleName) === false) {
