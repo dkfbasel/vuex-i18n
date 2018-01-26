@@ -256,6 +256,11 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		return store.state[moduleName].locale;
 	};
 
+	// get all available locales
+	let getLocales = function getLocales() {
+		return Object.keys(store.state[moduleName].translations);
+	};
+
 	// add predefined translations to the store (keeping existing information)
 	let addLocale = function addLocale(locale, translations) {
 		return store.dispatch({
@@ -298,6 +303,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// register vue prototype methods
 	Vue.prototype.$i18n = {
 		locale: getLocale,
+		locales: getLocales,
 		set: setLocale,
 		add: addLocale,
 		replace: replaceLocale,
@@ -312,6 +318,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// register global methods
 	Vue.i18n = {
 		locale: getLocale,
+		locales: getLocales,
 		set: setLocale,
 		add: addLocale,
 		replace: replaceLocale,
