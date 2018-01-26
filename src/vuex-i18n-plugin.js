@@ -312,6 +312,9 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		localeExists: checkLocaleExists,
 		keyExists: checkKeyExists,
 
+		translate: translate,
+		translateIn: translateInLanguage,
+
 		exists: phaseOutExistsFn
 	};
 
@@ -332,10 +335,10 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		exists: phaseOutExistsFn
 	};
 
-	// register the translation function on the vue instance
+	// register the translation function on the vue instance directly
 	Vue.prototype.$t = translate;
 
-	// register the specific language translation function on the vue instance
+	// register the specific language translation function on the vue instance directly
 	Vue.prototype.$tlang = translateInLanguage;
 
 	// register a filter function for translations
