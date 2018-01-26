@@ -284,6 +284,9 @@ $tlang(), Vue.i18n.translateIn()
 // get the current locale
 $i18n.locale(), Vue.i18n.locale()
 
+// get all available locales
+$i18n.locales(), Vue.i18n.locales()
+
 // set the current locale (i.e. 'de', 'en')
 $i18n.set(locale), Vue.i18n.set(locale)
 
