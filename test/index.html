@@ -79,6 +79,15 @@
 			<p>Current Language: {{ $i18n.locale() }}</p>
 		</div>
 
+		<h2>Available locales</h2>
+		<div class="block">
+			<ul>
+				<li v-for="locale in $i18n.locales()">
+					{{ locale }}
+				</li>
+			</ul>
+		</div>
+
 		<template v-if="$i18n.locale() == 'en'">
 		<h2>Update english locale translations</h2>
 			<div class="block">
@@ -104,7 +113,6 @@
 			<ul>
 				<li v-for="block in $t('listing', {first:'1', second:'2'})">{{ block }}</li>
 			</ul>
-			<p>Second item of list {{$t('listing')}}
 		</div>
 
 		<h2>Render translation with pluralization (specified with :::)</h2>
