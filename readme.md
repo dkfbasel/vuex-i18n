@@ -285,6 +285,9 @@ $tlang(), Vue.i18n.translateIn()
 $i18n.locale(), Vue.i18n.locale()
 
 // get all available locales
+// is is however recommended to use a computed property to fetch the locales
+// returning Object.keys(this.$store.state.i18n.translations); as this will
+// make use of vue's caching system.
 $i18n.locales(), Vue.i18n.locales()
 
 // set the current locale (i.e. 'de', 'en')
