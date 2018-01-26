@@ -147,7 +147,7 @@ Vue.use(vuexI18n.plugin, store, {
 			}).catch() {
 				reject();
 			}
-			
+
 		})
 
 	}}
@@ -224,7 +224,26 @@ the singular or pluralized translation should be used (see below for examples).
 	// will return: "You have 5 new messages" if the third argument is 5"
 	// or "You have 1 new message" if the third argument is 1
 	// or "You have 0 new messages" if the third argument is 0 (note pluralized version)
-	{{ $t('You have {count} new message ::: You have {count} new messages', {count: 5}, 5) }}
+
+	// using the translation directly (as specified in the current readme)
+	{{ $t('You have {count} new message ::: You have {count} new messages', {count: 5}, 5) }}
+
+
+	// using a key to lookup the translations
+	{{ $t('mykey', {count: 5}, 5) }}
+
+	// in the store
+	const translations = {
+	  'mykey': 'You have {count} new message ::: You have {count} new messages'
+	}
+
+	// alternative specification with array for translations
+	const translations = {
+	  'mykey': [
+	    'You have {count} new message',
+	    'You have {count} new messages'
+	  ]
+	}
 </div>
 ```
 
