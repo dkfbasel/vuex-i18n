@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>vuex-i18n</title>
+
+	<script src='https://cdn.polyfill.io/v2/polyfill.min.js?flags=gated&unknown=polyfill'></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.js"></script>
+	<script src="https://unpkg.com/vuex@3.0.1"></script>
+
+	<script src="../dist/vuex-i18n.min.js"></script>
+
+	</head>
+	<body>
+
+		<div id="app">
+			<div class="example-text"><h1>message.title: {{ $t('message.title') }}</h1></div>
+		</div>
+
+		<!-- application code -->
+		<script type="text/javascript">
+
+			// enable the vue devtools
+			Vue.config.devtools = true;
+
+			// initialize a new vuex store including our i18nVuexModule
+			const store = new Vuex.Store({});
+
+			// initialize the vuexi18nPlugin
+			Vue.use(vuexI18n.plugin, store);
+
+			// define default translations for english text
+			const localeEn = {
+				'message.title': 'My translated title'
+			};
+
+			// add the english locale to the i18n store
+			Vue.i18n.add('en', localeEn);
+
+			// set the current language to english
+			Vue.i18n.set('en');
+
+			var app = new Vue({
+				store: store,
+				el: '#app'
+			});
+
+		</script>
+
+	</body>
+	</html>
