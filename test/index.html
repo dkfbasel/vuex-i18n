@@ -224,15 +224,15 @@
 				}
 
 				if (key == 'async.promise') {
-					return new Promise((resolve, reject) => {
-						window.setTimeout(() => {
+					return new Promise(function(resolve, reject) {
+						window.setTimeout(function() {
 							resolve('This translation is resolved asynchronously');
 						}, 2000);
 					});
 
 				}
 
-				console.warn(`i18n: Key '${key}' not found for locale '${locale}'`);
+				console.warn('i18n: Key ', key, ' not found for locale ', locale);
 			}
 		});
 
@@ -240,17 +240,17 @@
 		Vue.use(VueRouter);
 
 		// define an init function for the router (to pass the store via closure)
-		let router = new VueRouter({
+		var router = new VueRouter({
 			routes: [{
 				path: '/:lang'
 			}]
 		});
 
 		// use beforeEach route guard to set the language
-		router.beforeEach((to, from, next) => {
+		router.beforeEach(function(to, from, next) {
 
 			// use the language from the routing param or default language
-			let language = to.params.lang;
+			var language = to.params.lang;
 			if (!language) {
 				language = 'en';
 			}
@@ -310,8 +310,8 @@
 
 		// use the plugin methods to access and add translations
 		var app = new Vue({
-			router,
-			store,
+			router: router,
+			store: store,
 			el: '#app',
 			data: {
 				language: 'de',
@@ -320,15 +320,17 @@
 			},
 			methods: {
 
-				changeLanguage() {
+				changeLanguage: function() {
 					this.$i18n.set(this.language);
 				},
 
 				// enable language changing
-				fetchLanguage() {
+				fetchLanguage: function() {
 
-					let locale = this.language;
-					let url = `/test/locale-${locale}.json`;
+					var locale = this.language;
+					var url = '/test/locale-' + locale + '.json';
+
+					var that = this;
 
 					// check if the locale has already been loaded
 					if (this.$i18n.localeExists(locale)) {
@@ -337,27 +339,27 @@
 					}
 
 					// load the specified locale from the server
-					axios.get(url).then((response) => {
-						this.$i18n.add(locale, response.data);
-						this.$i18n.set(locale);
+					axios.get(url).then(function(response) {
+						that.$i18n.add(locale, response.data);
+						that.$i18n.set(locale);
 
-					}).catch((error) => {
+					}).catch(function(error) {
 						alert('could not fetch locale translations');
 					});
 
 				},
 
-				updateEnLocale() {
+				updateEnLocale: function() {
 					this.$i18n.add('en-us', localeEnUs);
 				},
 
-				addFrLocale() {
+				addFrLocale: function() {
 					this.$i18n.set('fr');
 					this.$i18n.add('fr', localeFr);
 				}
 			},
 			computed: {
-				locales() {
+				locales: function() {
 					return Object.keys(this.$store.state.i18n.translations);
 				}
 			}
