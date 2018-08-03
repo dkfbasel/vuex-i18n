@@ -26,12 +26,14 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		moduleName: 'i18n',
 		identifiers: ['{', '}'],
 		preserveState: false,
+		translateFilterName: 'translate',
 		onTranslationNotFound: function() {}
 	}, config);
 
 	// define module name and identifiers as constants to prevent any changes
 	const moduleName = mergedConfig.moduleName;
 	const identifiers = mergedConfig.identifiers;
+	const translateFilterName = mergedConfig.translateFilterName;
 
 	// initialize the onTranslationNotFound function and make sure it is actually
 	// a function
@@ -342,7 +344,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	Vue.prototype.$tlang = translateInLanguage;
 
 	// register a filter function for translations
-	Vue.filter('translate', translate);
+	Vue.filter(translateFilterName, translate);
 
 };
 
