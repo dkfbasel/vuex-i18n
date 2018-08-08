@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "rollup -c rollup.config.js",
-    "minify": "uglifyjs dist/vuex-i18n.umd.js --output dist/vuex-i18n.min.js --compress"
+    "minify": "uglifyjs dist/vuex-i18n.umd.js --output dist/vuex-i18n.min.js --compress --mangle"
   },
   "repository": {
     "type": "git",
