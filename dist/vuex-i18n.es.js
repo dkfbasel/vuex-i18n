@@ -360,12 +360,14 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		moduleName: 'i18n',
 		identifiers: ['{', '}'],
 		preserveState: false,
+		translateFilterName: 'translate',
 		onTranslationNotFound: function onTranslationNotFound() {}
 	}, config);
 
 	// define module name and identifiers as constants to prevent any changes
 	var moduleName = mergedConfig.moduleName;
 	var identifiers = mergedConfig.identifiers;
+	var translateFilterName = mergedConfig.translateFilterName;
 
 	// initialize the onTranslationNotFound function and make sure it is actually
 	// a function
@@ -398,7 +400,6 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 		return;
 	}
-
 	// initialize the replacement function
 	var render = renderFn(identifiers);
 
@@ -671,7 +672,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	Vue.prototype.$tlang = translateInLanguage;
 
 	// register a filter function for translations
-	Vue.filter('translate', translate);
+	Vue.filter(translateFilterName, translate);
 };
 
 // renderFn will initialize a function to render the variable substitutions in
@@ -797,8 +798,6 @@ function isArray$1(obj) {
 	return !!obj && Array === obj.constructor;
 }
 
-// import the vuex module for localization
-// import the corresponding plugin for vue
 // export both modules as one file
 var index = {
 	store: i18nVuexModule,
