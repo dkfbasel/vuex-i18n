@@ -162,10 +162,11 @@ i.e. Vue.use(vuexI18n.plugin, store, config)
 
 At present, the configuration options that are supported are as follows:
 
-- `moduleName` (default `i18n`)
+- `moduleName` (default `'i18n'`)
 - `identifiers` (default `['{', '}']`)
 - `preserveState` (default `false`)
-- `translateFilterName` (default `translate`)
+- `translateFilterName` (default `'translate'`)
+- `translateInFilterName` (default `'translateIn'`)
 - `onTranslationNotFound` (default `function(){}`)
 
 ```javascript
@@ -341,6 +342,22 @@ $i18n.keyExists(key), Vue.i18n.keyExists(key)
 // fallback: current locale, parent language locale and fallback locale
 // the default is fallback
 $i18n.keyExists(key, 'strict'), $i18n.keyExists(key, 'locale'), $i18n.keyExists(key, 'fallback'),
+
+```
+
+There are also several filter function available. The names of these filter functions can be customized in the config object.
+
+```javascript
+
+// translate the given key
+// i.e. {{ 'Some localized information' | translate }}
+// just like {{ $t('Some localized information')}}
+{{ key | translate }}
+
+// translate the given key in a specific locale
+// i.e. {{ 'Some localized information' | translateIn('en') }}
+// just like {{ $tlang('en', 'Some localized information')}}
+{{ key | translateIn(locale) }}
 
 ```
 
