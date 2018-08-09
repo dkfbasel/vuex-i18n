@@ -157,14 +157,27 @@ Vue.use(vuexI18n.plugin, store, {
 
 ```
 ## Config
-You can pass a config object as the third parameter to vuex-i18n. Now,
-the configuration options that are supported are as follows:
+You can pass a config object as the third parameter when use vuex-i18n. 
+i.e. Vue.use(vuexI18n.plugin, store, config)
+
+At present, the configuration options that are supported are as follows:
 
 - `moduleName` (default `i18n`)
 - `identifiers` (default `['{', '}']`)
 - `preserveState` (default `false`)
 - `translateFilterName` (default `translate`)
 - `onTranslationNotFound` (default `function(){}`)
+
+```javascript
+
+const config = {
+	moduleName: 'myName',
+	translateFilterName: 't'
+}
+
+Vue.use(vuexI18n.plugin, store, config)
+
+```
 
 ## Usage
 vuex-i18n provides easy access to localized information through the use of
