@@ -367,6 +367,7 @@
   		identifiers: ['{', '}'],
   		preserveState: false,
   		translateFilterName: 'translate',
+  		translateInFilterName: 'translateIn',
   		onTranslationNotFound: function onTranslationNotFound() {}
   	}, config);
 
@@ -374,6 +375,7 @@
   	var moduleName = mergedConfig.moduleName;
   	var identifiers = mergedConfig.identifiers;
   	var translateFilterName = mergedConfig.translateFilterName;
+  	var translateInFilterName = mergedConfig.translateInFilterName;
 
   	// initialize the onTranslationNotFound function and make sure it is actually
   	// a function
@@ -532,6 +534,16 @@
   		return render(locale, translations[fallback][key], options, pluralization);
   	};
 
+  	// the filter function will get key as first argument, 
+  	// so, need to exchange the first and the second argument
+  	var translateInLanguageFilter = function translateInLanguageFilter(key, locale) {
+  		for (var _len = arguments.length, args = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+  			args[_key - 2] = arguments[_key];
+  		}
+
+  		return translateInLanguage.apply(undefined, [locale, key].concat(args));
+  	};
+
   	// check if the given key exists in the current locale
   	var checkKeyExists = function checkKeyExists(key) {
   		var scope = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'fallback';
@@ -679,6 +691,9 @@
 
   	// register a filter function for translations
   	Vue.filter(translateFilterName, translate);
+
+  	// register a filter function for specific language translations
+  	Vue.filter(translateInFilterName, translateInLanguageFilter);
   };
 
   // renderFn will initialize a function to render the variable substitutions in
