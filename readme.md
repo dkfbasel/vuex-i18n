@@ -55,7 +55,7 @@ const store = new Vuex.Store();
 Vue.use(vuexI18n.plugin, store);
 
 // please note that you must specify the name of the vuex module if it is
-// different from i18n. i.e. Vue.use(vuexI18n.plugin, store, 'myName')
+// different from i18n. i.e. Vue.use(vuexI18n.plugin, store, {moduleName: 'myName'})
 
 
 // add some translations (could also be loaded from a separate file)
@@ -154,6 +154,28 @@ Vue.use(vuexI18n.plugin, store, {
 
 	}}
 );
+
+```
+## Config
+You can pass a config object as the third parameter when use vuex-i18n. 
+i.e. Vue.use(vuexI18n.plugin, store, config)
+
+At present, the configuration options that are supported are as follows:
+
+- `moduleName` (default `i18n`)
+- `identifiers` (default `['{', '}']`)
+- `preserveState` (default `false`)
+- `translateFilterName` (default `translate`)
+- `onTranslationNotFound` (default `function(){}`)
+
+```javascript
+
+const config = {
+	moduleName: 'myName',
+	translateFilterName: 't'
+}
+
+Vue.use(vuexI18n.plugin, store, config)
 
 ```
 
