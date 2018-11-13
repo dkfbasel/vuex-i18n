@@ -1,0 +1,23 @@
+{
+	"name": "vuex-i18n-build",
+	"version": "1.10.5",
+	"description": "Build directory for vuex-i18n",
+	"scripts": {
+		"build": "rollup -c rollup.config.js",
+		"minify": "uglifyjs ../dist/vuex-i18n.umd.js --output ../dist/vuex-i18n.min.js --compress"
+	},
+	"author": {
+		"name": "Ramon Saccilotto",
+		"email": "tikiatua@gmail.com",
+		"url": "https://github.com/tikiatua"
+	},
+	"dependencies": {
+		"babel-core": "^6.26.0",
+		"babel-plugin-external-helpers": "^6.18.0",
+		"babel-preset-env": "^1.6.1",
+		"rollup": "^0.67.1",
+		"rollup-plugin-babel": "^3.0.2",
+		"rollup-plugin-commonjs": "^8.2.6",
+		"uglify-es": "^3.1.6"
+	}
+}
