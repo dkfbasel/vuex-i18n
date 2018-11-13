@@ -1,0 +1,8 @@
+{
+	"name": "vuex-i18n-docs",
+	"version": "1.0.0",
+	"description": "Documentation for vuex-i18n using vuepress",
+	"dependencies": {
+		"vuepress": "^0.14.4"
+	}
+}
