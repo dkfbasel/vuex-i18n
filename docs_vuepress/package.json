@@ -4,5 +4,9 @@
 	"description": "Documentation for vuex-i18n using vuepress",
 	"dependencies": {
 		"vuepress": "^0.14.4"
-	}
+	},
+	"scripts": {
+		"docs:dev": "vuepress dev docs",
+		"docs:build": "vuepress build docs"
+	} 
 }

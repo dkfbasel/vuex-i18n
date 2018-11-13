@@ -1,6 +1,6 @@
 {
 	"name": "vuex-i18n-build",
-	"version": "1.10.5",
+	"version": "1.0.0",
 	"description": "Build directory for vuex-i18n",
 	"scripts": {
 		"build": "rollup -c rollup.config.js",

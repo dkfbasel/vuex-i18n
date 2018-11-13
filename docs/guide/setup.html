@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Setup | Vuex-i18n</title>
+    <meta name="description" content="Vuex-I18n is internationalization plugin for Vue.js">
+    <meta name="theme-color" content="#3eaf7c">
+    
+    <link rel="preload" href="/vuex-i18n/assets/css/styles.372c9f28.css" as="style"><link rel="preload" href="/vuex-i18n/assets/js/app.372c9f28.js" as="script"><link rel="preload" href="/vuex-i18n/assets/js/6.266396d9.js" as="script"><link rel="prefetch" href="/vuex-i18n/assets/css/1.styles.b05fc641.css"><link rel="prefetch" href="/vuex-i18n/assets/css/2.styles.a2bd3099.css"><link rel="prefetch" href="/vuex-i18n/assets/js/1.b05fc641.js"><link rel="prefetch" href="/vuex-i18n/assets/js/2.a2bd3099.js"><link rel="prefetch" href="/vuex-i18n/assets/js/3.ed186416.js"><link rel="prefetch" href="/vuex-i18n/assets/js/4.803ab9e6.js"><link rel="prefetch" href="/vuex-i18n/assets/js/5.8bf27db6.js"><link rel="prefetch" href="/vuex-i18n/assets/js/7.c609a447.js"><link rel="prefetch" href="/vuex-i18n/assets/js/8.54410126.js">
+    <link rel="stylesheet" href="/vuex-i18n/assets/css/1.styles.b05fc641.css"><link rel="stylesheet" href="/vuex-i18n/assets/css/2.styles.a2bd3099.css"><link rel="stylesheet" href="/vuex-i18n/assets/css/styles.372c9f28.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/vuex-i18n/" class="home-link router-link-active"><!----> <span class="site-name">Vuex-i18n</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="https://github.com/dkfbasel/vuex-i18n/releases" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Release Notes
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <a href="https://github.com/dkfbasel/vuex-i18n" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="https://github.com/dkfbasel/vuex-i18n/releases" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Release Notes
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <a href="https://github.com/dkfbasel/vuex-i18n" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></nav>  <ul class="sidebar-links"><li><a href="/vuex-i18n/guide/introduction.html" class="sidebar-link">Introduction</a></li><li><a href="/vuex-i18n/guide/setup.html" class="active sidebar-link">Setup</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/vuex-i18n/guide/setup.html#webpack-setup" class="sidebar-link">Webpack-Setup</a></li><li class="sidebar-sub-header"><a href="/vuex-i18n/guide/setup.html#server-side-rendering" class="sidebar-link">Server-Side-Rendering</a></li></ul></li><li><a href="/vuex-i18n/guide/usage.html" class="sidebar-link">Usage</a></li><li><a href="/vuex-i18n/guide/api.html" class="sidebar-link">API</a></li><li><a href="/vuex-i18n/guide/comparison.html" class="sidebar-link">Comparison</a></li></ul> </div> <div class="page"> <div class="content"><h1 id="setup"><a href="#setup" aria-hidden="true" class="header-anchor">#</a> Setup</h1> <p>The vuex-i18n plugin is intended to be used for applications that use vuex as
+store and require localized messages. Make sure that both vue and vuex have
+been loaded beforehand.</p> <p>The plugin provides to main components:</p> <ul><li>A vuex module to store the localization information and translations</li> <li>A vue plugin to allow easy access to localized information from components</li></ul> <p>The plugin does not make any assumption on how you want to load the localization
+information. It can be loaded on start in your application bundle or dynamically
+after when the user is switching to a different language.</p> <h2 id="webpack-setup"><a href="#webpack-setup" aria-hidden="true" class="header-anchor">#</a> Webpack-Setup</h2> <p>The plugin can be used with your regular vue webpack setup. Please note, that
+the default distribution is in es2015 format. Therefore your code should be transpiled
+with something like babel to ensure compatibility to older browsers.</p> <p>Install the plugin using npm or yarn</p> <div class="language- extra-class"><pre class="language-text"><code>$ npm install vuex-i18n
+</code></pre></div><div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// load vue and vuex instance</span>
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Vuex <span class="token keyword">from</span> <span class="token string">'vuex'</span><span class="token punctuation">;</span>
+
+<span class="token comment">// load vuex i18n module (es2015 format by default)</span>
+<span class="token keyword">import</span> vuexI18n <span class="token keyword">from</span> <span class="token string">'vuex-i18n'</span><span class="token punctuation">;</span>
+
+<span class="token comment">// initialize the vuex store using the vuex module. note that you can change the</span>
+<span class="token comment">// name of the module if you wish</span>
+<span class="token keyword">const</span> store <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vuex<span class="token punctuation">.</span>Store</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// initialize the internationalization plugin on the vue instance. note that</span>
+<span class="token comment">// the store must be passed to the plugin. the plugin will then generate some</span>
+<span class="token comment">// helper functions for components (i.e. this.$i18n.set, this.$t) and on the vue</span>
+<span class="token comment">// instance (i.e. Vue.i18n.set).</span>
+Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>vuexI18n<span class="token punctuation">.</span>plugin<span class="token punctuation">,</span> store<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// add some translations (could also be loaded from a separate file)</span>
+<span class="token comment">// note that it is possible to use placeholders. translations can also be</span>
+<span class="token comment">// structured as object trees and will automatically be flattened by the the</span>
+<span class="token comment">// plugin</span>
+<span class="token keyword">const</span> translationsEn <span class="token operator">=</span> <span class="token punctuation">{</span>
+	<span class="token string">&quot;content&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;This is some {type} content&quot;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">// translations can be kept in separate files for each language</span>
+<span class="token comment">// i.e. resources/i18n/de.json.</span>
+<span class="token keyword">const</span> translationsDe <span class="token operator">=</span> <span class="token punctuation">{</span>
+	<span class="token string">&quot;My nice title&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;Ein schöner Titel&quot;</span><span class="token punctuation">,</span>
+	<span class="token string">&quot;content&quot;</span><span class="token punctuation">:</span> <span class="token string">&quot;Dies ist ein toller Inhalt&quot;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">// add translations directly to the application</span>
+Vue<span class="token punctuation">.</span>i18n<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">'en'</span><span class="token punctuation">,</span> translationsEn<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Vue<span class="token punctuation">.</span>i18n<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token string">'de'</span><span class="token punctuation">,</span> translationsDe<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// set the start locale to use</span>
+Vue<span class="token punctuation">.</span>i18n<span class="token punctuation">.</span><span class="token keyword">set</span><span class="token punctuation">(</span><span class="token string">'en'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// create a new component (requires a div with id app as mount point)</span>
+<span class="token comment">// you can use the method $t to access translations. the value will be returned</span>
+<span class="token comment">// as is, if no corresponding key is found in the translations</span>
+<span class="token keyword">var</span> app <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+	store<span class="token punctuation">,</span>
+	el<span class="token punctuation">:</span> <span class="token string">'#app'</span><span class="token punctuation">,</span>
+	template<span class="token punctuation">:</span> <span class="token template-string"><span class="token string">`
+		&lt;div&gt;
+			&lt;h1&gt;{{ 'My nice title' | translate }}&lt;/h1&gt;
+			&lt;p&gt;{{ $t('content', {'type': 'nice'}) }}&lt;/p&gt;
+		&lt;/div&gt;
+	`</span></span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre></div><h2 id="server-side-rendering"><a href="#server-side-rendering" aria-hidden="true" class="header-anchor">#</a> Server-Side-Rendering</h2> <p>The default format for the plugin is es2015, if you do not use a transpiler
+(such as babel) or for use in server side rendering (such as nuxt) the umd version
+of the plugin should be loaded.</p> <div class="language-js extra-class"><pre class="language-js"><code>
+<span class="token comment">// load vue and vuex instance</span>
+<span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> Vuex <span class="token keyword">from</span> <span class="token string">'vuex'</span><span class="token punctuation">;</span>
+
+<span class="token comment">// load vuex i18n module in umd version</span>
+<span class="token keyword">import</span> vuexI18n <span class="token keyword">from</span> <span class="token string">'vuex-i18n/dist/vuex-i18n.umd.js'</span><span class="token punctuation">;</span>
+
+<span class="token operator">...</span>
+</code></pre></div></div> <div class="page-edit"><div class="edit-link"><a href="https://github.com/dkfbasel/vuex-i18n/edit/master/docs_vuepress/docs/guide/setup.md" target="_blank" rel="noopener noreferrer">Help us improve the documentation</a> <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></div> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/vuex-i18n/guide/introduction.html" class="prev">
+          Introduction
+        </a></span> <span class="next"><a href="/vuex-i18n/guide/usage.html">
+          Usage
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/vuex-i18n/assets/js/6.266396d9.js" defer></script><script src="/vuex-i18n/assets/js/app.372c9f28.js" defer></script>
+  </body>
+</html>
