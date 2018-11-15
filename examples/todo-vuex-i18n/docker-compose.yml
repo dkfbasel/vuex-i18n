@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+
+    frontend:
+        container_name: todo.vuex.i18n
+        image: dkfbasel/hot-reload-webpack:6.5.0
+        ports:
+            - 3000:3000
+        volumes:
+            - ./src:/app
+            - ./build/public:/tmp/public
+        environment:
+            - COMMAND=npm run dev
