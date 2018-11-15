@@ -253,45 +253,6 @@ if (process.env.NODE_ENV !== 'production') {
 		filename: 'app.bundle.css',
 		allChunks: true
 	}));
-
-	// output the index html (currently not in use)
-	// config.plugins.push(new HtmlWebpackPlugin({
-	// 	template: './index.html',
-	// 	output: '../index.html'
-	// }));
-
-	// define the code splitting
-	// config.optimization = {
-	// 	splitChunks: {
-	// 		cacheGroups: {
-	// 			pdf: {
-	// 				test: /[\\/]node_modules[\\/]pdfjs-dist[\\/]/,
-	// 				name: 'pdf.worker',
-	// 				chunks: 'all',
-	// 				priority: 2
-	// 			},
-	// 			vendor: {
-	// 				test: /[\\/]node_modules[\\/]/,
-	// 				name: 'vendors',
-	// 				chunks: 'all',
-	// 				priority: 1
-	// 			}
-	// 		}
-	// 	}
-	// };
-
-}
-
-if (process.env.ANALYZE === 'true') {
-	console.log('-- starting bundle analyzer');
-
-	// add bundle analyzer to show size of output files
-	config.plugins.push(
-		new BundleAnalyzerPlugin({
-			analyzerMode: 'server',
-			analyzerHost: '0.0.0.0'
-		})
-	);
 }
 
 module.exports = config;

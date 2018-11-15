@@ -9,6 +9,6 @@ services:
             - 3000:3000
         volumes:
             - ./src:/app
-            - ./build/public:/tmp/public
+            - ./build:/tmp/public
         environment:
             - COMMAND=npm run dev
