@@ -14,6 +14,9 @@ var assetsDirectory = publicDirectory + '/assets';
 
 var includes = [appDirectory];
 
+// configuration for proxy routing to api servers
+var proxyConfig = {};
+
 // basic configuration shared for development and production build
 var config = {
 	entry: {
