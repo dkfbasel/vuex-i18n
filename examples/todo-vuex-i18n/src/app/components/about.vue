@@ -1,11 +1,8 @@
 <template>
 	<div :class="$style.about">
-		<p>
-			This is a small sample app to illustration internationalization with
-			the vuex-i18n plugin.
-		</p>
+		<p>{{ $t('about.text')}}</p>
 		<p :class="$style.back">
-			<router-link :to="{name:'todos'}">Back to my list</router-link>
+			<router-link :to="{name:'todos'}">{{ $t('about.link') }}</router-link>
 		</p>
 	</div>
 </template>

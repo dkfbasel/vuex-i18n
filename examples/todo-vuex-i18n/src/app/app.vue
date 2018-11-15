@@ -29,7 +29,9 @@
 	.app {
 		display: flex;
 		flex-direction: column;
-		width: 600px;
+		width: 100%;
+		padding: 0px 20px;
+		max-width: 640px;
 		margin: 40px auto;
 	}
 

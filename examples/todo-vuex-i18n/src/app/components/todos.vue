@@ -2,7 +2,7 @@
 	<div>
 		<input v-model="todo" @keydown.enter="addTodo"
 			:class="$style.input" 
-			placeholder="Add a new todo item" />
+			:placeholder="$t('todos.placeholder')" />
 
 		<ul :class="$style.list">
 			<li v-for="todo in todos" :key="todo.id"
@@ -17,30 +17,18 @@
 			</li>
 		</ul>
 
-		<div :class="$style.actions">
-			<div v-if="anyTodos">
-				{{activeTodos.length}} item<span v-if="activeTodos.length !== 1">s</span> left
-			</div>
-			<div v-if="anyTodos">
-				<router-link :to="{name:'todos', params: {status: 'all'}}">All</router-link>
-				<router-link :to="{name:'todos', params: {status: 'active'}}">Active</router-link>
-				<router-link :to="{name:'todos', params: {status: 'completed'}}">Completed</router-link>
-			</div>
-			<div>
-				<router-link :to="{name:'about'}">About</router-link>
-			</div>
-		</div>
-
+		<actions />
 	</div>
 </template>
 
 <script>
 
 	import Icon from './todo-icon.vue';
+	import Actions from './actions.vue';
 
 	export default {
 		name: 'Todos',
-		components: { Icon },
+		components: { Icon, Actions },
 		props: {
 			status: {
 				type: String,
@@ -53,17 +41,7 @@
 			};
 		},
 		computed: {
-
-			anyTodos() {
-				return this.$store.state.todos.length > 0;
-			},
-
-			activeTodos() {
-				return this.$store.state.todos.filter((todo) => {
-					return todo.status === 'active';
-				});
-			},
-
+			
 			todos() {
 				if (this.status === 'all') {
 					return this.$store.state.todos;

@@ -41,12 +41,11 @@
 		border-radius: 2px;
 		border: 1px solid tint(#404040, 85%);
 		box-shadow: 0px 0.5px 10px alpha(#404040, 8%);
+		transition: opacity 300ms ease;
 
 		&.done {
 			text-decoration: line-through;
-			* {
-				opacity: 0.5;
-			} 
+			opacity: 0.3;
 		}
 
 	}
@@ -58,50 +57,13 @@
 		position: relative;
 		height: 20px;
 		width: 20px;
+		opacity: 0.6;
 	}
 
-	.text{
+	.text {
 		flex-grow: 1;
 		font-size: 16px;
 		line-height: 1.3em;
 	} 
 
-}
-
-
-.actions {
-	display: flex;
-	justify-content: flex-end;
-	margin-top: 16px;
-	opacity: 0.6;
-	font-size: 14px;
-
-	a {
-		text-decoration: none;
-		color: inherit;
-		cursor: pointer;
-	}
-
-	:global a.router-link-active {
-		text-decoration: underline;
-	}
-
-	a + a {
-		margin-left: 12px;
-	}
-	
-	div:first-child {
-		flex-grow: 0;
-		padding-left: 12px;
-	}
-	
-	div:last-child {
-		flex-grow: 0;
-	}
-
-	div:nth-child(2) {
-		flex-grow: 1;
-		display: flex;
-		justify-content: center;
-	}
 }

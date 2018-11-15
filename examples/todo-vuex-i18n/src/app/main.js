@@ -1,7 +1,34 @@
 import Vue from 'vue';
 
-// import a vuex store to handle all state in one location
-import store from './store/index';
+// use vuex for state management
+import Vuex from 'vuex';
+Vue.use(Vuex);
+
+// initilialize a new vuex store
+import state from './store/state';
+import mutations from './store/mutations';
+import actions from './store/actions';
+
+const store = new Vuex.Store({
+	state: state,
+	mutations: mutations,
+	actions: actions
+});
+
+// initialize the vuex-i18 module
+import vuexI18n from 'vuex-i18n';
+Vue.use(vuexI18n.plugin, store);
+
+// import predefined localizations
+import translationsEn from 'i18n/en.js';
+import translationsDe from 'i18n/de.js';
+
+// add translations
+Vue.i18n.add('en', translationsEn);
+Vue.i18n.add('de', translationsDe);
+
+// default locale is english
+Vue.i18n.set('en');
 
 // use vue-router for navigation
 import Router from 'vue-router';

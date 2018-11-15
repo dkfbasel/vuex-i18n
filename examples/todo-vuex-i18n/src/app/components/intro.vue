@@ -1,6 +1,5 @@
 <template>
-	<div :class="$style.intro">
-		Welcome to our <span :class="$style.awesome">awesome</span> Toodoo App
+	<div :class="$style.intro" v-html="$t('intro.text')">
 	</div>
 </template>
 
@@ -19,7 +18,8 @@
 		margin-bottom: 40px;
 	}
 
-	.awesome {
+	:global .highlight {
+		padding: 0px 6px;
 		background: #D3B63A;
 	}
 
