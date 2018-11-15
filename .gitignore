@@ -2,5 +2,5 @@
 /config.codekit
 /config.codekit3
 /build/node_modules
-/examples/*/node_modules
+/examples/*/src/node_modules
 /docs_vuepress/node_modules
