@@ -362,7 +362,8 @@
   	}
 
   	// merge default options with user supplied options
-  	var mergedConfig = Object.assign({
+  	config = Object.assign({
+  		warnings: true,
   		moduleName: 'i18n',
   		identifiers: ['{', '}'],
   		preserveState: false,
@@ -371,13 +372,13 @@
   	}, config);
 
   	// define module name and identifiers as constants to prevent any changes
-  	var moduleName = mergedConfig.moduleName;
-  	var identifiers = mergedConfig.identifiers;
-  	var translateFilterName = mergedConfig.translateFilterName;
+  	var moduleName = config.moduleName;
+  	var identifiers = config.identifiers;
+  	var translateFilterName = config.translateFilterName;
 
   	// initialize the onTranslationNotFound function and make sure it is actually
   	// a function
-  	var onTranslationNotFound = mergedConfig.onTranslationNotFound;
+  	var onTranslationNotFound = config.onTranslationNotFound;
   	if (typeof onTranslationNotFound !== 'function') {
   		console.error('i18n: i18n config option onTranslationNotFound must be a function');
   		onTranslationNotFound = function onTranslationNotFound() {};
@@ -385,7 +386,7 @@
 
   	// register the i18n module in the vuex store
   	// preserveState can be used via configuration if server side rendering is used
-  	store.registerModule(moduleName, i18nVuexModule, { preserveState: mergedConfig.preserveState });
+  	store.registerModule(moduleName, i18nVuexModule, { preserveState: config.preserveState });
 
   	// check if the plugin was correctly initialized
   	if (store.state.hasOwnProperty(moduleName) === false) {
@@ -407,7 +408,7 @@
   		return;
   	}
   	// initialize the replacement function
-  	var render = renderFn(identifiers);
+  	var render = renderFn(identifiers, config.warnings);
 
   	// get localized string from store. note that we pass the arguments passed
   	// to the function directly to the translateInLanguage function
@@ -627,7 +628,7 @@
 
   	// we are phasing out the exists function
   	var phaseOutExistsFn = function phaseOutExistsFn(locale) {
-  		console.warn('i18n: $i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exatly the same functionality.');
+  		console.warn('i18n: $i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exactly the same functionality.');
   		return checkLocaleExists(locale);
   	};
 
@@ -687,18 +688,18 @@
   // closure to avoid recompilation of the regular expression to match tags on
   // every render cycle.
   var renderFn = function renderFn(identifiers) {
+  	var warnings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
 
   	if (identifiers == null || identifiers.length != 2) {
   		console.warn('i18n: You must specify the start and end character identifying variable substitutions');
   	}
 
   	// construct a regular expression ot find variable substitutions, i.e. {test}
-  	var matcher = new RegExp('' + identifiers[0] + '\\w+' + identifiers[1], 'g');
+  	var matcher = new RegExp('' + identifiers[0] + '{1}\\w.+?' + identifiers[1] + '{1}', 'g');
 
   	// define the replacement function
   	var replace = function replace(translation, replacements) {
-  		var warn = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
 
   		// check if the object has a replace property
   		if (!translation.replace) {
@@ -715,7 +716,7 @@
   			}
 
   			// warn user that the placeholder has not been found
-  			if (warn === true) {
+  			if (warnings) {
   				console.group ? console.group('i18n: Not all placeholders found') : console.warn('i18n: Not all placeholders found');
   				console.warn('Text:', translation);
   				console.warn('Placeholder:', placeholder);
@@ -759,7 +760,7 @@
 
   		// check if pluralization value is countable
   		if (pluralizationType !== 'number') {
-  			console.warn('i18n: pluralization is not a number');
+  			if (warnings) console.warn('i18n: pluralization is not a number');
   			return resolvePlaceholders();
   		}
 
@@ -785,7 +786,9 @@
 
   		// check if the specified index is present in the pluralization
   		if (typeof pluralizations[index] === 'undefined') {
-  			console.warn('i18n: pluralization not provided in locale', translation, locale, index);
+  			if (warnings) {
+  				console.warn('i18n: pluralization not provided in locale', translation, locale, index);
+  			}
 
   			// return the first element of the pluralization by default
   			return pluralizations[0].trim();
