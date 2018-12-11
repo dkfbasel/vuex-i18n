@@ -132,7 +132,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 		// return the default value if the locale is not set (could happen on initialization)
 		if (!locale) {
-			console.warn('i18n: i18n locale is not set when trying to access translations:', key);
+			if (config.warnings) console.warn('i18n: i18n locale is not set when trying to access translations:', key);
 			return defaultValue;
 		}
 
@@ -294,7 +294,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// we are phasing out the exists function
 	let phaseOutExistsFn = function phaseOutExistsFn(locale) {
-		console.warn('i18n: $i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exactly the same functionality.');
+		if (config.warnings) console.warn('i18n: $i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exactly the same functionality.');
 		return checkLocaleExists(locale);
 	};
 
