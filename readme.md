@@ -167,6 +167,7 @@ At present, the configuration options that are supported are as follows:
 - `preserveState` (default `false`)
 - `translateFilterName` (default `translate`)
 - `onTranslationNotFound` (default `function(){}`)
+- `warnings`: default(`true`)
 
 ```javascript
 
