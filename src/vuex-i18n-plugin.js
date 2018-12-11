@@ -22,7 +22,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	}
 
 	// merge default options with user supplied options
-	let mergedConfig = Object.assign({
+	config = Object.assign({
 		moduleName: 'i18n',
 		identifiers: ['{', '}'],
 		preserveState: false,
@@ -31,13 +31,13 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	}, config);
 
 	// define module name and identifiers as constants to prevent any changes
-	const moduleName = mergedConfig.moduleName;
-	const identifiers = mergedConfig.identifiers;
-	const translateFilterName = mergedConfig.translateFilterName;
+	const moduleName = config.moduleName;
+	const identifiers = config.identifiers;
+	const translateFilterName = config.translateFilterName;
 
 	// initialize the onTranslationNotFound function and make sure it is actually
 	// a function
-	let onTranslationNotFound = mergedConfig.onTranslationNotFound;
+	let onTranslationNotFound = config.onTranslationNotFound;
 	if (typeof onTranslationNotFound !== 'function') {
 		console.error('i18n: i18n config option onTranslationNotFound must be a function');
 		onTranslationNotFound = function() {};
@@ -45,7 +45,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// register the i18n module in the vuex store
 	// preserveState can be used via configuration if server side rendering is used
-	store.registerModule(moduleName, module, {preserveState: mergedConfig.preserveState});
+	store.registerModule(moduleName, module, {preserveState: config.preserveState});
 
 	// check if the plugin was correctly initialized
 	if (store.state.hasOwnProperty(moduleName) === false) {
