@@ -23,6 +23,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// merge default options with user supplied options
 	config = Object.assign({
+		warnings: true,
 		moduleName: 'i18n',
 		identifiers: ['{', '}'],
 		preserveState: false,
@@ -68,7 +69,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	};
 
 	// initialize the replacement function
-	let render = renderFn(identifiers);
+	let render = renderFn(identifiers, config.warnings);
 
 	// get localized string from store. note that we pass the arguments passed
 	// to the function directly to the translateInLanguage function
@@ -293,7 +294,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// we are phasing out the exists function
 	let phaseOutExistsFn = function phaseOutExistsFn(locale) {
-		console.warn('i18n: $i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exatly the same functionality.');
+		console.warn('i18n: $i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exactly the same functionality.');
 		return checkLocaleExists(locale);
 	};
 
@@ -353,7 +354,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 // variable substitutions, i.e. {test} or {{test}}, note that we are using a
 // closure to avoid recompilation of the regular expression to match tags on
 // every render cycle.
-let renderFn = function(identifiers) {
+let renderFn = function(identifiers, warnings = true) {
 
 	if (identifiers == null || identifiers.length != 2) {
 		console.warn('i18n: You must specify the start and end character identifying variable substitutions');
@@ -363,7 +364,7 @@ let renderFn = function(identifiers) {
 	let matcher = new RegExp('' + identifiers[0] + '\\w+' + identifiers[1], 'g');
 
 	// define the replacement function
-	let replace = function replace(translation, replacements, warn = true) {
+	let replace = function replace(translation, replacements) {
 
 		// check if the object has a replace property
 		if (!translation.replace) {
@@ -380,7 +381,7 @@ let renderFn = function(identifiers) {
 			}
 
 			// warn user that the placeholder has not been found
-			if (warn === true) {
+			if (warnings) {
 				console.group ? console.group('i18n: Not all placeholders found') : console.warn('i18n: Not all placeholders found');
 				console.warn('Text:', translation);
 				console.warn('Placeholder:', placeholder);
@@ -423,7 +424,7 @@ let renderFn = function(identifiers) {
 
 		// check if pluralization value is countable
 		if (pluralizationType !== 'number') {
-			console.warn('i18n: pluralization is not a number');
+			if (warnings) console.warn('i18n: pluralization is not a number');
 			return resolvePlaceholders();
 		}
 
@@ -450,8 +451,10 @@ let renderFn = function(identifiers) {
 
 		// check if the specified index is present in the pluralization
 		if(typeof pluralizations[index] === 'undefined') {
-			console.warn('i18n: pluralization not provided in locale', translation, locale, index);
-
+			if (warnings) {
+				console.warn('i18n: pluralization not provided in locale', translation, locale, index);
+			}
+		
 			// return the first element of the pluralization by default
 			return pluralizations[0].trim();
 		}
