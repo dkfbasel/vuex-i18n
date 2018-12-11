@@ -361,7 +361,7 @@ let renderFn = function(identifiers, warnings = true) {
 	}
 
 	// construct a regular expression ot find variable substitutions, i.e. {test}
-	let matcher = new RegExp('' + identifiers[0] + '\\w+' + identifiers[1], 'g');
+	let matcher = new RegExp('' + identifiers[0] + '{1}\\w.+?' + identifiers[1] + '{1}', 'g');
 
 	// define the replacement function
 	let replace = function replace(translation, replacements) {
