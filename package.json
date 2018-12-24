@@ -1,6 +1,6 @@
 {
   "name": "vuex-i18n",
-  "version": "1.10.5",
+  "version": "1.10.8",
   "description": "Easy localization for vue-components using vuex as data store",
   "directories": {
     "test": "test",
@@ -8,14 +8,7 @@
     "lib": "src"
   },
   "main": "dist/vuex-i18n.es.js",
-  "files": [
-    "dist",
-    "test"
-  ],
-  "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "minify": "uglifyjs dist/vuex-i18n.umd.js --output dist/vuex-i18n.min.js --compress --mangle"
-  },
+  "files": ["dist"],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dkfbasel/vuex-i18n.git"
