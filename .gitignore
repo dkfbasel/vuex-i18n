@@ -4,3 +4,4 @@
 /build/node_modules
 /examples/*/src/node_modules
 /docs_vuepress/node_modules
+/build/package-lock.json
