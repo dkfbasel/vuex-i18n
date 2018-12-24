@@ -1,18 +1,12 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
-
 /* vuex-i18n-store defines a vuex module to store locale translations. Make sure
 ** to also include the file vuex-i18n.js to enable easy access to localized
 ** strings in your vue components.
 */
 
 // define a simple vuex module to handle locale translations
-var i18nVuexModule = {
+const i18nVuexModule = {
 	namespaced: true,
 	state: {
 		locale: null,
@@ -22,20 +16,19 @@ var i18nVuexModule = {
 	mutations: {
 
 		// set the current locale
-		SET_LOCALE: function SET_LOCALE(state, payload) {
+		SET_LOCALE(state, payload) {
 			state.locale = payload.locale;
 		},
 
-
 		// add a new locale
-		ADD_LOCALE: function ADD_LOCALE(state, payload) {
+		ADD_LOCALE(state, payload) {
 
 			// reduce the given translations to a single-depth tree
 			var translations = flattenTranslations(payload.translations);
 
 			if (state.translations.hasOwnProperty(payload.locale)) {
 				// get the existing translations
-				var existingTranslations = state.translations[payload.locale];
+				let existingTranslations = state.translations[payload.locale];
 				// merge the translations
 				state.translations[payload.locale] = Object.assign({}, existingTranslations, translations);
 			} else {
@@ -51,9 +44,8 @@ var i18nVuexModule = {
 			} catch (ex) {}
 		},
 
-
 		// replace existing locale information with new translations
-		REPLACE_LOCALE: function REPLACE_LOCALE(state, payload) {
+		REPLACE_LOCALE(state, payload) {
 
 			// reduce the given translations to a single-depth tree
 			var translations = flattenTranslations(payload.translations);
@@ -69,9 +61,8 @@ var i18nVuexModule = {
 			} catch (ex) {}
 		},
 
-
 		// remove a locale from the store
-		REMOVE_LOCALE: function REMOVE_LOCALE(state, payload) {
+		REMOVE_LOCALE(state, payload) {
 
 			// check if the given locale is present in the state
 			if (state.translations.hasOwnProperty(payload.locale)) {
@@ -83,7 +74,7 @@ var i18nVuexModule = {
 				}
 
 				// create a copy of the translations object
-				var translationCopy = Object.assign({}, state.translations);
+				let translationCopy = Object.assign({}, state.translations);
 
 				// remove the given locale
 				delete translationCopy[payload.locale];
@@ -92,23 +83,24 @@ var i18nVuexModule = {
 				state.translations = translationCopy;
 			}
 		},
-		SET_FALLBACK_LOCALE: function SET_FALLBACK_LOCALE(state, payload) {
+
+		SET_FALLBACK_LOCALE(state, payload) {
 			state.fallback = payload.locale;
 		}
+
 	},
 	actions: {
 
 		// set the current locale
-		setLocale: function setLocale(context, payload) {
+		setLocale(context, payload) {
 			context.commit({
 				type: 'SET_LOCALE',
 				locale: payload.locale
 			});
 		},
 
-
 		// add or extend a locale with translations
-		addLocale: function addLocale(context, payload) {
+		addLocale(context, payload) {
 			context.commit({
 				type: 'ADD_LOCALE',
 				locale: payload.locale,
@@ -116,9 +108,8 @@ var i18nVuexModule = {
 			});
 		},
 
-
 		// replace locale information
-		replaceLocale: function replaceLocale(context, payload) {
+		replaceLocale(context, payload) {
 			context.commit({
 				type: 'REPLACE_LOCALE',
 				locale: payload.locale,
@@ -126,31 +117,32 @@ var i18nVuexModule = {
 			});
 		},
 
-
 		// remove the given locale translations
-		removeLocale: function removeLocale(context, payload) {
+		removeLocale(context, payload) {
 			context.commit({
 				type: 'REMOVE_LOCALE',
 				locale: payload.locale,
 				translations: payload.translations
 			});
 		},
-		setFallbackLocale: function setFallbackLocale(context, payload) {
+
+		setFallbackLocale(context, payload) {
 			context.commit({
 				type: 'SET_FALLBACK_LOCALE',
 				locale: payload.locale
 			});
 		}
+
 	}
 };
 
 // flattenTranslations will convert object trees for translations into a
 // single-depth object tree
-var flattenTranslations = function flattenTranslations(translations) {
+const flattenTranslations = function flattenTranslations(translations) {
 
-	var toReturn = {};
+	let toReturn = {};
 
-	for (var i in translations) {
+	for (let i in translations) {
 
 		// check if the property is present
 		if (!translations.hasOwnProperty(i)) {
@@ -158,15 +150,15 @@ var flattenTranslations = function flattenTranslations(translations) {
 		}
 
 		// get the type of the property
-		var objType = _typeof(translations[i]);
+		let objType = typeof translations[i];
 
 		// allow unflattened array of strings
 		if (isArray(translations[i])) {
 
-			var count = translations[i].length;
+			let count = translations[i].length;
 
-			for (var index = 0; index < count; index++) {
-				var itemType = _typeof(translations[i][index]);
+			for (let index = 0; index < count; index++) {
+				let itemType = typeof translations[i][index];
 
 				if (itemType !== 'string') {
 					console.warn('i18n:', 'currently only arrays of strings are fully supported', translations[i]);
@@ -177,9 +169,9 @@ var flattenTranslations = function flattenTranslations(translations) {
 			toReturn[i] = translations[i];
 		} else if (objType == 'object' && objType !== null) {
 
-			var flatObject = flattenTranslations(translations[i]);
+			let flatObject = flattenTranslations(translations[i]);
 
-			for (var x in flatObject) {
+			for (let x in flatObject) {
 				if (!flatObject.hasOwnProperty(x)) continue;
 
 				toReturn[i + '.' + x] = flatObject[x];
@@ -197,7 +189,7 @@ function isArray(obj) {
 }
 
 var plurals = {
-	getTranslationIndex: function getTranslationIndex(languageCode, n) {
+	getTranslationIndex: function (languageCode, n) {
 		switch (languageCode) {
 			case 'ay': // Aymará
 			case 'bo': // Tibetan
@@ -343,7 +335,7 @@ var plurals = {
 */
 
 // initialize the plugin object
-var VuexI18nPlugin = {};
+let VuexI18nPlugin = {};
 
 // internationalization plugin for vue js using vuex
 VuexI18nPlugin.install = function install(Vue, store, config) {
@@ -364,20 +356,20 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		identifiers: ['{', '}'],
 		preserveState: false,
 		translateFilterName: 'translate',
-		onTranslationNotFound: function onTranslationNotFound() {}
+		onTranslationNotFound: function () {}
 	}, config);
 
 	// define module name and identifiers as constants to prevent any changes
-	var moduleName = config.moduleName;
-	var identifiers = config.identifiers;
-	var translateFilterName = config.translateFilterName;
+	const moduleName = config.moduleName;
+	const identifiers = config.identifiers;
+	const translateFilterName = config.translateFilterName;
 
 	// initialize the onTranslationNotFound function and make sure it is actually
 	// a function
-	var onTranslationNotFound = config.onTranslationNotFound;
+	let onTranslationNotFound = config.onTranslationNotFound;
 	if (typeof onTranslationNotFound !== 'function') {
 		console.error('i18n: i18n config option onTranslationNotFound must be a function');
-		onTranslationNotFound = function onTranslationNotFound() {};
+		onTranslationNotFound = function () {};
 	}
 
 	// register the i18n module in the vuex store
@@ -404,16 +396,16 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		return;
 	}
 	// initialize the replacement function
-	var render = renderFn(identifiers, config.warnings);
+	let render = renderFn(identifiers, config.warnings);
 
 	// get localized string from store. note that we pass the arguments passed
 	// to the function directly to the translateInLanguage function
-	var translate = function $t() {
+	let translate = function $t() {
 
 		// get the current language from the store
-		var locale = store.state[moduleName].locale;
+		let locale = store.state[moduleName].locale;
 
-		return translateInLanguage.apply(undefined, [locale].concat(Array.prototype.slice.call(arguments)));
+		return translateInLanguage(locale, ...arguments);
 	};
 
 	// get localized string from store in a given language if available.
@@ -421,18 +413,18 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	// we will check the arguments to make up the options passed.
 	// 1: locale, key, options, pluralization
 	// 2: locale, key, defaultValue, options, pluralization
-	var translateInLanguage = function translateInLanguage(locale) {
+	let translateInLanguage = function translateInLanguage(locale) {
 
 		// read the function arguments
-		var args = arguments;
+		let args = arguments;
 
 		// initialize options
-		var key = '';
-		var defaultValue = '';
-		var options = {};
-		var pluralization = null;
+		let key = '';
+		let defaultValue = '';
+		let options = {};
+		let pluralization = null;
 
-		var count = args.length;
+		let count = args.length;
 
 		// check if a default value was specified and fill options accordingly
 		if (count >= 3 && typeof args[2] === 'string') {
@@ -470,17 +462,17 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		}
 
 		// get the translations from the store
-		var translations = store.state[moduleName].translations;
+		let translations = store.state[moduleName].translations;
 
 		// get the last resort fallback from the store
-		var fallback = store.state[moduleName].fallback;
+		let fallback = store.state[moduleName].fallback;
 
 		// split locale by - to support partial fallback for regional locales
 		// like de-CH, en-UK
-		var localeRegional = locale.split('-');
+		let localeRegional = locale.split('-');
 
 		// flag for translation to exist or not
-		var translationExists = true;
+		let translationExists = true;
 
 		// check if the language exists in the store. return the key if not
 		if (translations.hasOwnProperty(locale) === false) {
@@ -503,12 +495,12 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		}
 
 		// invoke a method if a translation is not found
-		var asyncTranslation = onTranslationNotFound(locale, key, defaultValue);
+		let asyncTranslation = onTranslationNotFound(locale, key, defaultValue);
 
 		// resolve async translations by updating the store
 		if (asyncTranslation) {
-			Promise.resolve(asyncTranslation).then(function (value) {
-				var additionalTranslations = {};
+			Promise.resolve(asyncTranslation).then(value => {
+				let additionalTranslations = {};
 				additionalTranslations[key] = value;
 				addLocale(locale, additionalTranslations);
 			});
@@ -530,14 +522,12 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	};
 
 	// check if the given key exists in the current locale
-	var checkKeyExists = function checkKeyExists(key) {
-		var scope = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'fallback';
-
+	let checkKeyExists = function checkKeyExists(key, scope = 'fallback') {
 
 		// get the current language from the store
-		var locale = store.state[moduleName].locale;
-		var fallback = store.state[moduleName].fallback;
-		var translations = store.state[moduleName].translations;
+		let locale = store.state[moduleName].locale;
+		let fallback = store.state[moduleName].fallback;
+		let translations = store.state[moduleName].translations;
 
 		// check the current translation
 		if (translations.hasOwnProperty(locale) && translations[locale].hasOwnProperty(key)) {
@@ -549,7 +539,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		}
 
 		// check any localized translations
-		var localeRegional = locale.split('-');
+		let localeRegional = locale.split('-');
 
 		if (localeRegional.length > 1 && translations.hasOwnProperty(localeRegional[0]) && translations[localeRegional[0]].hasOwnProperty(key)) {
 			return true;
@@ -569,67 +559,67 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	};
 
 	// set fallback locale
-	var setFallbackLocale = function setFallbackLocale(locale) {
+	let setFallbackLocale = function setFallbackLocale(locale) {
 		store.dispatch({
-			type: moduleName + '/setFallbackLocale',
+			type: `${moduleName}/setFallbackLocale`,
 			locale: locale
 		});
 	};
 
 	// set the current locale
-	var setLocale = function setLocale(locale) {
+	let setLocale = function setLocale(locale) {
 		store.dispatch({
-			type: moduleName + '/setLocale',
+			type: `${moduleName}/setLocale`,
 			locale: locale
 		});
 	};
 
 	// get the current locale
-	var getLocale = function getLocale() {
+	let getLocale = function getLocale() {
 		return store.state[moduleName].locale;
 	};
 
 	// get all available locales
-	var getLocales = function getLocales() {
+	let getLocales = function getLocales() {
 		return Object.keys(store.state[moduleName].translations);
 	};
 
 	// add predefined translations to the store (keeping existing information)
-	var addLocale = function addLocale(locale, translations) {
+	let addLocale = function addLocale(locale, translations) {
 		return store.dispatch({
-			type: moduleName + '/addLocale',
+			type: `${moduleName}/addLocale`,
 			locale: locale,
 			translations: translations
 		});
 	};
 
 	// replace all locale information in the store
-	var replaceLocale = function replaceLocale(locale, translations) {
+	let replaceLocale = function replaceLocale(locale, translations) {
 		return store.dispatch({
-			type: moduleName + '/replaceLocale',
+			type: `${moduleName}/replaceLocale`,
 			locale: locale,
 			translations: translations
 		});
 	};
 
 	// remove the givne locale from the store
-	var removeLocale = function removeLocale(locale) {
+	let removeLocale = function removeLocale(locale) {
 		if (store.state[moduleName].translations.hasOwnProperty(locale)) {
 			store.dispatch({
-				type: moduleName + '/removeLocale',
+				type: `${moduleName}/removeLocale`,
 				locale: locale
 			});
 		}
 	};
 
 	// we are phasing out the exists function
-	var phaseOutExistsFn = function phaseOutExistsFn(locale) {
+	let phaseOutExistsFn = function phaseOutExistsFn(locale) {
 		if (config.warnings) console.warn('i18n: $i18n.exists is depreceated. Please use $i18n.localeExists instead. It provides exactly the same functionality.');
 		return checkLocaleExists(locale);
 	};
 
 	// check if the given locale is already loaded
-	var checkLocaleExists = function checkLocaleExists(locale) {
+	let checkLocaleExists = function checkLocaleExists(locale) {
 		return store.state[moduleName].translations.hasOwnProperty(locale);
 	};
 
@@ -683,19 +673,17 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 // variable substitutions, i.e. {test} or {{test}}, note that we are using a
 // closure to avoid recompilation of the regular expression to match tags on
 // every render cycle.
-var renderFn = function renderFn(identifiers) {
-	var warnings = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
-
+let renderFn = function (identifiers, warnings = true) {
 
 	if (identifiers == null || identifiers.length != 2) {
 		console.warn('i18n: You must specify the start and end character identifying variable substitutions');
 	}
 
 	// construct a regular expression ot find variable substitutions, i.e. {test}
-	var matcher = new RegExp('' + identifiers[0] + '{1}\\w.+?' + identifiers[1] + '{1}', 'g');
+	let matcher = new RegExp('' + identifiers[0] + '{1}(\\w{1}|\\w.+?)' + identifiers[1] + '{1}', 'g');
 
 	// define the replacement function
-	var replace = function replace(translation, replacements) {
+	let replace = function replace(translation, replacements) {
 
 		// check if the object has a replace property
 		if (!translation.replace) {
@@ -705,7 +693,7 @@ var renderFn = function renderFn(identifiers) {
 		return translation.replace(matcher, function (placeholder) {
 
 			// remove the identifiers (can be set on the module level)
-			var key = placeholder.replace(identifiers[0], '').replace(identifiers[1], '');
+			let key = placeholder.replace(identifiers[0], '').replace(identifiers[1], '');
 
 			if (replacements[key] !== undefined) {
 				return replacements[key];
@@ -728,20 +716,17 @@ var renderFn = function renderFn(identifiers) {
 
 	// the render function will replace variable substitutions and prepare the
 	// translations for rendering
-	var render = function render(locale, translation) {
-		var replacements = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-		var pluralization = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
+	let render = function render(locale, translation, replacements = {}, pluralization = null) {
 		// get the type of the property
-		var objType = typeof translation === 'undefined' ? 'undefined' : _typeof(translation);
-		var pluralizationType = typeof pluralization === 'undefined' ? 'undefined' : _typeof(pluralization);
+		let objType = typeof translation;
+		let pluralizationType = typeof pluralization;
 
-		var resolvePlaceholders = function resolvePlaceholders() {
+		let resolvePlaceholders = function () {
 
 			if (isArray$1(translation)) {
 
 				// replace the placeholder elements in all sub-items
-				return translation.map(function (item) {
+				return translation.map(item => {
 					return replace(item, replacements, false);
 				});
 			} else if (objType === 'string') {
@@ -763,10 +748,10 @@ var renderFn = function renderFn(identifiers) {
 		// --- handle pluralizations ---
 
 		// replace all placeholders
-		var resolvedTranslation = resolvePlaceholders();
+		let resolvedTranslation = resolvePlaceholders();
 
 		// initialize pluralizations
-		var pluralizations = null;
+		let pluralizations = null;
 
 		// if translations are already an array and have more than one entry,
 		// we will not perform a split operation on :::
@@ -778,7 +763,7 @@ var renderFn = function renderFn(identifiers) {
 		}
 
 		// determine the pluralization version to use by locale
-		var index = plurals.getTranslationIndex(locale, pluralization);
+		let index = plurals.getTranslationIndex(locale, pluralization);
 
 		// check if the specified index is present in the pluralization
 		if (typeof pluralizations[index] === 'undefined') {
