@@ -1,10 +1,11 @@
 {
 	"name": "vuex-i18n-build",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"license": "MIT",
 	"description": "Build directory for vuex-i18n",
 	"scripts": {
-		"build": "rollup -c rollup.config.js",
+		"build": "node ./build.js",
+		"rollup": "rollup -c rollup.config.js",
 		"minify": "uglifyjs ../dist/vuex-i18n.umd.js --output ../dist/vuex-i18n.min.js --compress"
 	},
 	"author": {
