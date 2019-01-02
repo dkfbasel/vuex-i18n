@@ -1,6 +1,7 @@
 {
 	"name": "vuex-i18n-build",
 	"version": "1.0.0",
+	"license": "MIT",
 	"description": "Build directory for vuex-i18n",
 	"scripts": {
 		"build": "rollup -c rollup.config.js",
