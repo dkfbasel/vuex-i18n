@@ -12,11 +12,12 @@
 		"url": "https://github.com/tikiatua"
 	},
 	"dependencies": {
-		"babel-core": "^6.26.0",
-		"babel-preset-env": "^1.6.1",
-		"rollup": "^0.67.1",
-		"rollup-plugin-babel": "^3.0.2",
-		"rollup-plugin-commonjs": "^8.2.6",
-		"uglify-es": "^3.1.6"
+		"@babel/core": "^7.2.2",
+		"@babel/plugin-external-helpers": "^7.2.0",
+		"@babel/preset-env": "^7.2.3",
+		"rollup": "^1.0.0",
+		"rollup-plugin-babel": "^4.2.0",
+		"rollup-plugin-commonjs": "^9.2.0",
+		"uglify-es": "^3.3.9"
 	}
 }
