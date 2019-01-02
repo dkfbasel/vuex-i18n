@@ -28,6 +28,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 		identifiers: ['{', '}'],
 		preserveState: false,
 		translateFilterName: 'translate',
+		translateInFilterName: 'translateIn',
 		onTranslationNotFound: function() {}
 	}, config);
 
@@ -35,6 +36,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 	const moduleName = config.moduleName;
 	const identifiers = config.identifiers;
 	const translateFilterName = config.translateFilterName;
+	const translateInFilterName = config.translateInFilterName;
 
 	// initialize the onTranslationNotFound function and make sure it is actually
 	// a function
@@ -199,6 +201,11 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	};
 
+	// add a filter function to translate in a given locale (i.e. {{ 'something' | translateIn('en') }})
+	let translateInLanguageFilter = function translateInLanguageFilter(key, locale, ...args) {
+		return translateInLanguage(locale, key, ...args);
+	};
+
 	// check if the given key exists in the current locale
 	let checkKeyExists = function checkKeyExists(key, scope = 'fallback') {
 
@@ -346,6 +353,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
 
 	// register a filter function for translations
 	Vue.filter(translateFilterName, translate);
+	Vue.filter(translateInFilterName, translateInLanguageFilter);
 
 };
 
