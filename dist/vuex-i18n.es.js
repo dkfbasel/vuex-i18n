@@ -405,12 +405,14 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
     identifiers: ['{', '}'],
     preserveState: false,
     translateFilterName: 'translate',
+    translateInFilterName: 'translateIn',
     onTranslationNotFound: function onTranslationNotFound() {}
   }, config); // define module name and identifiers as constants to prevent any changes
 
   var moduleName = config.moduleName;
   var identifiers = config.identifiers;
-  var translateFilterName = config.translateFilterName; // initialize the onTranslationNotFound function and make sure it is actually
+  var translateFilterName = config.translateFilterName;
+  var translateInFilterName = config.translateInFilterName; // initialize the onTranslationNotFound function and make sure it is actually
   // a function
 
   var onTranslationNotFound = config.onTranslationNotFound;
@@ -551,6 +553,15 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
     }
 
     return render(locale, translations[fallback][key], options, pluralization);
+  }; // add a filter function to translate in a given locale (i.e. {{ 'something' | translateIn('en') }})
+
+
+  var translateInLanguageFilter = function translateInLanguageFilter(key, locale) {
+    for (var _len = arguments.length, args = new Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+      args[_key - 2] = arguments[_key];
+    }
+
+    return translateInLanguage.apply(void 0, [locale, key].concat(args));
   }; // check if the given key exists in the current locale
 
 
@@ -690,6 +701,7 @@ VuexI18nPlugin.install = function install(Vue, store, config) {
   Vue.prototype.$tlang = translateInLanguage; // register a filter function for translations
 
   Vue.filter(translateFilterName, translate);
+  Vue.filter(translateInFilterName, translateInLanguageFilter);
 }; // renderFn will initialize a function to render the variable substitutions in
 // the translation string. identifiers specify the tags will be used to find
 // variable substitutions, i.e. {test} or {{test}}, note that we are using a
