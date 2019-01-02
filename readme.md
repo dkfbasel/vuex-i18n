@@ -166,6 +166,7 @@ At present, the configuration options that are supported are as follows:
 - `identifiers` (default `['{', '}']`)
 - `preserveState` (default `false`)
 - `translateFilterName` (default `translate`)
+- `translateInFilterName` (default `translateIn`)
 - `onTranslationNotFound` (default `function(){}`)
 - `warnings`: default(`true`)
 
@@ -301,7 +302,8 @@ There are also several methods available on the property `this.$i18n` or `Vue.i1
 // translate the given key
 $t(), Vue.i18n.translate()
 
-// translate the given key in a specific locale
+// translate the given key in a specific locale, also available as filter
+// i.e {{ 'message' | translateIn('en') }}
 $tlang(), Vue.i18n.translateIn()
 
 // get the current locale
