@@ -1,3 +1,4 @@
+// configuration for the jest test utility
 module.exports = {
   moduleFileExtensions: [
     'js',

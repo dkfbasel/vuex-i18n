@@ -1,3 +1,4 @@
+// configuration for the bili bundler (based on rollup)
 import { Config } from 'bili'
 
 const config: Config = {
