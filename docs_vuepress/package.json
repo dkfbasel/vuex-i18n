@@ -3,10 +3,10 @@
 	"version": "1.0.0",
 	"description": "Documentation for vuex-i18n using vuepress",
 	"dependencies": {
-		"vuepress": "^0.14.4"
+		"vuepress": "^1.0.3"
 	},
 	"scripts": {
 		"docs:dev": "vuepress dev docs",
 		"docs:build": "vuepress build docs"
-	} 
+	}
 }
