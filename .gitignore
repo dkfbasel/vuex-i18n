@@ -1,7 +1,26 @@
-/node_modules
-/config.codekit
-/config.codekit3
-/build/node_modules
-/examples/*/src/node_modules
-/docs_vuepress/node_modules
-/build/package-lock.json
+# node modules folders should not be included
+node_modules
+
+# rollup build cache
+.rpt2_cache
+
+# created by os x for finder windows
+.DS_Store
+
+# local env files
+.env.local
+.env.*.local
+
+# log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
